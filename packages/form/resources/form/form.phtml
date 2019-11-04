@@ -1,0 +1,12 @@
+<?php
+
+use Form\FormView\FormView;
+use Form\FormView\HtmlElement;
+
+/** @var FormView $form */ ?>
+<form<?=$form->getAttributesAsString();?>>
+    <?php /** @var HtmlElement $htmlElement */ ?>
+    <?php foreach($form->getElements() as $htmlElement): ?>
+        <?=$this->include($htmlElement->getResource(), ['htmlElement' => $htmlElement])?>
+    <?php endforeach; ?>
+</form>

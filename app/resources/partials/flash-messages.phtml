@@ -1,0 +1,11 @@
+<?php if($this->hasMessagesToFlash()): ?>
+    <div class="flash-messages">
+        <?php foreach($this->flashMessages() as $type => $messages): ?>
+            <?php foreach($messages as $message): ?>
+                <div class="message <?=$type?>">
+                    <p><?=$message;?></p>
+                </div>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>

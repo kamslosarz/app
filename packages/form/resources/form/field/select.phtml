@@ -1,0 +1,39 @@
+<?php /** @var HtmlElement $htmlElement */ ?>
+<?php use Form\FormView\HtmlElement; ?>
+
+<?php if($htmlElement->hasOption('label')): ?>
+    <?php if($htmlElement->hasAttribute('id')): ?>
+        <label for="<?=$htmlElement->getAttribute('id')?>">
+            <?=$htmlElement->getOption('label')?>
+        </label>
+        <select<?=$htmlElement->getAttributesAsString();?>>
+            <?php foreach($this->getOption('options') as $value => $label): ?>
+                <option value="<?=$value?>"<?php if($htmlElement->getAttribute('value') === $value): ?> selected="selected"<? endif; ?>>
+                    <?=$label?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    <?php else: ?>
+        <label>
+            <?=$htmlElement->getOption('label')?>
+            <select<?=$htmlElement->getAttributesAsString();?>>
+                <?php foreach($this->getOption('options') as $value => $label): ?>
+                    <option value="<?=$value?>"<?php if($htmlElement->getAttribute('value') === $value): ?> selected="selected"<? endif; ?>>
+                        <?=$label?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </label>
+    <?php endif; ?>
+<?php else: ?>
+    <select<?=$htmlElement->getAttributesAsString();?>>
+        <?php foreach($this->getOption('options') as $value => $label): ?>
+            <option value="<?=$value?>"<?php if($htmlElement->getAttribute('value') === $value): ?> selected="selected"<? endif; ?>>
+                <?=$label?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+<?php endif; ?>
+<?=$this->include('form/field/errors.phtml', [
+    'errors' => $htmlElement->getOption('errors'), 'htmlElement' => $htmlElement
+]);?>

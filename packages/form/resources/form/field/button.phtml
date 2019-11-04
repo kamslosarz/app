@@ -1,0 +1,10 @@
+<?php /** @var HtmlElement $htmlElement */ ?>
+<?php use Form\FormView\HtmlElement; ?>
+<?php if($htmlElement->hasOption('label')): ?>
+    <button<?=$htmlElement->getAttributesAsString();?>><?=$htmlElement->getOption('label')?></button>
+<?php else: ?>
+    <button<?=$htmlElement->getAttributesAsString();?>/>
+<?php endif; ?>
+<?=$this->include('form/field/errors.phtml', [
+    'errors' => $htmlElement->getOption('errors'), 'htmlElement' => $htmlElement
+]);?>

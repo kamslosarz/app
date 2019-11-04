@@ -1,0 +1,41 @@
+{
+  "name": "kslosarz/app",
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../packages/*"
+    },
+    {
+      "type": "path",
+      "url": "../framework"
+    }
+  ],
+  "require": {
+    "framework/event-dispatcher": "dev-master",
+    "framework/service-container": "dev-master",
+    "framework/console": "dev-master",
+    "framework/collection": "dev-master",
+    "framework/router": "dev-master",
+    "framework/request": "dev-master",
+    "framework/response": "dev-master",
+    "framework/controller": "dev-master",
+    "framework/container": "dev-master",
+    "framework/view": "dev-master",
+    "framework/form": "dev-master",
+    "framework/builder": "dev-master",
+    "framework/validator": "dev-master",
+    "framework/flash-messenger": "dev-master",
+    "framework/factory": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/",
+      "Tests\\": "tests/src/",
+      "fixture\\": "tests/fixture"
+    }
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.2",
+    "phpunit/phpunit": "^8.1"
+  }
+}

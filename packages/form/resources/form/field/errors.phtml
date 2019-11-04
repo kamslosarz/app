@@ -1,0 +1,11 @@
+<?php use Form\FormView\HtmlElement; ?>
+<?php /** @var array $errors */ ?>
+<?php /** @var HtmlElement $htmlElement */ ?>
+
+<?php if(is_array($errors)): ?>
+    <div class="errors" id="errors-<?=$htmlElement->getAttribute('id')?>">
+        <?php foreach($errors as $error): ?>
+            <p><?=$error?></p>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>

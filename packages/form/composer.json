@@ -1,0 +1,32 @@
+{
+  "name": "framework/form",
+  "authors": [
+    {
+      "name": "Kamil Ślósarz",
+      "email": "kamil.slosarz@netart.pl"
+    }
+  ],
+  "require": {
+    "framework/collection": "dev-master",
+    "framework/event-dispatcher": "dev-master",
+    "framework/view": "dev-master",
+    "framework/validator": "dev-master",
+    "framework/builder": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.4",
+    "mockery/mockery": "^1.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Form\\": "src/",
+      "fixture\\": "tests/fixture"
+    }
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../*"
+    }
+  ]
+}

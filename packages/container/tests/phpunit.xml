@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit backupStaticAttributes="false"
+         colors="true"
+         stopOnFailure="true"
+         backupGlobals="false"
+         bootstrap="bootstrap.php"
+         processIsolation="true">
+
+    <testsuite name="Application Test Suite">
+        <directory>tests/</directory>
+    </testsuite>
+</phpunit>

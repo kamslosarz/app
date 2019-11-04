@@ -1,0 +1,20 @@
+<?php /** @var HtmlElement $htmlElement */ ?>
+<?php use Form\FormView\HtmlElement; ?>
+<?php if($htmlElement->hasOption('label')): ?>
+    <?php if($htmlElement->hasAttribute('id')): ?>
+        <label for="<?=$htmlElement->getAttribute('id')?>">
+            <?=$htmlElement->getOption('label')?>
+        </label>
+        <input<?=$htmlElement->getAttributesAsString();?>/>
+    <?php else: ?>
+        <label>
+            <?=$htmlElement->getOption('label')?>
+            <input<?=$htmlElement->getAttributesAsString();?>/>
+        </label>
+    <?php endif; ?>
+<?php else: ?>
+    <input<?=$htmlElement->getAttributesAsString();?>/>
+<?php endif; ?>
+<?=$this->include('form/field/errors.phtml', [
+    'errors' => $htmlElement->getOption('errors'), 'htmlElement' => $htmlElement
+]);?>

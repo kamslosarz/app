@@ -1,0 +1,26 @@
+{
+  "name": "framework/file",
+  "authors": [
+    {
+      "name": "Kamil Ślósarz",
+      "email": "kamil.slosarz@netart.pl"
+    }
+  ],
+  "require": {},
+  "require-dev": {
+    "phpunit/phpunit": "^8.4",
+    "mockery/mockery": "^1.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "File\\": "src/",
+      "fixture\\": "tests/fixture"
+    }
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../*"
+    }
+  ]
+}

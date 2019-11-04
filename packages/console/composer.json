@@ -1,0 +1,28 @@
+{
+  "name": "framework/console",
+  "authors": [
+    {
+      "name": "Kamil Ślósarz",
+      "email": "kamil.slosarz@netart.pl"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../*"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^8.3",
+    "mockery/mockery": "^1.2"
+  },
+  "require": {
+    "framework/collection": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "Console\\": "src/",
+      "fixture\\": "tests/fixture"
+    }
+  }
+}

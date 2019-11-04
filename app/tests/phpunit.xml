@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit backupStaticAttributes="false"
+         colors="true"
+         stopOnFailure="true"
+         backupGlobals="false"
+         bootstrap="bootstrap.php"
+         processIsolation="true"
+         cacheResult="false">
+
+    <testsuites>
+        <testsuite name="unit">
+            <directory>unit/</directory>
+        </testsuite>
+        <testsuite name="functional">
+            <directory>functional/</directory>
+        </testsuite>
+        <testsuite name="packages">
+            <directory>../../packages/*/tests/</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
