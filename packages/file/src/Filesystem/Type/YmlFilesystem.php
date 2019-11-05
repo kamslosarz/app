@@ -4,22 +4,27 @@
 namespace File\Filesystem\Type;
 
 
-use File\Filesystem\Filesystem;
-
-class YmlFilesystem extends Filesystem
+class YmlFilesystem extends FlatFilesystem
 {
     protected function saveFile(string $filename, $contents): bool
     {
-        // TODO: Implement saveFile() method.
+        $contents = yaml_emit($contents);
+
+        return parent::saveFile($filename, $contents);
     }
 
-    protected function deleteFile(string $filename): bool
+    public function read(array $files)
     {
-        // TODO: Implement deleteFile() method.
-    }
+        $filesContents = parent::read($files);
 
-    protected function readFile(string $filename): array
-    {
-        // TODO: Implement readFile() method.
+        if(!empty($filesContents))
+        {
+            foreach($filesContents as &$fileContents)
+            {
+                $fileContents = yaml_parse($fileContents);
+            }
+        }
+
+        return $filesContents;
     }
 }

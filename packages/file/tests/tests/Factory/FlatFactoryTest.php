@@ -13,7 +13,7 @@ class FlatFactoryTest extends TestCase
     /**
      * @throws ReflectionException
      */
-    public function testShouldConstructFileWithYmlFilesystem()
+    public function testShouldConstructFileWithFlatFilesystem()
     {
         $file = FlatFactory::getInstance('file.yml');
 

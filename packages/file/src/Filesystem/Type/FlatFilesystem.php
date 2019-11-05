@@ -17,17 +17,17 @@ class FlatFilesystem extends Filesystem
     {
         if(!file_exists($filename))
         {
-            throw new FilesystemException(sprintf('File \'%s\' not exists', $filename));
+            $this->touch($filename);
         }
         if(!is_writable($filename))
         {
             throw new FilesystemException(sprintf('File \'%s\' is not writable', $filename));
         }
-        if(($handle = fopen($filename, 'w')) === false)
+        if(($handle = $this->fopen($filename, 'w')) === false)
         {
             throw new FilesystemException(sprintf('Error while opening file \'%s\' for write', $filename));
         }
-        if(fputs($handle, $contents) === false)
+        if($this->fputs($handle, $contents) === false)
         {
             throw new FilesystemException(sprintf('Error while saving file \'%s\'', $filename));
         }
@@ -47,7 +47,7 @@ class FlatFilesystem extends Filesystem
             throw new FilesystemException(sprintf('File \'%s\' not exits', $filename));
         }
 
-        if(unlink($filename) === false)
+        if($this->unlink($filename) === false)
         {
             throw new FilesystemException(sprintf('File \'%s\' cannot be delete', $filename));
         }
@@ -70,15 +70,40 @@ class FlatFilesystem extends Filesystem
         {
             throw new FilesystemException(sprintf('File \'%s\' is not readable', $filename));
         }
-        if(($handle = fopen($filename, 'r')) === false)
+        if(($handle = $this->fopen($filename, 'r')) === false)
         {
             throw new FilesystemException(sprintf('Error while opening file \'%s\' for reading', $filename));
         }
-        if(($contents = fread($handle)) === false)
+        if(($contents = $this->fread($handle, filesize($filename))) === false)
         {
             throw new FilesystemException(sprintf('Error while reading file \'%s\'', $filename));
         }
 
         return $contents;
+    }
+
+    protected function fopen(string $filename, string $mode)
+    {
+        return fopen($filename, $mode);
+    }
+
+    protected function fputs($handle, $contents)
+    {
+        return fputs($handle, $contents);
+    }
+
+    protected function touch(string $filename)
+    {
+        return touch($filename);
+    }
+
+    protected function unlink($filename)
+    {
+        return unlink($filename);
+    }
+
+    protected function fread($handle, $size)
+    {
+        return fread($handle, $size);
     }
 }
