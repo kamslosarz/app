@@ -12,7 +12,6 @@ use Collection\Collection;
 use Container\Process\ProcessContext;
 use fixture\BrokenProcess\BrokenProcess;
 use PHPUnit\Framework\TestCase;
-use Response\Response;
 
 class AppTest extends TestCase
 {
@@ -37,13 +36,16 @@ class AppTest extends TestCase
             'errorProcessContext' => new Collection()
         ];
         $app = new App();
+        ob_start();
+        $app($dependencyTree);
+        $results = ob_get_clean();
+
         /** @var ProcessContext $processContext */
-        $processContext = $app($dependencyTree);
-        /** @var Response $response */
-        $response = $processContext->get('response');
+        $processContext = $app->getProcessContext();
+        $this->assertInstanceOf(ProcessContext::class, $processContext);
         $this->assertNull($processContext->get('containerException'));
         $this->assertNull($processContext->get('applicationError'));
-        $this->assertEquals('hello world', $response->getContents());
+        $this->assertEquals('hello world', $results);
     }
 
     public function testShouldInvokeErrorProcessContext()
@@ -70,10 +72,11 @@ class AppTest extends TestCase
             ])
         ];
         $app = new App();
+        ob_start();
+        $app($dependencyTree);
+        $results = ob_get_clean();
         /** @var ProcessContext $processContext */
-        $processContext = $app($dependencyTree);
-        /** @var Response $response */
-        $response = $processContext->get('response');
+        $processContext = $app->getProcessContext();
         if($processContext->has('applicationError'))
         {
             /** @var Exception $containerException */
@@ -86,6 +89,7 @@ class AppTest extends TestCase
             $containerException = $processContext->get('containerException');
             $this->fail(sprintf('%s %s', $containerException->getMessage(), $containerException->getTraceAsString()));
         }
-        $this->assertEquals('ERROR OCCURRED: some error', $response->getContents());
+
+        $this->assertEquals('ERROR OCCURRED: some error', $results);
     }
 }

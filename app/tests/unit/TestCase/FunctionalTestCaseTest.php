@@ -49,7 +49,7 @@ class FunctionalTestCaseTest extends TestCase
     /**
      * @throws ReflectionException
      */
-    public function testShouldInvokeApp()
+    public function testShouldInvokeDefaultApp()
     {
         /** @var FunctionalTestCase $functionalTestCase */
         $functionalTestCase = Mockery::mock(FunctionalTestCase::class)

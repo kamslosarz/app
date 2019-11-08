@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\ApplicationException;
+use App\ViewExtension\Asset;
 use Container\Process\Process;
 use Container\Process\ProcessContext;
 use FlashMessenger\FlashMessenger;
@@ -25,7 +26,7 @@ class ViewFactory extends Process
 
         $extensionEventManager = new ExtensionEventManager();
         $view = new View($this->parameters['resources'], $extensionEventManager);
-        $view->addExtension(new IncludeExtension($view));
+        $this->addViewExtensions($view);
 
         /** @var Request $request */
         $request = $processContext->get('request');
@@ -46,5 +47,11 @@ class ViewFactory extends Process
         {
             throw new ApplicationException('Request not exists');
         }
+    }
+
+    private function addViewExtensions(View &$view): void
+    {
+        $view->addExtension(new IncludeExtension($view));
+        $view->addExtension(new Asset());
     }
 }

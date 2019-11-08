@@ -39,10 +39,12 @@ abstract class FunctionalTestCase extends TestCase
 
     public function invokeApp()
     {
+        ob_start();
         $app = new App();
         $dependencyTree = include APP_DIR . '/config/app.php';
         $app->__invoke($dependencyTree);
         $this->processContext = $app->getProcessContext();
+        ob_end_clean();
     }
 
     /**

@@ -1,13 +1,13 @@
 <?php
 
-
 namespace tests\Command;
 
+use Collection\Collection;
 use Console\Command\Command;
 use Mockery;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use ReflectionException;
+use ReflectionProperty;
 
 class CommandTest extends TestCase
 {
@@ -16,16 +16,37 @@ class CommandTest extends TestCase
      */
     public function testShouldConstructCommand()
     {
-        $parameters = [
-            'test' => 'value'
-        ];
-        $commandMock = Mockery::mock(Command::class, [$parameters])
+        $parameters = Mockery::mock(Collection::class);
+        $command = Mockery::mock(Command::class, [
+            $parameters
+        ])
             ->makePartial();
 
-        $reflection = new ReflectionClass($commandMock);
-        $parametersProperty = $reflection->getProperty('parameters');
+        $parametersProperty = new ReflectionProperty($command, 'parameters');
         $parametersProperty->setAccessible(true);
+        $parametersPropertyValue = $parametersProperty->getValue($command);
 
-        $this->assertEquals($parameters, $parametersProperty->getValue($commandMock));
+        $this->assertInstanceOf(Collection::class, $parametersPropertyValue);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function testShouldGetCommandResultsSuccess()
+    {
+        $expectedResults = 'expected results';
+        $parameter = Mockery::mock(Collection::class);
+        $command = Mockery::mock(Command::class, [
+            $parameter
+        ])
+            ->makePartial();
+
+        $resultsProperty = new ReflectionProperty($command, 'results');
+        $resultsProperty->setAccessible(true);
+        $resultsProperty->setValue($command, $expectedResults);
+
+        $results = $command->getResults();
+
+        $this->assertEquals($expectedResults, $results);
     }
 }

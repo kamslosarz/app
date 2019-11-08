@@ -144,6 +144,6 @@ class ControllerTest extends TestCase
         $result = $method->invoke($controller);
 
         $contextMock->shouldHaveReceived('get')->with('request')->once();
-        $this->assertEquals($flashMessengerMock, $result);
+        $this->assertInstanceOf(FlashMessenger::class, $result);
     }
 }

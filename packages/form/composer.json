@@ -11,7 +11,10 @@
     "framework/event-dispatcher": "dev-master",
     "framework/view": "dev-master",
     "framework/validator": "dev-master",
-    "framework/builder": "dev-master"
+    "framework/builder": "dev-master",
+    "framework/factory": "dev-master",
+    "framework/router": "dev-master",
+    "php": "7.4.0RC4"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.4",

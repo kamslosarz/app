@@ -2,30 +2,18 @@
 
 namespace Console;
 
-use Console\Command\CommandLocator;
+use Console\Command\Command;
 
 class Console
 {
-    private $input = '';
-    private $config = [];
+    protected ?string $error = null;
+    protected ?string $output = null;
 
-    public function __construct(array $config, string $input)
+    public function execute(Command $command): ?string
     {
-        $this->config = $config;
-        $this->input = $input;
-    }
+        $command->validate();
+        $command->execute();
 
-    /**
-     * @return bool
-     * @throws Command\CommandException
-     */
-    public function __invoke()
-    {
-        return $this->getCommandLocator()()();
-    }
-
-    protected function getCommandLocator(): CommandLocator
-    {
-        return new CommandLocator($this->input, $this->config['commandNamespace']);
+        return $command->getResults();
     }
 }

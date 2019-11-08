@@ -20,6 +20,6 @@ class LoginTest extends FunctionalTestCase
         $this->assertEquals(200, $response->getCode());
 
         $contents = trim($response->getContents());
-        $this->assertEquals('<form name="login-form" method="post"><input name="login"/><input name="password"/><button name="submit" value="save" id="login-button">save</button></form>', $contents);
+        $this->assertEquals('<form name="login-form" method="post"><input name="login-form[login]"/><input name="login-form[password]"/><button name="login-form[submit]" value="save" id="login-button">save</button></form>', $contents);
     }
 }

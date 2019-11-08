@@ -13,7 +13,6 @@
   "require": {
     "framework/event-dispatcher": "dev-master",
     "framework/service-container": "dev-master",
-    "framework/console": "dev-master",
     "framework/collection": "dev-master",
     "framework/router": "dev-master",
     "framework/request": "dev-master",
@@ -25,7 +24,10 @@
     "framework/builder": "dev-master",
     "framework/validator": "dev-master",
     "framework/flash-messenger": "dev-master",
-    "framework/factory": "dev-master"
+    "framework/factory": "dev-master",
+    "framework/filesystem": "dev-master",
+    "php": "7.4.0RC4",
+    "framework/console": "dev-master"
   },
   "autoload": {
     "psr-4": {

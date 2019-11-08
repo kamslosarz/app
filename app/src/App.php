@@ -44,7 +44,7 @@ class App
 
     private function handleError(Throwable $error): void
     {
-        if(DEBUG_MODE)
+        if(defined('DEBUG_MODE') && DEBUG_MODE === true)
         {
             echo sprintf("%s in %s:%s </br></br> <pre>%s</pre>", $error->getMessage(), $error->getFile(), $error->getLine(), $error->getTraceAsString());
         }

@@ -3,7 +3,6 @@
 namespace tests\Listener;
 
 use EventManager\Event\Context;
-use EventManager\Event\ContextException;
 use EventManager\Event\Event;
 use EventManager\Listener\ListenerInvokable;
 use Mockery;
@@ -11,9 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class ListenerInvokableTest extends TestCase
 {
-    /**
-     * @throws ContextException
-     */
     public function testShouldConstructAndInvokeListenerInvokableClosure()
     {
         /** @var callable $listenerMock */
@@ -31,6 +27,11 @@ class ListenerInvokableTest extends TestCase
                 ->getMock()
                 ->shouldReceive('getParameters')
                 ->andReturns([
+                    'param1', 'param2'
+                ])
+                ->getMock()
+                ->shouldReceive('__toArray')
+                ->andReturn([
                     'param1', 'param2'
                 ])
                 ->getMock()

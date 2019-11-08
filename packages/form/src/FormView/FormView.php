@@ -55,13 +55,14 @@ class FormView
 
     private function adjustFieldName(Collection $attributes): Collection
     {
-        if(!$this->attributes->get('name'))
+        if(!$attributes->get('name'))
         {
             return $attributes;
         }
 
         $name = [];
         preg_match("/(^[^\[^\]]{1,})(.{0,})|(^\[+[^\[^\]]{0,}+])(.{0,})/", $attributes->get('name', ''), $name);
+
         list(, $fieldName, $suffix) = $name;
         $attributes->set('name', sprintf('%s[%s]%s', $this->attributes->get('name'), $fieldName, $suffix));
 

@@ -14,18 +14,13 @@ use Validator\Validator;
 
 abstract class Form
 {
-    /** @var FormBuilder $formBuilder */
-    private $formBuilder = [];
-    /** @var Context */
-    private $context;
-    /** @var Validator $validator */
-    private $validator;
-    /** @var Collection $fields */
-    private $fields;
-    private $handler;
-    /** @var Collection $attributes */
-    protected $attributes = [];
-    private $errors = [];
+    protected FormBuilder $formBuilder;
+    protected Context $context;
+    protected Validator $validator;
+    protected Fields $fields;
+    protected FormHandler $handler;
+    protected Collection $attributes;
+    private array $errors = [];
 
     /**
      * Form constructor.

@@ -9,7 +9,8 @@
   "require": {
     "framework/collection": "dev-master",
     "framework/builder": "dev-master",
-    "framework/factory": "dev-master"
+    "framework/factory": "dev-master",
+    "php": "7.4.0RC4"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.4",

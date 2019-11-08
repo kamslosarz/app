@@ -11,14 +11,14 @@ class FlashMessenger
     const TYPE_SUCCESS = 'SUCCESS';
     const TYPE_ERROR = 'ERROR';
 
-    static $types = [
+    static array $types = [
         'MESSAGES_' . self::TYPE_WARNING,
         'MESSAGES_' . self::TYPE_SUCCESS,
         'MESSAGES_' . self::TYPE_ERROR,
         'MESSAGES_' . self::TYPE_INFO,
     ];
 
-    protected $request;
+    protected Request $request;
 
     public function __construct(Request $request)
     {
