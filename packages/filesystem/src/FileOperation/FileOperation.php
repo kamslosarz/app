@@ -6,7 +6,9 @@ use FileSystem\FileSystemException;
 
 abstract class FileOperation
 {
-    protected $results;
+    protected /*mixed*/
+        /** @noinspection PhpMissingFieldTypeInspection */
+        $results;
 
     /**
      * @throws FileSystemException

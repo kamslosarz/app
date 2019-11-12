@@ -4,10 +4,7 @@ namespace Container\Process;
 
 abstract class Process
 {
-    /**
-     * @var array
-     */
-    protected $parameters;
+    protected array $parameters;
 
     public function __construct(array $parameters)
     {

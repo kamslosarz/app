@@ -10,10 +10,8 @@ class Router
     const REQUEST_METHOD_PATTERN = '/^[a-zA-Z\,]+\:/';
     const REQUEST_PARAMETER_PATTER = '/^\{[a-zA-Z0-9]+\}$|^\*$/';
     const DEFAULT_REQUEST_METHOD = 'get';
-    /**
-     * @var array
-     */
-    private $routes;
+
+    protected array $routes;
 
     public function __construct(array $routes = [])
     {

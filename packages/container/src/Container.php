@@ -12,11 +12,8 @@ use Throwable;
 
 class Container
 {
-    /**
-     * @var array
-     */
-    protected $appProcessContext;
-    protected $errorProcessContext;
+    protected Collection $appProcessContext;
+    protected Collection $errorProcessContext;
 
     /**
      * Container constructor.

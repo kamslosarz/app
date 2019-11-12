@@ -5,6 +5,7 @@ namespace View\Element;
 use Collection\Collection;
 use EventManager\Event\Event;
 use EventManager\EventDispatcher;
+use EventManager\EventManager;
 use EventManager\EventManagerException;
 use Exception;
 use View\ViewException;
@@ -12,10 +13,10 @@ use View\ViewExtension\ExtensionEventManager;
 
 class Element extends Collection
 {
-    protected $resourceFile;
-    protected $oldPath = null;
-    protected $resourcesPaths = [];
-    protected $eventManager;
+    protected string $resourceFile;
+    protected string $oldPath;
+    protected string $resourcesPaths;
+    protected EventManager $eventManager;
 
     /**
      * Element constructor.

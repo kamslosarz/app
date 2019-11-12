@@ -28,7 +28,6 @@ class ErrorResponseFactory extends Process
         );
         $processContext->remove('containerException');
 
-
         return $response;
     }
 }

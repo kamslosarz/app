@@ -4,7 +4,7 @@ namespace Form\Handler;
 
 abstract class FormHandler
 {
-    private $errors = [];
+    private array $errors = [];
 
     abstract public function validate(array $fields): void;
 

@@ -5,7 +5,7 @@ namespace Validator\Constraint;
 
 class OptionListConstraint extends Constraint
 {
-    private $optionsList;
+    private array $optionsList = [];
 
     public function __construct(array $options = [])
     {

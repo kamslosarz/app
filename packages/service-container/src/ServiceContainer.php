@@ -8,8 +8,8 @@ use ServiceContainer\ServiceResolver\ServiceResolver;
 
 class ServiceContainer
 {
-    protected $serviceCollection;
-    protected $serviceResolver;
+    protected Collection $serviceCollection;
+    protected ServiceResolver $serviceResolver;
 
     public function __construct(array $servicesMap)
     {

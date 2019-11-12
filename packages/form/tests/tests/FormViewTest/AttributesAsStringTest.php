@@ -4,6 +4,7 @@
 namespace tests\FormViewTest;
 
 
+use Collection\Collection;
 use Form\FormView\AttributesAsString;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +29,7 @@ class AttributesAsStringTest extends TestCase
         $reflection = new ReflectionClass($attributesAsString);
         $attributesProperty = $reflection->getProperty('attributes');
         $attributesProperty->setAccessible(true);
-        $attributesProperty->setValue($attributesAsString, $attributes);
+        $attributesProperty->setValue($attributesAsString, new Collection($attributes));
 
         $this->assertEquals(' class="element-class" id="SOME_ID"', $attributesAsString->getAttributesAsString());
     }

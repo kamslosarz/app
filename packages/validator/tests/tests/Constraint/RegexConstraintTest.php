@@ -26,6 +26,7 @@ class RegexConstraintTest extends TestCase
                 return sizeof($matches[0]) == 2;
             }
         ]);
+
         $regexConstraint->setValue('somevalue somevalue');
         $this->assertTrue($regexConstraint->isValid());
     }

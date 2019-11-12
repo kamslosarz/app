@@ -4,9 +4,9 @@ namespace EventManager\Event;
 
 class Event
 {
-    private $name;
-    private $results = [];
-    private $context;
+    private string $name;
+    private array $results = [];
+    private Context $context;
 
     /**
      * Event constructor.

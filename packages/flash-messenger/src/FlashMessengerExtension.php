@@ -6,7 +6,7 @@ use View\ViewExtension\ViewExtension;
 
 class FlashMessengerExtension extends ViewExtension
 {
-    protected $flashMessenger;
+    protected FlashMessenger $flashMessenger;
 
     public function __construct(FlashMessenger & $flashMessenger)
     {

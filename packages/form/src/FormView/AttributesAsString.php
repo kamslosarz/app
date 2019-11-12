@@ -2,9 +2,11 @@
 
 namespace Form\FormView;
 
+use ArrayObject;
+
 trait AttributesAsString
 {
-    protected $attributes = [];
+    protected ArrayObject $attributes;
 
     public function getAttributesAsString(array $except = []): string
     {

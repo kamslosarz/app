@@ -13,9 +13,9 @@ class ElementFactoryTest extends TestCase
 {
     public function testShouldConstructElement()
     {
-        $file = dirname(__DIR__).'/fixture/resources/example-resource.phtml';
+        $file = dirname(__DIR__) . '/fixture/resources/example-resource.phtml';
         $parameters = [];
-        $paths = [dirname(__DIR__).'/fixture/resources'];
+        $paths = [dirname(__DIR__) . '/fixture/resources'];
         $extensionEventManager = Mockery::mock(ExtensionEventManager::class);
         $element = ElementFactory::getInstance($file, $paths, $parameters, $extensionEventManager);
 

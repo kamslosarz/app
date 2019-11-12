@@ -11,7 +11,7 @@ class FormView
 {
     use AttributesAsString;
 
-    private $htmlElements;
+    private Collection $htmlElements;
 
     /**
      * FormView constructor.

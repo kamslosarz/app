@@ -4,8 +4,8 @@ namespace Router;
 
 class Route
 {
-    private $name;
-    private $parameters = [];
+    private string $name;
+    private array $parameters = [];
 
     public function __construct(string $name, array $parameters = [])
     {

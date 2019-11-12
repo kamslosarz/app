@@ -5,8 +5,8 @@ namespace Validator\Constraint;
 
 class CharacterLengthConstraint extends Constraint
 {
-    private $max;
-    private $min;
+    private int $max;
+    private int $min;
 
     public function __construct(array $options = [])
     {

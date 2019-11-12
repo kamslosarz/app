@@ -8,8 +8,8 @@ class HtmlElement
 {
     use AttributesAsString;
 
-    protected $resource;
-    protected $options;
+    protected string $resource;
+    protected Collection $options;
 
     public function __construct(string $resource, Collection $attributes, Collection $options)
     {

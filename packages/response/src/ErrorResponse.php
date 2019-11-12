@@ -3,15 +3,13 @@
 namespace Response;
 
 use Exception;
+use Throwable;
 
 class ErrorResponse extends Response
 {
-    /**
-     * @var Exception
-     */
-    private $exception;
+    private Throwable $exception;
 
-    public function setException(Exception $exception)
+    public function setException(Throwable $exception)
     {
         $this->exception = $exception;
     }

@@ -8,8 +8,8 @@ use ServiceContainer\ServiceContainerException;
 
 class ServiceResolver
 {
-    private $servicesMap;
-    private $serviceContainer;
+    private array $servicesMap;
+    private ServiceContainer $serviceContainer;
 
     public function __construct(array $servicesMap, ServiceContainer $serviceContainer)
     {

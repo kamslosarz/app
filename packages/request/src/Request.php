@@ -6,7 +6,7 @@ use Collection\Collection;
 
 class Request
 {
-    private $parameters;
+    private Collection $parameters;
 
     public function __construct()
     {

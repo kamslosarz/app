@@ -7,8 +7,8 @@ use EventManager\Listener\ListenerInvokable;
 
 class EventDispatcher
 {
-    private $eventManager;
-    private $event;
+    private EventManager $eventManager;
+    private Event $event;
 
     public function __construct(EventManager $eventManager, Event &$event)
     {

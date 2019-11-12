@@ -7,10 +7,6 @@ use View\ViewExtension\ExtensionEventManager;
 abstract class ElementFactory
 {
     /**
-     * @var array
-     */
-
-    /**
      * @param string $resourceFile
      * @param array $resourcesPaths
      * @param array $parameters

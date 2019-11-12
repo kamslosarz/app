@@ -14,7 +14,7 @@ use View\View;
 
 abstract class Controller implements EventListenerInvokable
 {
-    protected $context;
+    protected Context $context;
 
     public function __construct(Context $context)
     {
@@ -48,11 +48,17 @@ abstract class Controller implements EventListenerInvokable
     /**
      * @param string $classname
      * @return Form
-     * @throws FactoryException
      */
     protected function getForm(string $classname): Form
     {
-        return FormFactory::getInstance($classname, $this->context);
+        try
+        {
+            return FormFactory::getInstance($classname, $this->context);
+        }
+        catch(FactoryException $factoryException)
+        {
+            return null;
+        }
     }
 
     /**

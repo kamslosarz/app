@@ -6,14 +6,8 @@ use Collection\Collection;
 
 abstract class FormElement
 {
-    /**
-     * @var Collection
-     */
-    protected $attributes;
-    /**
-     * @var Collection
-     */
-    protected $options;
+    protected Collection $attributes;
+    protected Collection $options;
 
     public function __construct(array $attributes, array $options)
     {

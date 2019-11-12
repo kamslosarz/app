@@ -7,7 +7,7 @@ use EventManager\Subscriber\SubscriberInterface;
 
 class RouteSubscriber implements SubscriberInterface
 {
-    private $routes;
+    private array $routes;
 
     public function __construct(array $routes)
     {

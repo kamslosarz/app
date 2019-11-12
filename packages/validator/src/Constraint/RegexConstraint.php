@@ -2,17 +2,19 @@
 
 namespace Validator\Constraint;
 
+use Closure;
+
 class RegexConstraint extends Constraint
 {
-    private $regex;
-    private $matchAll;
-    private $callback;
+    private ?string $regex;
+    private ?bool $matchAll;
+    private ?Closure $callback;
 
     public function __construct(array $options = [])
     {
         parent::__construct($options);
 
-        $this->regex = $this->options->get('regex');
+        $this->regex = $this->options->get('regex', null);
         $this->matchAll = $this->options->get('matchAll', false);
         $this->callback = $this->options->get('callback', null);
     }
