@@ -1,11 +1,16 @@
 <?php
 
-use App\Controller\Controller;
+namespace unit\Controller\AbstractController;
+
+use App\Controller\AbstractController\Controller;
 use EventManager\Event\Context;
 use fixture\ExampleForm;
 use FlashMessenger\FlashMessenger;
 use Form\Form;
+use Mockery;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionException;
 use Request\Request;
 use ServiceContainer\ServiceContainer;
 use View\View;
@@ -51,76 +56,40 @@ class ControllerTest extends TestCase
     /**
      * @throws ReflectionException
      */
+    public function testShouldGetFormFailed()
+    {
+        $contextMock = Mockery::mock(Context::class);
+        $controller = Mockery::mock(Controller::class, [$contextMock])
+            ->makePartial();
+
+        $reflection = new ReflectionClass($controller);
+        $getForm = $reflection->getMethod('getForm');
+        $getForm->setAccessible(true);
+        $form = $getForm->invokeArgs($controller, [
+            'invalid form class'
+        ]);
+
+        $this->assertNull($form);
+    }
+
     public function testShouldGetView()
     {
         $viewMock = Mockery::mock(View::class);
-        $contextMock = Mockery::mock(Context::class)
-            ->shouldReceive('get')
-            ->once()
-            ->with('view')
-            ->andReturn($viewMock)
-            ->getMock();
-
-        $controller = Mockery::mock(Controller::class, [$contextMock])
-            ->makePartial();
-
-        $reflection = new ReflectionClass($controller);
-        $method = $reflection->getMethod('getView');
-        $method->setAccessible(true);
-        $view = $method->invoke($controller);
-
-        $contextMock->shouldHaveReceived('get')->with('view')->once();
-        $this->assertEquals($viewMock, $view);
+        $this->assertContextItem($viewMock, 'view', 'getView');
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function testShouldGetServiceContainer()
     {
         $serviceContainerMock = Mockery::mock(ServiceContainer::class);
-        $contextMock = Mockery::mock(Context::class)
-            ->shouldReceive('get')
-            ->once()
-            ->with('serviceContainer')
-            ->andReturn($serviceContainerMock)
-            ->getMock();
-
-        $controller = Mockery::mock(Controller::class, [$contextMock])
-            ->makePartial();
-
-        $reflection = new ReflectionClass($controller);
-        $method = $reflection->getMethod('getServiceContainer');
-        $method->setAccessible(true);
-        $serviceContainer = $method->invoke($controller);
-
-        $contextMock->shouldHaveReceived('get')->with('serviceContainer')->once();
-        $this->assertEquals($serviceContainerMock, $serviceContainer);
+        $this->assertContextItem($serviceContainerMock, 'serviceContainer', 'getServiceContainer');
     }
-    /**
-     * @throws ReflectionException
-     */
+
     public function testShouldGetRequest()
     {
         $requestMock = Mockery::mock(Request::class);
-        $contextMock = Mockery::mock(Context::class)
-            ->shouldReceive('get')
-            ->once()
-            ->with('request')
-            ->andReturn($requestMock)
-            ->getMock();
-
-        $controller = Mockery::mock(Controller::class, [$contextMock])
-            ->makePartial();
-
-        $reflection = new ReflectionClass($controller);
-        $method = $reflection->getMethod('getRequest');
-        $method->setAccessible(true);
-        $result = $method->invoke($controller);
-
-        $contextMock->shouldHaveReceived('get')->with('request')->once();
-        $this->assertEquals($requestMock, $result);
+        $this->assertContextItem($requestMock, 'request', 'getRequest');
     }
+
     /**
      * @throws ReflectionException
      */
@@ -134,7 +103,6 @@ class ControllerTest extends TestCase
             ->andReturn($requestMock)
             ->getMock();
 
-        $flashMessengerMock = Mockery::mock(FlashMessenger::class);
         $controller = Mockery::mock(Controller::class, [$contextMock])
             ->makePartial();
 
@@ -145,5 +113,32 @@ class ControllerTest extends TestCase
 
         $contextMock->shouldHaveReceived('get')->with('request')->once();
         $this->assertInstanceOf(FlashMessenger::class, $result);
+    }
+
+    /**
+     * @param $itemMock
+     * @param $contextPropertyName
+     * @param $controllerMethod
+     * @throws ReflectionException
+     */
+    private function assertContextItem($itemMock, $contextPropertyName, $controllerMethod)
+    {
+        $contextMock = Mockery::mock(Context::class)
+            ->shouldReceive('get')
+            ->once()
+            ->with($contextPropertyName)
+            ->andReturn($itemMock)
+            ->getMock();
+
+        $controller = Mockery::mock(Controller::class, [$contextMock])
+            ->makePartial();
+
+        $reflection = new ReflectionClass($controller);
+        $method = $reflection->getMethod($controllerMethod);
+        $method->setAccessible(true);
+        $result = $method->invoke($controller);
+
+        $contextMock->shouldHaveReceived('get')->with($contextPropertyName)->once();
+        $this->assertEquals($itemMock, $result);
     }
 }

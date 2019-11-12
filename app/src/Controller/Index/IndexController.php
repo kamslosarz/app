@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Index;
 
-use View\ViewException;
+use App\Controller\AbstractController\AppController;
 
-class IndexController extends Controller
+class IndexController extends AppController
 {
     /**
      * @return string
-     * @throws ViewException
      */
     public function indexAction()
     {

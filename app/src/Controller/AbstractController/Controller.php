@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\AbstractController;
 
 use EventManager\Event\Context;
 use EventManager\Listener\EventListenerInvokable;
@@ -49,7 +49,7 @@ abstract class Controller implements EventListenerInvokable
      * @param string $classname
      * @return Form
      */
-    protected function getForm(string $classname): Form
+    protected function getForm(string $classname): ?Form
     {
         try
         {
@@ -62,19 +62,6 @@ abstract class Controller implements EventListenerInvokable
     }
 
     /**
-     * @param string $url
-     * @param int $code
-     */
-    protected function redirect(string $url, int $code = 302)
-    {
-        $this->context
-            ->set('responseHeaders', [
-                sprintf('Location: %s', $url)
-            ])
-            ->set('responseCode', $code);
-    }
-
-    /**
      * @return FlashMessenger
      */
     protected function getFlashMessenger(): FlashMessenger
@@ -83,12 +70,4 @@ abstract class Controller implements EventListenerInvokable
         return new FlashMessenger($request);
     }
 
-    protected function handleFormErrors(array $errors): void
-    {
-        $flashMessenger = $this->getFlashMessenger();
-        foreach($errors as $fieldName => $fieldErrors)
-        {
-            $flashMessenger->add(sprintf('%s - %s', $fieldName, implode(', ', $fieldErrors)), FlashMessenger::TYPE_ERROR);
-        }
-    }
 }

@@ -10,8 +10,8 @@ use Console\ConsoleInput;
 $input = $argv;
 try
 {
-    $commandRegister = new CommandRegister([
-    ]);
+    $config = include APP_DIR . '/config/console.php';
+    $commandRegister = new CommandRegister($config['commands']);
     $commandRegister->register();
 
     $consoleInput = new ConsoleInput($input);

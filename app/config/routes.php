@@ -1,8 +1,8 @@
 <?php
 
-use App\Controller\ContactController;
-use App\Controller\IndexController;
-use App\Controller\LoginController;
+use App\Controller\Contact\ContactController;
+use App\Controller\Index\IndexController;
+use App\Controller\Login\LoginController;
 use EventManager\Event\Context;
 
 return [

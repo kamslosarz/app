@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Login;
 
+use App\Controller\AbstractController\AppController;
 use App\Form\LoginForm;
 use FlashMessenger\FlashMessenger;
 use Form\FormView\FormView;
 use View\ViewException;
 
-class LoginController extends Controller
+class LoginController extends AppController
 {
     /**
      * @return string

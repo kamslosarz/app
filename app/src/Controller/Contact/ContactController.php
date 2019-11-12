@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Contact;
 
+use App\Controller\AbstractController\AppController;
 use App\Form\ContactForm;
 use Form\FormView\FormView;
 use View\ViewException;
 
-class ContactController extends Controller
+class ContactController extends AppController
 {
     /**
      * @return string
