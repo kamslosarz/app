@@ -3,14 +3,13 @@
 namespace App\Factory;
 
 use App\ApplicationException;
-use App\ViewExtension\Asset;
+use Closure;
 use Container\Process\Process;
 use Container\Process\ProcessContext;
-use FlashMessenger\FlashMessenger;
-use FlashMessenger\FlashMessengerExtension;
+use Factory\Factory;
+use Factory\FactoryException;
 use Request\Request;
 use View\View;
-use View\ViewExtension\Extension\IncludeExtension;
 use View\ViewExtension\ExtensionEventManager;
 
 class ViewFactory extends Process
@@ -19,6 +18,7 @@ class ViewFactory extends Process
      * @param ProcessContext $processContext
      * @return View
      * @throws ApplicationException
+     * @throws FactoryException
      */
     public function & __invoke(ProcessContext $processContext)
     {
@@ -26,12 +26,7 @@ class ViewFactory extends Process
 
         $extensionEventManager = new ExtensionEventManager();
         $view = new View($this->parameters['resources'], $extensionEventManager);
-        $this->addViewExtensions($view);
-
-        /** @var Request $request */
-        $request = $processContext->get('request');
-        $flashMessenger = new FlashMessenger($request);
-        $view->addExtension(new FlashMessengerExtension($flashMessenger));
+        $this->addViewExtensions($view, $processContext);
 
         return $view;
     }
@@ -49,9 +44,27 @@ class ViewFactory extends Process
         }
     }
 
-    private function addViewExtensions(View &$view): void
+    /**
+     * @param View $view
+     * @param ProcessContext $processContext
+     * @throws FactoryException
+     */
+    private function addViewExtensions(View $view, ProcessContext $processContext): void
     {
-        $view->addExtension(new IncludeExtension($view));
-        $view->addExtension(new Asset());
+        foreach($this->getViewExtensions() as $extensionClassName => $parameters)
+        {
+            if(is_callable($parameters))
+            {
+                /**@var Closure $parameters */
+                $parameters = $parameters($view, $processContext);
+            }
+            $extension = Factory::getInstance([$extensionClassName, $parameters]);
+            $view->addExtension($extension);
+        }
+    }
+
+    private function getViewExtensions(): array
+    {
+        return !empty($this->parameters['viewExtensions']) ? $this->parameters['viewExtensions'] : [];
     }
 }

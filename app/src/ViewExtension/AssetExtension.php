@@ -5,7 +5,7 @@ namespace App\ViewExtension;
 use FileSystem\File\File;
 use View\ViewExtension\ViewExtension;
 
-class Asset extends ViewExtension
+class AssetExtension extends ViewExtension
 {
     protected function getFunctions(): array
     {

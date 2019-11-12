@@ -9,8 +9,8 @@ use View\ViewExtension\ViewExtension;
 
 class View
 {
-    protected $resourcesPaths;
-    private $extensionManager;
+    protected array $resourcesPaths;
+    protected ExtensionEventManager $extensionManager;
 
     public function __construct(array $resourcesPaths, ExtensionEventManager $extensionEventManager)
     {

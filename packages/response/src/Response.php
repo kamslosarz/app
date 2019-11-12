@@ -10,9 +10,9 @@ class Response
 
     public function __construct(string $contents = '', array $headers = [], int $code = 200)
     {
+        $this->contents = $contents;
         $this->headers = $headers;
         $this->code = $code;
-        $this->contents = $contents;
     }
 
     public function __invoke(): void

@@ -13,7 +13,7 @@ class IncludeExtension extends ViewExtension
     /**
      * @var View
      */
-    private $view;
+    private View $view;
 
     public function __construct(View $view)
     {

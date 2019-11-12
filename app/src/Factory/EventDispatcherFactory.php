@@ -12,6 +12,10 @@ use Router\RouteSubscriber;
 
 class EventDispatcherFactory extends Process
 {
+    /**
+     * @param ProcessContext $processContext
+     * @return EventDispatcher
+     */
     public function & __invoke(ProcessContext $processContext)
     {
         /** @var Router $router */

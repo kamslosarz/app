@@ -1,14 +1,19 @@
 <?php
 
-namespace FlashMessenger;
+namespace App\ViewExtension;
 
+use FlashMessenger\FlashMessenger;
 use View\ViewExtension\ViewExtension;
 
 class FlashMessengerExtension extends ViewExtension
 {
     protected FlashMessenger $flashMessenger;
 
-    public function __construct(FlashMessenger & $flashMessenger)
+    /**
+     * FlashMessengerExtension constructor.
+     * @param FlashMessenger $flashMessenger
+     */
+    public function __construct(FlashMessenger $flashMessenger)
     {
         $this->flashMessenger = $flashMessenger;
     }

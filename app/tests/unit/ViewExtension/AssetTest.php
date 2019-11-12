@@ -2,18 +2,23 @@
 
 namespace unit\ViewExtension;
 
-use App\ViewExtension\Asset;
+use App\ViewExtension\AssetExtension;
+use Container\Process\ProcessContext;
+use Mockery;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
 use ReflectionMethod;
+use View\View;
 
 class AssetTest extends TestCase
 {
     public function testShouldConstructViewExtension()
     {
-        $asset = new Asset();
+        $viewMock = Mockery::mock(View::class);
+        $processContextMock = Mockery::mock(ProcessContext::class);
+        $asset = new AssetExtension($viewMock, $processContextMock);
 
-        $this->assertInstanceOf(Asset::class, $asset);
+        $this->assertInstanceOf(AssetExtension::class, $asset);
     }
 
     /**
@@ -21,7 +26,9 @@ class AssetTest extends TestCase
      */
     public function testShouldGetExtensionFunctions()
     {
-        $asset = new Asset();
+        $viewMock = Mockery::mock(View::class);
+        $processContextMock = Mockery::mock(ProcessContext::class);
+        $asset = new AssetExtension($viewMock, $processContextMock);
 
         $getFunctionsMethod = new ReflectionMethod($asset, 'getFunctions');
         $getFunctionsMethod->setAccessible(true);

@@ -18,7 +18,8 @@ return [
                 'resources' => [
                     APP_DIR . '/resources',
                     APP_DIR . '/vendor/framework/form/resources'
-                ]
+                ],
+                'viewExtensions' => include __DIR__ . '/view-extensions.php'
             ]
         ],
         'event' => [EventFactory::class, ['servicesMap' => include __DIR__ . '/services.php']],
@@ -31,7 +32,8 @@ return [
                 'resources' => [
                     APP_DIR . '/resources',
                     APP_DIR . '/vendor/framework/form/resources'
-                ]
+                ],
+                'viewExtensions' => include __DIR__ . '/view-extensions.php'
             ]
         ],
         'response' => [ErrorResponseFactory::class, []]

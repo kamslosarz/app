@@ -1,8 +1,10 @@
 <?php
 
+namespace unit\ViewExtension;
 
+use App\ViewExtension\FlashMessengerExtension;
 use FlashMessenger\FlashMessenger;
-use FlashMessenger\FlashMessengerExtension;
+use Mockery;
 use PHPUnit\Framework\TestCase;
 use Request\Request;
 

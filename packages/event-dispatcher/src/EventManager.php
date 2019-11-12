@@ -6,7 +6,7 @@ use EventManager\Subscriber\SubscriberInterface;
 
 class EventManager
 {
-    protected $listeners = [];
+    protected array $listeners = [];
 
     /**
      * @param SubscriberInterface $subscriber
