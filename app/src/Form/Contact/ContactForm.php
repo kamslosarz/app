@@ -1,26 +1,24 @@
 <?php
 
-namespace App\Form;
 
+namespace App\Form\Contact;
 
-use App\Form\Handler\LoginFormHandler;
 use EventManager\Event\Context;
 use Form\Form;
 use Form\FormBuilder\FormBuilder;
 use Form\FormBuilder\FormBuilderException;
 use Form\Handler\FormHandler;
-use Validator\Constraint\RegexConstraint;
 use Validator\ConstraintBuilder\ConstraintBuilder;
 use Validator\Validator;
 
-class LoginForm extends Form
+class ContactForm extends Form
 {
     public function __construct(Context $context, FormBuilder $formBuilder, Validator $validator)
     {
         parent::__construct($context, $formBuilder, $validator);
 
         $this->setAttributes([
-            'name' => 'login-form',
+            'name' => 'contact-form',
             'method' => 'post'
         ]);
     }
@@ -33,13 +31,11 @@ class LoginForm extends Form
     protected function buildFields(FormBuilder &$formBuilder, Context $context): void
     {
         $formBuilder->addInput([
-            'name' => 'login',
-        ])->addInput([
-            'name' => 'password',
+            'name' => 'title'
+        ])->addTextarea([
+            'name' => 'message'
         ])->addButton([
-            'name' => 'submit',
-            'value' => 'save',
-            'id' => 'login-button'
+            'name' => 'submit'
         ], [
             'label' => 'save'
         ]);
@@ -51,9 +47,7 @@ class LoginForm extends Form
      */
     protected function buildConstraints(ConstraintBuilder &$constraintBuilder, Context $context): void
     {
-        $constraintBuilder->addConstraint('login', RegexConstraint::class, [
-            'regex' => '/[a-zA-Z0-9-.]{4,16}/'
-        ]);
+        // TODO: Implement buildConstraints() method.
     }
 
     /**
@@ -61,6 +55,6 @@ class LoginForm extends Form
      */
     protected function getHandler(): FormHandler
     {
-        return new LoginFormHandler();
+        return new ContactFormHandler();
     }
 }

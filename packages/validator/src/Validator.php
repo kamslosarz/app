@@ -71,12 +71,4 @@ abstract class Validator
         $this->constraints = $constraintBuilder->build();
         $this->constraintBuilder = $constraintBuilder;
     }
-
-    /**
-     * @return array
-     */
-    public function getConstraints()
-    {
-        return $this->constraints;
-    }
 }

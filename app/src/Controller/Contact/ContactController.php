@@ -3,7 +3,7 @@
 namespace App\Controller\Contact;
 
 use App\Controller\AbstractController\AppController;
-use App\Form\ContactForm;
+use App\Form\Contact\ContactForm;
 use Form\FormView\FormView;
 use View\ViewException;
 

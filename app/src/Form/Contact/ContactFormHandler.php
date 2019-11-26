@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Handler;
+namespace App\Form\Contact;
 
 use Form\Handler\FormHandler;
 

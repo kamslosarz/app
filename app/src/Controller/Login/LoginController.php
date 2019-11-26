@@ -3,7 +3,7 @@
 namespace App\Controller\Login;
 
 use App\Controller\AbstractController\AppController;
-use App\Form\LoginForm;
+use App\Form\Login\LoginForm;
 use FlashMessenger\FlashMessenger;
 use Form\FormView\FormView;
 use View\ViewException;
