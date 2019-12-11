@@ -80,7 +80,7 @@ class AppTest extends TestCase
         if($processContext->has('applicationError'))
         {
             /** @var Exception $containerException */
-            $applicationError = $processContext->get('applicationError');;
+            $applicationError = $processContext->get('applicationError');
             $this->fail(sprintf('%s %s', $applicationError->getMessage(), $applicationError->getTraceAsString()));
         }
         if($processContext->has('containerException'))
