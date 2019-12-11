@@ -27,6 +27,6 @@
     "framework/request": "dev-master",
     "framework/event-dispatcher": "dev-master",
     "framework/router": "dev-master",
-    "php": "7.4.0RC4"
+    "php": "7.4"
   }
 }

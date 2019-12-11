@@ -1,3 +1,5 @@
 vendor
 composer.lock
 tests/.phpunit.result.cache
+resources/templates/vue-template/package-lock.json
+resources/templates/vue-template/node_modules

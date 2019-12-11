@@ -1,4 +1,5 @@
 - form unit tests
 - controllers unit tests
 - functional tests
-- ORM package
+- ORM package - small part was done
+- console with proc_open

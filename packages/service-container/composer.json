@@ -8,7 +8,7 @@
   ],
   "require": {
     "framework/collection": "dev-master",
-    "php": "7.4.0RC4"
+    "php": "7.4"
   },
   "autoload": {
     "psr-4": {

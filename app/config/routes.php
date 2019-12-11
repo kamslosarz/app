@@ -14,7 +14,7 @@ return [
         function (Context $context) {
             $context->__toArray();
 
-            return 'hello world from callback';
+            return '';
         }
     ],
     '/login' => [
