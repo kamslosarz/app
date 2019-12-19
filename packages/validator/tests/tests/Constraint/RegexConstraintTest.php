@@ -1,8 +1,9 @@
 <?php
 
-namespace Validator\Constraint;
+namespace tests\Constraint;
 
 use PHPUnit\Framework\TestCase;
+use Validator\Constraint\RegexConstraint;
 
 class RegexConstraintTest extends TestCase
 {

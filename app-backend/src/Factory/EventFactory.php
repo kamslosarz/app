@@ -28,8 +28,7 @@ class EventFactory extends Process
         /** @var Request $request */
         $request = $processContext->get('request');
         $route = $router->getRoute($request);
-        if(!isset($this->parameters['servicesMap']))
-        {
+        if (!isset($this->parameters['servicesMap'])) {
             throw new ApplicationException('Property "servicesMap" is not defined');
         }
         $view = $processContext->get('view');
@@ -38,7 +37,7 @@ class EventFactory extends Process
             'request' => &$request,
             'route' => &$route,
             'serviceContainer' => &$serviceContainer,
-            'view' => &$view
+            'view' => &$view,
         ]));
 
         return $event;

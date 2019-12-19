@@ -12,7 +12,7 @@ use Collection\Collection;
 return [
     'appProcessContext' => new Collection([
         'request' => [RequestFactory::class, []],
-        'router' => [RouterFactory::class, include __DIR__ . '/routes.php'],
+        'router' => [RouterFactory::class, (include __DIR__ . '/routes.php') + (include __DIR__ . '/api/routes.php')],
         'view' => [
             ViewFactory::class, [
                 'resources' => [

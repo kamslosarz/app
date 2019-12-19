@@ -19,7 +19,7 @@ class RegexConstraint extends Constraint
         $this->callback = $this->options->get('callback', null);
     }
 
-    public function isValid()
+    public function isValid(): bool
     {
         $matches = [];
         if($this->matchAll)

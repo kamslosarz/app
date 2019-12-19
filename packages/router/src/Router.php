@@ -7,7 +7,7 @@ use Router\Exception\RouterException;
 
 class Router
 {
-    const REQUEST_METHOD_PATTERN = '/^[a-zA-Z\,]+\:/';
+    const REQUEST_METHOD_PATTERN = '/^[a-zA-Z\,\*]+\:/';
     const REQUEST_PARAMETER_PATTER = '/^\{[a-zA-Z0-9]+\}$|^\*$/';
     const DEFAULT_REQUEST_METHOD = 'get';
 
@@ -25,25 +25,21 @@ class Router
      */
     public function getRoute(Request $request): Route
     {
-        foreach($this->routes as $routeName => $routeProperties)
-        {
+        foreach ($this->routes as $routeName => $routeProperties) {
             $requestParameters = [];
-
-            if($this->isRouteMethodMatch($routeName, strtolower($request->getRequestMethod())))
-            {
-                if($this->tryMatch($request, $routeName, $requestParameters))
-                {
+            if ($this->isRouteMethodMatch($routeName, strtolower($request->getRequestMethod()))) {
+                if ($this->tryMatch($request, $routeName, $requestParameters)) {
                     return new Route($routeName, $requestParameters);
                 }
             }
         }
 
-        if(isset($this->routes['*']))
-        {
+        if (isset($this->routes['*'])) {
             return new Route('*');
         }
 
-        throw new RouterException(sprintf('Route for "%s:%s" not found', strtolower($request->getRequestMethod()), $request->getRequestUri()));
+        throw new RouterException(sprintf('Route for "%s:%s" not found', strtolower($request->getRequestMethod()),
+            $request->getRequestUri()));
     }
 
     private function tryMatch(Request $request, string $routeName, array &$parameters = []): bool
@@ -51,22 +47,16 @@ class Router
         $requestUri = explode('/', $request->getRequestUri());
         $route = explode('/', preg_replace(self::REQUEST_METHOD_PATTERN, '', $routeName));
 
-        foreach($requestUri as $index => $requestParameter)
-        {
-            if(isset($route[$index]))
-            {
+        foreach ($requestUri as $index => $requestParameter) {
+            if (isset($route[$index])) {
                 $routeParameter = $route[$index];
-                if($requestParameter !== $routeParameter)
-                {
-                    if(!$this->isParameterVariable($routeParameter))
-                    {
+                if ($requestParameter !== $routeParameter) {
+                    if (!$this->isParameterVariable($routeParameter)) {
                         return false;
                     }
                     $parameters[] = $requestParameter;
                 }
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
@@ -83,9 +73,10 @@ class Router
     {
         $requestMethods = [];
         preg_match(self::REQUEST_METHOD_PATTERN, $routeName, $requestMethods);
-        if(!isset($requestMethods[0]) || empty($requestMethods[0]))
-        {
+        if (!isset($requestMethods[0]) || empty($requestMethods[0])) {
             return $requestMethod === self::DEFAULT_REQUEST_METHOD;
+        } elseif ($requestMethods[0] === '*:') {
+            return true;
         }
         $requestMethods = explode(',', rtrim($requestMethods[0], ":"));
 

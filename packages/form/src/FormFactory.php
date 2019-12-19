@@ -2,7 +2,7 @@
 
 namespace Form;
 
-use App\Form\FormValidator;
+use App\Validator\FormValidator;
 use EventManager\Event\Context;
 use Factory\FactoryException;
 use Form\FormBuilder\FormBuilder;

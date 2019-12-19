@@ -5,7 +5,7 @@ namespace Validator\Constraint;
 
 class StringCompareConstraint extends Constraint
 {
-    public function isValid()
+    public function isValid(): bool
     {
         $expected = $this->options->get('expected');
         $compareStatement = $this->options->get('compareStatement', null);

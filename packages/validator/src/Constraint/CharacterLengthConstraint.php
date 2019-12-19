@@ -16,7 +16,7 @@ class CharacterLengthConstraint extends Constraint
         $this->min = $this->options->get('min', 1);
     }
 
-    public function isValid()
+    public function isValid(): bool
     {
         $length = strlen($this->value);
 

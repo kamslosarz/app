@@ -40,10 +40,5 @@ return [
             ContactController::class,
             'indexPostAction'
         ]
-    ],
-    '*' => [
-        function () {
-            return 'route that not exists';
-        }
     ]
 ];

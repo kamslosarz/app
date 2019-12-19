@@ -1,1 +1,1 @@
-ERROR OCCURRED: <?=$this->exception->getMessage();?>
+<?php if ($this->json): ?><?=json_encode(['error' => $this->exception->getMessage().$this->exception->getTraceAsString()]); ?><?php else: ?>ERROR OCCURRED: <?= $this->exception->getMessage(); ?><?php endif; ?>

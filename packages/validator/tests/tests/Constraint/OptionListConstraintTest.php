@@ -1,6 +1,5 @@
 <?php
 
-
 namespace tests\Constraint;
 
 use PHPUnit\Framework\TestCase;

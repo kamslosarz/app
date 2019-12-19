@@ -14,7 +14,7 @@ class OptionListConstraint extends Constraint
         $this->optionsList = array_keys($this->options->get('options', []));
     }
 
-    public function isValid()
+    public function isValid(): bool
     {
         return in_array($this->value, $this->optionsList);
     }

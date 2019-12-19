@@ -33,6 +33,7 @@ class ResponseFactory extends Process
             $eventContext->get('responseHeaders', []),
             $eventContext->get('responseCode', 200)
         );
+
         /** @var Request $request */
         $request = $processContext->get('request');
         $request->saveSessionAndCookie();

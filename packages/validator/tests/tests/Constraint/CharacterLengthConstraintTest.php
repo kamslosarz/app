@@ -1,8 +1,6 @@
 <?php
 
-
 namespace tests\Constraint;
-
 
 use PHPUnit\Framework\TestCase;
 use Validator\Constraint\CharacterLengthConstraint;

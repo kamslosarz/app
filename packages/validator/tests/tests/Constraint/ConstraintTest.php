@@ -1,7 +1,6 @@
 <?php
 
-
-namespace Constraint;
+namespace tests\Constraint;
 
 use Mockery;
 use PHPUnit\Framework\TestCase;

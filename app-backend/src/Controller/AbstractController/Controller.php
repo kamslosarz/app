@@ -51,12 +51,9 @@ abstract class Controller implements EventListenerInvokable
      */
     protected function getForm(string $classname): ?Form
     {
-        try
-        {
+        try {
             return FormFactory::getInstance($classname, $this->context);
-        }
-        catch(FactoryException $factoryException)
-        {
+        } catch (FactoryException $factoryException) {
             return null;
         }
     }
@@ -68,6 +65,22 @@ abstract class Controller implements EventListenerInvokable
     {
         $request = $this->getRequest();
         return new FlashMessenger($request);
+    }
+
+    /**
+     * @param int $code
+     */
+    protected function setResponseCode(int $code): void
+    {
+        $this->context->set('responseCode', $code);
+    }
+
+    /***
+     * @param array $headers
+     */
+    protected function setResponseHeaders(array $headers): void
+    {
+        $this->context->set('responseHeaders', $headers);
     }
 
 }
