@@ -17,3 +17,8 @@ export interface BackupItemResponse {
   errors: [];
   item: BackupItem;
 }
+
+export interface BackupItemDeleteResponse {
+  errors: [];
+  status: string;
+}

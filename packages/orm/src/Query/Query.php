@@ -42,6 +42,20 @@ class Query
     }
 
     /**
+     * @return array|null
+     * @throws OrmException
+     */
+    public function getFirstResult(): ?array
+    {
+        if(!isset($this->results[0]))
+        {
+            throw new OrmException('Query returns empty results');
+        }
+
+        return $this->results[0];
+    }
+
+    /**
      * @return int
      */
     public function getLastInsertId(): int

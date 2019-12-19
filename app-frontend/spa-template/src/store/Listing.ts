@@ -2,10 +2,7 @@ import {Action, Mutation} from "vuex-module-decorators";
 import {Vue} from "vue-property-decorator";
 import AsyncRequest from "@/store/AsyncRequest";
 
-export default abstract class Listing<
-  ItemType,
-  ResponseType
-> extends AsyncRequest {
+export default abstract class Listing <ItemType,ResponseType> extends AsyncRequest {
   abstract listEndpoint: string;
   items: ItemType[] = [];
 
@@ -18,7 +15,7 @@ export default abstract class Listing<
   getItems() {
     this.context.commit("setLoading", true);
     this.context.commit("setResponseErrors", {});
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.context.commit("setLoading", true);
       Vue.axios
         .get<ResponseType>(this.listEndpoint)
@@ -30,6 +27,7 @@ export default abstract class Listing<
           } else {
             // @ts-ignore
             this.context.commit("setItems", response.data.items);
+            resolve(response);
           }
         })
         .catch(err => {

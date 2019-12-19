@@ -82,6 +82,23 @@ abstract class Model extends Peer
     }
 
     /**
+     * @throws DataBaseAdapterException
+     * @throws OrmException
+     */
+    public function delete(): void
+    {
+        $queryBuilder = $this->getQueryBuilder()
+            ->delete()
+            ->from($this->getTableName())
+            ->where($this->getPrimaryKey(), QueryBuilderPeers::IS, ':primaryKey', [
+                'primaryKey' => $this->properties[$this->getPrimaryKey()]
+            ]);
+
+        $query = new Query($queryBuilder, $this->getDataBase());
+        $query->execute();
+    }
+
+    /**
      * @return QueryBuilder
      */
     protected function getQueryBuilder(): QueryBuilder

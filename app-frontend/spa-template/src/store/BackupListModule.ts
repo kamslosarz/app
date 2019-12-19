@@ -9,5 +9,5 @@ export default class BackupListModule extends Listing<
   BackupItem,
   BackupListResponse
 > {
-  listEndpoint: string = "getBackupList";
+  listEndpoint: string = "getBackupsList";
 }

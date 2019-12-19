@@ -8,7 +8,7 @@
             v-for="item in items"
             :key="item.id"
             class="list-group-item list-group-item-action"
-            :class="{ active: activeItemId === item.id }"
+            :class="{ active: activeItem && activeItem.id === item.id }"
             href="#"
             @click="select(item)"
           >
@@ -17,19 +17,11 @@
         </div>
       </div>
       <div class="col-8">
-        <div class="tab-content" id="nav-tabContent">
-          <div
-            class="tab-pane"
-            :class="{ active: activeItemId === item.id }"
-            v-for="item in items"
-            :key="item.id"
-          >
-            {{ item.date }}, {{ item.description }}
-            <br />
-            <input type="button" value="Edit" @click="edit(item)" />
-            <input type="button" value="Delete" @click="remove(item)" />
-          </div>
-        </div>
+        <BackupItemDetails
+          v-if="activeItem"
+          :item="activeItem"
+          @remove="remove"
+        />
       </div>
     </div>
   </div>
@@ -37,40 +29,54 @@
 
 <script lang="ts">
   import {Component, Vue, Watch} from "vue-property-decorator";
-  import {BackupItem} from "@/models/Backup";
+  import {BackupItem, BackupItemDeleteResponse} from "@/models/Backup";
   import {mapActions, mapState} from "vuex";
   import Loader from "@/components/Loader.vue";
+  import BackupItemDetails from "@/components/BackupItemDetails.vue";
 
   @Component({
   components: {
-    Loader
+    Loader,
+    BackupItemDetails
   },
-  methods: mapActions("backupList", ["getItems"]),
+  methods: {
+    ...mapActions("backupList", ["getItems"]),
+    ...mapActions("backupItem", ["deleteItem"])
+  },
   computed: {
     ...mapState("backupList", ["loading", "items"])
   }
 })
 export default class BackupsListView extends Vue {
   items!: BackupItem[];
-  activeItemId: number | null = null;
+  activeItem: BackupItem | null = null;
   getItems!: () => BackupItem[];
+  deleteItem!: (item: BackupItem) => Promise<BackupItemDeleteResponse>;
 
   @Watch("items")
   itemsChanged(items: BackupItem[]) {
+    this.activeItem = null;
     if (items.length) {
-      this.activeItemId = items[0].id;
+      this.activeItem = items[0];
     }
   }
-
   select(item: BackupItem): void {
-    this.activeItemId = item.id;
+    this.activeItem = item;
   }
-
   edit(item: BackupItem): void {
     this.$router.push("/edit/" + item.id);
   }
-
-  remove(item: BackupItem): void {}
+  itemDeleted(item: BackupItem) {
+    this.$store.commit('backupList/setItems', this.items.filter((listItem)=>item.id !== listItem.id));
+  }
+  remove(item: BackupItem): void {
+    this.deleteItem(item).then(response => {
+      // @ts-ignore
+      if (response.data && response.data[0] == "ok") {
+        this.itemDeleted(item);
+      }
+    });
+  }
 
   created(): void {
     this.getItems();

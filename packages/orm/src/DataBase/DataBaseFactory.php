@@ -6,6 +6,10 @@ use Orm\DataBase\DatabaseAdapter\PdoAdapter;
 
 abstract class DataBaseFactory
 {
+    /**
+     * @return DataBase
+     * @throws DatabaseAdapter\DataBaseAdapterException
+     */
     public static function getInstance(): DataBase
     {
         return new DataBase(new PdoAdapter([

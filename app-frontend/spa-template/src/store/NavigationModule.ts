@@ -9,5 +9,5 @@ export default class NavigationModule extends Listing<
   NavigationItem,
   NavigationResponse
 > {
-  listEndpoint: string = "getNavigation";
+  listEndpoint: string = "getNavigationsList";
 }

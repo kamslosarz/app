@@ -51,7 +51,7 @@ abstract class Repository extends Peer
         $query->execute();
         $classname = $this->getModel();
 
-        return new $classname($query->getResults());
+        return new $classname($query->getFirstResult());
     }
 
     /**
@@ -64,6 +64,7 @@ abstract class Repository extends Peer
 
     /**
      * @return DataBase
+     * @throws DataBaseAdapterException
      */
     private function getDataBase(): DataBase
     {

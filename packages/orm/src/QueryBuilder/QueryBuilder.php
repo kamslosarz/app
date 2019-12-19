@@ -102,6 +102,13 @@ class QueryBuilder
         return $this;
     }
 
+    public function delete(): self
+    {
+        $this->queryType = QueryBuilderPeers::DELETE;
+
+        return $this;
+    }
+
     /**
      * @return array
      */
@@ -142,6 +149,15 @@ class QueryBuilder
                     $where = sprintf('WHERE %s', $this->where);
                 }
                 $query = sprintf("SELECT %s FROM %s %s", $this->columns, $this->table, $where);
+                break;
+
+            case QueryBuilderPeers::DELETE:
+                $where = '';
+                if(isset($this->where))
+                {
+                    $where = sprintf('WHERE %s', $this->where);
+                }
+                $query = sprintf("DELETE FROM %s %s LIMIT 1", $this->table, $where);
                 break;
 
             default:
