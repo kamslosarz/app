@@ -44,8 +44,10 @@ abstract class Model extends Peer
         {
             $this->updateRecord();
         }
-
-        $this->saveRecord();
+        else
+        {
+            $this->saveRecord();
+        }
     }
 
     /**
@@ -54,13 +56,16 @@ abstract class Model extends Peer
      */
     protected function updateRecord(): void
     {
+        $properties = $this->properties;
+        unset($properties[$this->getPrimaryKey()]);
         $queryBuilder = $this->getQueryBuilder()
             ->update($this->getTableName())
-            ->set($this->properties)
+            ->set($properties)
             ->where(
                 $this->getPrimaryKey(),
                 QueryBuilderPeers::IS,
-                $this->properties[$this->getPrimaryKey()]
+                ':primaryKey',
+                [':primaryKey' => $this->properties[$this->getPrimaryKey()]]
             );
         $query = new Query($queryBuilder, $this->getDataBase());
         $query->execute();

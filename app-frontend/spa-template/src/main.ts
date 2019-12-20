@@ -7,9 +7,14 @@ import store from "./store";
 import axios from "axios";
 import VueAxios from "vue-axios";
 
-axios.defaults.baseURL = "http://app.backup.dev.com/api";
-
 Vue.use(VueAxios, axios);
+Vue.axios.defaults.baseURL = "http://app.backup.dev.com/api";
+Vue.axios.interceptors.response.use(
+  response => response,
+  error => {
+    console.error(error);
+  }
+);
 
 Vue.config.productionTip = false;
 

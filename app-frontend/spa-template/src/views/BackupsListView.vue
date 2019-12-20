@@ -18,10 +18,12 @@
       </div>
       <div class="col-8">
         <BackupItemDetails
-          v-if="activeItem"
+          v-if="showDetails && activeItem"
           :item="activeItem"
           @remove="remove"
+          @edit="edit"
         />
+        <BackupItemEdit v-if="showEdit && activeItem" :item-id="activeItem.id" />
       </div>
     </div>
   </div>
@@ -33,11 +35,14 @@
   import {mapActions, mapState} from "vuex";
   import Loader from "@/components/Loader.vue";
   import BackupItemDetails from "@/components/BackupItemDetails.vue";
+  import BackupItemEdit from "@/components/BackupItemEdit.vue";
+  import {Mutation} from "vuex-module-decorators";
 
   @Component({
   components: {
     Loader,
-    BackupItemDetails
+    BackupItemDetails,
+    BackupItemEdit
   },
   methods: {
     ...mapActions("backupList", ["getItems"]),
@@ -52,6 +57,7 @@ export default class BackupsListView extends Vue {
   activeItem: BackupItem | null = null;
   getItems!: () => BackupItem[];
   deleteItem!: (item: BackupItem) => Promise<BackupItemDeleteResponse>;
+  displayMode: string = "details";
 
   @Watch("items")
   itemsChanged(items: BackupItem[]) {
@@ -60,26 +66,49 @@ export default class BackupsListView extends Vue {
       this.activeItem = items[0];
     }
   }
+
+  @Mutation
+  updateItems(item: BackupItem): void {
+    let items: BackupItem[] = this.items;
+    let index: number = this.items.findIndex(
+      listItem => listItem.id === item.id
+    );
+    items[index] = item;
+
+    this.$store.commit("backupList/setItems", items);
+  }
+
   select(item: BackupItem): void {
     this.activeItem = item;
+    this.displayMode = "details";
   }
   edit(item: BackupItem): void {
-    this.$router.push("/edit/" + item.id);
+    this.activeItem = item;
+    this.displayMode = "edit";
   }
   itemDeleted(item: BackupItem) {
-    this.$store.commit('backupList/setItems', this.items.filter((listItem)=>item.id !== listItem.id));
+    this.$store.commit(
+      "backupList/setItems",
+      this.items.filter(listItem => item.id !== listItem.id)
+    );
   }
   remove(item: BackupItem): void {
     this.deleteItem(item).then(response => {
       // @ts-ignore
-      if (response.data && response.data[0] == "ok") {
+      if (response && response[0] == "ok") {
         this.itemDeleted(item);
       }
     });
   }
-
   created(): void {
     this.getItems();
+  }
+
+  get showDetails(): boolean {
+    return this.displayMode === "details";
+  }
+  get showEdit(): boolean {
+    return this.displayMode === "edit";
   }
 }
 </script>

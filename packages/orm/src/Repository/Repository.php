@@ -16,16 +16,21 @@ use Orm\QueryBuilder\QueryBuilderPeers;
 abstract class Repository extends Peer
 {
     /**
+     * @param int $limit
+     * @param int $offset
      * @return Collection
      * @throws DataBaseAdapterException
      * @throws OrmException
      */
-    public function find(): Collection
+    public function find(int $limit = null, int $offset = null): Collection
     {
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder->select('*')
             ->from($this->getTableName());
-
+        if($limit && $offset)
+        {
+            $queryBuilder->limit($offset, $limit);
+        }
         $query = new Query($queryBuilder, $this->getDataBase());
         $query->execute();
 
@@ -52,6 +57,23 @@ abstract class Repository extends Peer
         $classname = $this->getModel();
 
         return new $classname($query->getFirstResult());
+    }
+
+    /**
+     * @return int
+     * @throws DataBaseAdapterException
+     * @throws OrmException
+     */
+    public function count(): int
+    {
+        $queryBuilder = $this->getQueryBuilder();
+        $queryBuilder->select(sprintf('Count(%s) as count', $this->getPrimaryKey()))
+            ->from($this->getTableName());
+
+        $query = new Query($queryBuilder, $this->getDataBase());
+        $query->execute();
+
+        return $query->getFirstResult()['count'];
     }
 
     /**

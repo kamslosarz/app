@@ -93,11 +93,11 @@ class PdoAdapter implements DatabaseAdapterInterface
     {
         if($stmt->errorCode() !== '00000')
         {
-            throw new DataBaseAdapterException($stmt->errorInfo(), $stmt->errorCode(), null);
+            throw new DataBaseAdapterException(implode(', ', $stmt->errorInfo()), (int)$stmt->errorCode(), null);
         }
         elseif($this->pdo->errorCode() !== '00000')
         {
-            throw new DataBaseAdapterException($this->pdo->errorInfo(), $this->pdo->errorCode(), null);
+            throw new DataBaseAdapterException(implode(', ', $this->pdo->errorInfo()), (int)$this->pdo->errorCode(), null);
         }
     }
 }

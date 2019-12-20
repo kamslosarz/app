@@ -2,14 +2,13 @@
 
 namespace App\Controller\Api\Backups;
 
-use App\Controller\AbstractController\AppController;
 use App\ORM\Model\Backup\BackupItem;
 use App\ORM\Repository\Backup\BackupRepository;
 use App\Response\JsonResponse;
 use Orm\DataBase\DatabaseAdapter\DataBaseAdapterException;
 use Orm\OrmException;
 
-class BackupItemDeleteController extends AppController
+class BackupItemDeleteController extends BackupController
 {
     /**
      * @param int $id
@@ -17,7 +16,7 @@ class BackupItemDeleteController extends AppController
      * @throws DataBaseAdapterException
      * @throws OrmException
      */
-    public function indexAction(int $id)
+    public function deleteAction(int $id)
     {
         $backupRepository = new BackupRepository();
         /** @var BackupItem $backupItem */

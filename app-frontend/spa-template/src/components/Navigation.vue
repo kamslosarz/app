@@ -16,9 +16,9 @@
   import {mapActions, mapState} from "vuex";
 
   @Component({
-  methods: mapActions("navigation", ["getItems"]),
+  methods: mapActions("navigationList", ["getItems"]),
   computed: {
-    ...mapState("navigation", ["loading", "items"])
+    ...mapState("navigationList", ["loading", "items"])
   }
 })
 export default class Navigation extends Vue {

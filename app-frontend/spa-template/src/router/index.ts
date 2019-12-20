@@ -4,7 +4,7 @@ import Index from "../views/Index.vue";
 import IndexView from "@/views/IndexView.vue";
 import BackupsListView from "@/views/BackupsListView.vue";
 import AddBackupView from "@/views/AddBackupView.vue";
-import EditBackupView from "@/views/EditBackupView.vue";
+import BackupItemEdit from "@/components/BackupItemEdit.vue";
 
 Vue.use(VueRouter);
 
@@ -25,10 +25,9 @@ const routes = [
     component: AddBackupView
   },
   {
-    path: "/edit/:id",
+    path: "/edit",
     name: "EditBackup",
-    component: EditBackupView,
-    props: true
+    component: BackupItemEdit
   }
 ];
 

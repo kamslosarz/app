@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
       <slot></slot>
       <div class="form-group">
         <label for="name">Name:</label>
@@ -50,7 +50,7 @@
           >
         </div>
       </div>
-      <input type="button" value="Save" v-on:click="save" />
+      <input type="button" class="btn btn-primary btn-sm" value="Save" v-on:click="save" />
     </div>
   </div>
 </template>

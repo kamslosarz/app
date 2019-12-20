@@ -2,25 +2,25 @@
 
 namespace App\Controller\Api\Backups;
 
-use App\Controller\AbstractController\AppController;
 use App\ORM\Repository\Backup\BackupRepository;
 use App\Response\ListResponse;
 use Orm\DataBase\DatabaseAdapter\DataBaseAdapterException;
 use Orm\OrmException;
 
-class BackupsListController extends AppController
+class BackupsListController extends BackupController
 {
     /**
      * @return string
      * @throws DataBaseAdapterException
      * @throws OrmException
      */
-    public function indexAction(): string
+    public function listAction(): string
     {
         $repository = new BackupRepository();
-        $collection = $repository->find();
+        $items = $repository->find();
+        $offset = 0;
 
-        $listResponse = new ListResponse($collection->__toArray());
+        $listResponse = new ListResponse($items->__toArray(), 100, $items->count(), $offset, $repository->count());
 
         return $listResponse->toJson();
     }

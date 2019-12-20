@@ -2,7 +2,9 @@
   <div>
     <loader :is-loading="loading" />
     <backup-form @save="save" :errors="responseErrors" :item="itemEntry">
-      <div class="alert alert-success" role="alert" v-if="success">{{ this.successMessage }}</div>
+      <div class="alert alert-success" role="alert" v-if="success">
+        {{ this.successMessage }}
+      </div>
     </backup-form>
   </div>
 </template>
@@ -35,20 +37,20 @@ export default class AddBackupView extends Vue {
     this.success = true;
     this.itemEntry = this.getNewItemEntry();
   }
+
   getNewItemEntry(): BackupItem {
     return {
       id: null,
       name: "",
       description: "",
-      date: ""
+      date: new Date().toISOString().slice(0, 10)
     };
   }
+
   save(item: Object) {
     this.success = false;
-    this.saveItem(item).then(response => {
-      if (!response.errors && response.item) {
-        this.savedSuccessFully();
-      }
+    this.saveItem(item).then((response: BackupItemResponse) => {
+      this.savedSuccessFully();
     });
   }
 

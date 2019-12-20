@@ -7,7 +7,7 @@ use App\Response\ListResponse;
 
 class NavigationListController extends AppController
 {
-    public function indexAction(): string
+    public function listAction(): string
     {
         $listResponse = new ListResponse([
             [
@@ -25,7 +25,7 @@ class NavigationListController extends AppController
                 'title' => 'Dodaj',
                 'href' => '/add'
             ]
-        ]);
+        ], 10, 3, 0, 3);
 
         return $listResponse->toJson();
     }

@@ -12,6 +12,7 @@ class QueryBuilder
     protected array $binds = [];
     protected array $data;
     protected string $columns;
+    protected string $limit;
 
     /**
      * @param string $table
@@ -109,6 +110,11 @@ class QueryBuilder
         return $this;
     }
 
+    public function limit(int $offset, int $limit)
+    {
+        $this->limit = sprintf('%s, %s', $offset, $limit);
+    }
+
     /**
      * @return array
      */
@@ -127,12 +133,17 @@ class QueryBuilder
         switch($this->queryType)
         {
             case QueryBuilderPeers::UPDATE:
-                $sets = '';
+                $sets = [];
                 foreach($this->data as $name => $bindName)
                 {
-                    $sets[] = sprintf('`%s`=:%s', $name, $name);
+                    $sets[] = sprintf('`%s`=:%s', $bindName, $bindName);
                 }
-                $query = sprintf('UPDATE %s SET %s WHERE %s', $this->table, implode(', ', $sets), $this->where);
+                $where = '';
+                if(isset($this->where))
+                {
+                    $where = sprintf('WHERE %s', $this->where);
+                }
+                $query = sprintf('UPDATE %s SET %s %s', $this->table, implode(', ', $sets), $where);
 
                 break;
 
@@ -148,7 +159,12 @@ class QueryBuilder
                 {
                     $where = sprintf('WHERE %s', $this->where);
                 }
-                $query = sprintf("SELECT %s FROM %s %s", $this->columns, $this->table, $where);
+                $limit = '';
+                if(isset($this->limit))
+                {
+                    $limit = sprintf('LIMIT %s', $this->limit);
+                }
+                $query = sprintf("SELECT %s FROM %s %s %s", $this->columns, $this->table, $where, $limit);
                 break;
 
             case QueryBuilderPeers::DELETE:

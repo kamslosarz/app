@@ -17,9 +17,18 @@
           </tr>
           <tr>
             <td>
-              <button type="button" class="btn btn-secondary btn-danger" v-on:click="remove(item)">
-                Delete
-              </button>
+              <input
+                type="button"
+                class="btn btn-primary btn-sm mr-1"
+                v-on:click="remove(item)"
+                value="Delete"
+              />
+              <input
+                type="button"
+                class="btn btn-secondary btn-sm"
+                v-on:click="edit(item)"
+                value="Edit"
+              />
             </td>
             <td></td>
           </tr>
@@ -40,8 +49,12 @@ export default class BackupItemDetails extends Vue {
   })
   item!: BackupItem;
 
-  remove(item: BackupItem) {
+  remove(item: BackupItem): void {
     this.$emit("remove", item);
+  }
+
+  edit(item: BackupItem): void {
+    this.$emit("edit", item);
   }
 }
 </script>

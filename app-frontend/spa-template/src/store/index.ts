@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import BackupListModule from "@/store/BackupListModule";
-import BackupItemModule from "@/store/BackupItemModule";
-import NavigationModule from "@/store/NavigationModule";
+import BackupListModule from "@/store/Backup/BackupListModule";
+import BackupItemModule from "@/store/Backup/BackupItemModule";
+import NavigationListModule from "@/store/Navigation/NavigationListModule";
 
 Vue.use(Vuex);
 
@@ -11,7 +11,7 @@ export default new Vuex.Store({
   mutations: {},
   actions: {},
   modules: {
-    navigation: NavigationModule,
+    navigationList: NavigationListModule,
     backupList: BackupListModule,
     backupItem: BackupItemModule
   }
