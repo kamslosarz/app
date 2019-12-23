@@ -19,16 +19,9 @@ class ErrorResponseFactory extends Process
     {
         /** @var View $view */
         $view = $processContext->get('view');
-        $event = $processContext->get('event');
-        if ($event) {
-            $json = $event->getContext()->get('jsonResponse', false);
-        } else {
-            $json = false;
-        }
         $response = new Response(
             $view->render('error/index.phtml', [
-                'exception' => $processContext->get('containerException'),
-                'json' => $json,
+                'exception' => $processContext->get('containerException')
             ]),
             [],
             500,

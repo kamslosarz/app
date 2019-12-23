@@ -2,12 +2,12 @@
 
 namespace App\Controller\Api\Backups;
 
-use App\Controller\AbstractController\AppController;
+use App\Controller\Api\ApiController;
 use Validator\Constraint\CharacterLengthConstraint;
 use Validator\Constraint\DateTimeConstraint;
 use Validator\ConstraintBuilder\ConstraintBuilder;
 
-abstract class BackupController extends AppController
+abstract class BackupController extends ApiController
 {
     protected function getConstraintBuilder(): ConstraintBuilder
     {

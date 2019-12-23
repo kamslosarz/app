@@ -33,14 +33,6 @@ abstract class AppController extends Controller
             ->set('responseCode', $code);
     }
 
-    /**
-     * @param array $array
-     * @return string
-     */
-    protected function json(array $array): string
-    {
-        return json_encode($array);
-    }
 
     protected function getErrors(): array
     {

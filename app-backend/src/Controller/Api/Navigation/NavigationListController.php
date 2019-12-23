@@ -2,14 +2,13 @@
 
 namespace App\Controller\Api\Navigation;
 
-use App\Controller\AbstractController\AppController;
-use App\Response\ListResponse;
+use App\Controller\Api\ApiController;
 
-class NavigationListController extends AppController
+class NavigationListController extends ApiController
 {
     public function listAction(): string
     {
-        $listResponse = new ListResponse([
+        $list = [
             [
                 'id' => 1,
                 'title' => 'Strona głowna',
@@ -25,8 +24,8 @@ class NavigationListController extends AppController
                 'title' => 'Dodaj',
                 'href' => '/add'
             ]
-        ], 10, 3, 0, 3);
+        ];
 
-        return $listResponse->toJson();
+        return $this->jsonListResponse($list, 3, 0,3);
     }
 }

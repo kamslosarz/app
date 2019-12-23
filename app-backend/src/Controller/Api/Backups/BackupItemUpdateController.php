@@ -41,6 +41,8 @@ class BackupItemUpdateController extends BackupController
 
         $jsonResponse = new JsonResponse(['item' => $backupItem->__toArray()]);
 
+
+
         return $jsonResponse->toJson();
     }
 }

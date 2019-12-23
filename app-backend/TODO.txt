@@ -1,8 +1,12 @@
 - form unit tests
 - controllers unit tests
+- app orm unit tests
+- validator unit tests
+- responses tests
+
 - functional tests
+
 - Orm package - small part was done
     - repo tests
     - model tests
 - console with proc_open
-- list response tests

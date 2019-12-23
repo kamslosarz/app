@@ -36,6 +36,6 @@ class NumberConstraint extends Constraint
 
     public function getError(): string
     {
-        return sprintf('Value is not in range. Got %d, expected %d..%d', strlen($this->value), $this->min, $this->max);
+        return sprintf('Value is not in range. Got %d, expected %d..%d', $this->value, $this->min, $this->max);
     }
 }

@@ -1,5 +1,5 @@
 import {Action, Mutation, VuexModule} from "vuex-module-decorators";
-import ResponseType from "@/models/ResposeType";
+import {Response} from "@/models/Response";
 
 export default abstract class AsyncRequest extends VuexModule {
   error!: string;
@@ -23,10 +23,10 @@ export default abstract class AsyncRequest extends VuexModule {
   }
 
   @Action
-  asyncRequest(axiosRequestFactory: CallableFunction): Promise<ResponseType> {
+  asyncRequest(axiosRequestFactory: CallableFunction): Promise<Response> {
     this.context.commit("setLoading", true);
     this.context.commit("setResponseErrors", {});
-    return new Promise<ResponseType>((resolve, reject) => {
+    return new Promise<Response>((resolve, reject) => {
       axiosRequestFactory(resolve, reject)
         .catch((e: Error) => {
           this.context.commit("setError", e);

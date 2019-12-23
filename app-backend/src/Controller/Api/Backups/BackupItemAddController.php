@@ -3,7 +3,6 @@
 namespace App\Controller\Api\Backups;
 
 use App\ORM\Model\Backup\BackupItem;
-use App\Response\JsonResponse;
 use Factory\FactoryException;
 use Orm\DataBase\DatabaseAdapter\DataBaseAdapterException;
 use Orm\OrmException;
@@ -21,7 +20,7 @@ class BackupItemAddController extends BackupController
         $requestData = $this->getRequest()->getInput()->__toArray();
         if(!$this->validate($requestData, $this->getConstraintBuilder()))
         {
-            return (new JsonResponse(['errors' => $this->getErrors()]))->toJson();
+            return $this->jsonErrorResponse($this->getErrors());
         }
 
         $backup = new BackupItem();
@@ -30,8 +29,6 @@ class BackupItemAddController extends BackupController
         $backup->setDate($requestData['date']);
         $backup->save();
 
-        $jsonResponse = new JsonResponse(['item' => $backup->__toArray()]);
-
-        return $jsonResponse->toJson();
+        return $this->jsonItemResponse($backup->__toArray());
     }
 }

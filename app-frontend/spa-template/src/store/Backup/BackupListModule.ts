@@ -7,4 +7,8 @@ import Listing from "@/store/AsyncRequest/Listing";
 })
 export default class BackupListModule extends Listing<BackupItem> {
   listEndpoint: string = "getBackupsList";
+
+  get itemsList(): BackupItem[]{
+    return this.items;
+  }
 }

@@ -2,6 +2,8 @@ import {Action, Module, Mutation} from "vuex-module-decorators";
 import {BackupItem, BackupItemDeleteResponse, BackupItemResponse} from "@/models/Backup";
 import {Vue} from "vue-property-decorator";
 import AsyncRequest from "@/store/AsyncRequest/AsyncRequest";
+import {AxiosResponse} from "axios";
+import {Response} from "@/models/Response";
 
 @Module({
   namespaced: true
@@ -19,12 +21,13 @@ export default class BackupItemModule extends AsyncRequest {
     return this.context.dispatch("asyncRequest", (resolve: Function) => {
       return Vue.axios
         .get<BackupItemResponse>("backup/" + itemId)
-        .then(response => {
-          if (response.data.errors) {
-            this.context.commit("setResponseErrors", response.data.errors);
+        .then((response: AxiosResponse) => {
+          let itemResponse: BackupItemResponse = response.data;
+          if (!itemResponse.success) {
+            this.context.commit("setResponseErrors", itemResponse.errors);
           } else {
-            this.context.commit("setItem", response.data.item);
-            resolve(response.data);
+            this.context.commit("setItem", itemResponse.data.item);
+            resolve(itemResponse);
           }
         });
     });
@@ -35,12 +38,13 @@ export default class BackupItemModule extends AsyncRequest {
     return this.context.dispatch("asyncRequest", (resolve: Function) => {
       return Vue.axios
         .put<BackupItemResponse>("backup", item)
-        .then(response => {
-          if (response.data.errors) {
-            this.context.commit("setResponseErrors", response.data.errors);
+        .then((response: AxiosResponse) => {
+          let itemResponse: BackupItemResponse = response.data;
+          if (!itemResponse.success) {
+            this.context.commit("setResponseErrors", itemResponse.errors);
           } else {
-            this.context.commit("setItem", response.data.item);
-            resolve(response.data);
+            this.context.commit("setItem", itemResponse.data.item);
+            resolve(itemResponse);
           }
         });
     });
@@ -51,12 +55,13 @@ export default class BackupItemModule extends AsyncRequest {
     return this.context.dispatch("asyncRequest", (resolve: Function) => {
       return Vue.axios
         .post<BackupItemResponse>("backup", item)
-        .then(response => {
-          if (response.data.errors) {
-            this.context.commit("setResponseErrors", response.data.errors);
+        .then((response: AxiosResponse) => {
+          let itemResponse: BackupItemResponse = response.data;
+          if (!itemResponse.success) {
+            this.context.commit("setResponseErrors", itemResponse.errors);
           } else {
-            this.context.commit("setItem", response.data.item);
-            resolve(response.data);
+            this.context.commit("setItem", itemResponse.data.item);
+            resolve(itemResponse);
           }
         });
     });
@@ -67,12 +72,13 @@ export default class BackupItemModule extends AsyncRequest {
     return this.context.dispatch("asyncRequest", (resolve: Function) => {
       return Vue.axios
         .delete<BackupItemDeleteResponse>("backup/" + item.id)
-        .then(response => {
-          if (response.data.errors) {
-            this.context.commit("setResponseErrors", response.data.errors);
+        .then((response: AxiosResponse) => {
+          let deleteResponse: Response = response.data;
+          if (!deleteResponse.success) {
+            this.context.commit("setResponseErrors", deleteResponse.errors);
           } else {
             this.context.commit("setItem", null);
-            resolve(response.data);
+            resolve(deleteResponse);
           }
         });
     });

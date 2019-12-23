@@ -28,7 +28,7 @@ class NumberConstraintTest extends TestCase
         $this->assertEquals('Value is not in range. Got 1, expected 2..10', $numberConstraint->getError());
     }
 
-    public function testShouldValidateConstraintFailedToLarge()
+    public function testShouldValidateConstraintFailedToHighNumber()
     {
         $numberConstraint = new NumberConstraint([
             'min' => 2,

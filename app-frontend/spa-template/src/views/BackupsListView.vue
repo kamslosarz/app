@@ -23,7 +23,12 @@
           @remove="remove"
           @edit="edit"
         />
-        <BackupItemEdit v-if="showEdit && activeItem" :item-id="activeItem.id" />
+        <BackupItemEdit
+          v-if="showEdit && activeItem"
+          :item-id="activeItem.id"
+          @itemUpdated="itemUpdated"
+          @cancel="cancel"
+        />
       </div>
     </div>
   </div>
@@ -36,7 +41,6 @@
   import Loader from "@/components/Loader.vue";
   import BackupItemDetails from "@/components/BackupItemDetails.vue";
   import BackupItemEdit from "@/components/BackupItemEdit.vue";
-  import {Mutation} from "vuex-module-decorators";
 
   @Component({
   components: {
@@ -66,18 +70,6 @@ export default class BackupsListView extends Vue {
       this.activeItem = items[0];
     }
   }
-
-  @Mutation
-  updateItems(item: BackupItem): void {
-    let items: BackupItem[] = this.items;
-    let index: number = this.items.findIndex(
-      listItem => listItem.id === item.id
-    );
-    items[index] = item;
-
-    this.$store.commit("backupList/setItems", items);
-  }
-
   select(item: BackupItem): void {
     this.activeItem = item;
     this.displayMode = "details";
@@ -86,24 +78,38 @@ export default class BackupsListView extends Vue {
     this.activeItem = item;
     this.displayMode = "edit";
   }
-  itemDeleted(item: BackupItem) {
-    this.$store.commit(
-      "backupList/setItems",
-      this.items.filter(listItem => item.id !== listItem.id)
-    );
-  }
   remove(item: BackupItem): void {
-    this.deleteItem(item).then(response => {
-      // @ts-ignore
-      if (response && response[0] == "ok") {
-        this.itemDeleted(item);
-      }
+    this.deleteItem(item).then((response: BackupItemDeleteResponse) => {
+      this.$emit("itemDeleted", item);
     });
+  }
+  mounted() {
+    this.$on("itemDeleted", (item: BackupItem) => {
+      this.$store.commit(
+        "backupList/setItems",
+        this.items.filter((listItem: BackupItem) => item.id !== listItem.id)
+      );
+    });
+  }
+  itemUpdated(item: BackupItem) {
+    if(this.activeItem && this.activeItem.id === item.id){
+      this.activeItem = item;
+    }
+    let items: BackupItem[] = this.items;
+    items[
+      items.findIndex(listItem => {
+        return listItem.id === item.id;
+      })
+    ] = item;
+    this.$store.commit("backupList/setItems", items);
+    this.$forceUpdate();
+  }
+  cancel() {
+    this.displayMode = "details";
   }
   created(): void {
     this.getItems();
   }
-
   get showDetails(): boolean {
     return this.displayMode === "details";
   }

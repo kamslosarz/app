@@ -4,7 +4,6 @@ namespace App\Controller\Api\Backups;
 
 use App\ORM\Model\Backup\BackupItem;
 use App\ORM\Repository\Backup\BackupRepository;
-use App\Response\JsonResponse;
 use Orm\DataBase\DatabaseAdapter\DataBaseAdapterException;
 use Orm\OrmException;
 
@@ -23,6 +22,6 @@ class BackupItemDeleteController extends BackupController
         $backupItem = $backupRepository->findOne($id);
         $backupItem->delete();
 
-        return (new JsonResponse(['ok']))->toJson();
+        return $this->jsonSuccessResponse();
     }
 }

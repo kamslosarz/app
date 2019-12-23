@@ -50,7 +50,19 @@
           >
         </div>
       </div>
-      <input type="button" class="btn btn-primary btn-sm" value="Save" v-on:click="save" />
+      <input
+        type="button"
+        class="btn btn-primary btn-sm"
+        value="Save"
+        v-on:click="save"
+      />
+      <input
+        v-if="cancelAble"
+        type="button"
+        class="btn btn-sm"
+        value="Cancel"
+        v-on:click="cancel"
+      />
     </div>
   </div>
 </template>
@@ -73,6 +85,8 @@ export default class BackupForm extends Vue {
   item!: BackupItem;
   @Prop()
   errors!: string[];
+  @Prop({ required: false, default: false })
+  cancelAble!: boolean;
 
   selected(selectedDate: string) {
     let date = new Date(selectedDate);
@@ -81,6 +95,10 @@ export default class BackupForm extends Vue {
 
   save() {
     this.$emit("save", JSON.parse(JSON.stringify(this.item)));
+  }
+
+  cancel() {
+    this.$emit("cancel");
   }
 }
 </script>
