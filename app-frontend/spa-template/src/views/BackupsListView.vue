@@ -2,8 +2,19 @@
   <div class="itemsList">
     <loader :is-loading="loading" />
     <div class="row">
+      <div class="col-12 mb-4">
+        <div class="md-form mb-0">
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Search"
+            aria-label="Search"
+            v-model="search"
+          />
+        </div>
+      </div>
       <div class="col-4">
-        <div class="list-group" id="list-tab" role="tablist">
+        <div class="list-group mb-4" id="list-tab" role="tablist">
           <a
             v-for="item in items"
             :key="item.id"
@@ -15,6 +26,7 @@
             {{ item.name }}
           </a>
         </div>
+        <Pagination v-if="showPagination" :pagination="pagination" />
       </div>
       <div class="col-8">
         <BackupItemDetails
@@ -41,19 +53,22 @@
   import Loader from "@/components/Loader.vue";
   import BackupItemDetails from "@/components/BackupItemDetails.vue";
   import BackupItemEdit from "@/components/BackupItemEdit.vue";
+  import Pagination from "@/components/Pagination.vue";
+  import {Pagination as PaginationInterface} from "@/models/Response";
 
   @Component({
   components: {
     Loader,
     BackupItemDetails,
-    BackupItemEdit
+    BackupItemEdit,
+    Pagination
   },
   methods: {
     ...mapActions("backupList", ["getItems"]),
     ...mapActions("backupItem", ["deleteItem"])
   },
   computed: {
-    ...mapState("backupList", ["loading", "items"])
+    ...mapState("backupList", ["loading", "items", "pagination"])
   }
 })
 export default class BackupsListView extends Vue {
@@ -62,6 +77,14 @@ export default class BackupsListView extends Vue {
   getItems!: () => BackupItem[];
   deleteItem!: (item: BackupItem) => Promise<BackupItemDeleteResponse>;
   displayMode: string = "details";
+  pagination!: PaginationInterface;
+  search: string = '';
+
+  @Watch('search')
+  searchChanged(keyword: string){
+
+    console.log(keyword);
+  }
 
   @Watch("items")
   itemsChanged(items: BackupItem[]) {
@@ -70,19 +93,23 @@ export default class BackupsListView extends Vue {
       this.activeItem = items[0];
     }
   }
+
   select(item: BackupItem): void {
     this.activeItem = item;
     this.displayMode = "details";
   }
+
   edit(item: BackupItem): void {
     this.activeItem = item;
     this.displayMode = "edit";
   }
+
   remove(item: BackupItem): void {
     this.deleteItem(item).then((response: BackupItemDeleteResponse) => {
       this.$emit("itemDeleted", item);
     });
   }
+
   mounted() {
     this.$on("itemDeleted", (item: BackupItem) => {
       this.$store.commit(
@@ -91,8 +118,9 @@ export default class BackupsListView extends Vue {
       );
     });
   }
+
   itemUpdated(item: BackupItem) {
-    if(this.activeItem && this.activeItem.id === item.id){
+    if (this.activeItem && this.activeItem.id === item.id) {
       this.activeItem = item;
     }
     let items: BackupItem[] = this.items;
@@ -104,17 +132,25 @@ export default class BackupsListView extends Vue {
     this.$store.commit("backupList/setItems", items);
     this.$forceUpdate();
   }
+
   cancel() {
     this.displayMode = "details";
   }
+
   created(): void {
     this.getItems();
   }
+
   get showDetails(): boolean {
     return this.displayMode === "details";
   }
+
   get showEdit(): boolean {
     return this.displayMode === "edit";
+  }
+
+  get showPagination(): boolean {
+    return this.pagination !== null;
   }
 }
 </script>

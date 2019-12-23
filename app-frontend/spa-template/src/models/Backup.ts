@@ -10,12 +10,6 @@ export interface BackupItem extends Entry {
   date: string;
 }
 
-export interface Pagination {
-  total?: number;
-  perPage?: number;
-  offset?: number;
-}
-
 export interface BackupListResponse extends ListResponse<BackupItem> {}
 
 export interface BackupItemResponse extends Response {

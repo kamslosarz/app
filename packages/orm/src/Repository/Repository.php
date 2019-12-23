@@ -22,15 +22,16 @@ abstract class Repository extends Peer
      * @throws DataBaseAdapterException
      * @throws OrmException
      */
-    public function find(int $limit = null, int $offset = null): Collection
+    public function find(int $limit = null, int $offset = 0): Collection
     {
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder->select('*')
             ->from($this->getTableName());
-        if($limit && $offset)
+        if(!is_null($limit))
         {
             $queryBuilder->limit($offset, $limit);
         }
+
         $query = new Query($queryBuilder, $this->getDataBase());
         $query->execute();
 

@@ -19,13 +19,13 @@
             <td>
               <input
                 type="button"
-                class="btn btn-secondary btn-sm mr-1"
+                class="btn btn-primary btn-sm mr-1"
                 v-on:click="edit(item)"
                 value="Edit"
               />
               <input
                 type="button"
-                class="btn btn-primary btn-sm"
+                class="btn btn-danger btn-sm"
                 v-on:click="remove(item)"
                 value="Delete"
               />
@@ -50,7 +50,7 @@ export default class BackupItemDetails extends Vue {
   item!: BackupItem;
 
   remove(item: BackupItem): void {
-    if(confirm('Are you sure?')){
+    if (confirm("Are you sure?")) {
       this.$emit("remove", item);
     }
   }

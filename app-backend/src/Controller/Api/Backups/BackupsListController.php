@@ -16,9 +16,9 @@ class BackupsListController extends BackupController
     public function listAction(): string
     {
         $repository = new BackupRepository();
-        $items = $repository->find();
+        $items = $repository->find(10);
         $offset = 0;
 
-        return $this->jsonListResponse($items->__toArray(), $items->count(), $offset, $repository->count());
+        return $this->jsonListResponse($items->__toArray(), $items->count(), $offset, $repository->count(), 10);
     }
 }

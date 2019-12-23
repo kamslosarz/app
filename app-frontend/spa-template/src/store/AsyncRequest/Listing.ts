@@ -1,14 +1,13 @@
 import {Action, Mutation} from "vuex-module-decorators";
 import {Vue} from "vue-property-decorator";
 import AsyncRequest from "@/store/AsyncRequest/AsyncRequest";
-import {Pagination} from "@/models/Backup";
 import {AxiosResponse} from "axios";
-import {ListResponse} from "@/models/Response";
+import {ListResponse, Pagination} from "@/models/Response";
 
 export default abstract class Listing<ItemType> extends AsyncRequest {
   abstract listEndpoint: string;
   items: ItemType[] = [];
-  pagination!: Pagination;
+  pagination: Pagination | null = null;
 
   @Mutation
   setItems(items: ItemType[]) {
