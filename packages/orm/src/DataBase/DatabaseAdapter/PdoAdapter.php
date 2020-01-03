@@ -50,9 +50,9 @@ class PdoAdapter implements DatabaseAdapterInterface
         {
             /** @var PDOStatement $stmt */
             $stmt = $this->pdo->prepare($query);
+            $this->throwErrorIfOccurred();
             $stmt->execute($binds);
             $this->throwErrorIfOccurred($stmt);
-
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if(!is_array($results))
             {
@@ -89,9 +89,9 @@ class PdoAdapter implements DatabaseAdapterInterface
      * @param PDOStatement $stmt
      * @throws DataBaseAdapterException
      */
-    private function throwErrorIfOccurred(PDOStatement $stmt): void
+    private function throwErrorIfOccurred(PDOStatement $stmt = null): void
     {
-        if($stmt->errorCode() !== '00000')
+        if($stmt && $stmt->errorCode() !== '00000')
         {
             throw new DataBaseAdapterException(implode(', ', $stmt->errorInfo()), (int)$stmt->errorCode(), null);
         }

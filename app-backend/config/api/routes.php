@@ -10,13 +10,23 @@ use App\Controller\Api\Navigation\NavigationListController;
 use EventManager\Event\Context;
 
 return [
-    'get:/getNavigationsList' => [
+    'get:/auth/token' => [
+        [AccessController::class, 'generateTokenAction'],
+    ],
+
+    'get:/navigations' => [
         [AccessController::class, 'indexAction'],
         [NavigationListController::class, 'listAction'],
     ],
-    'get:/getBackupsList' => [
+
+
+    'get:/backups/{offset}' => [
         [AccessController::class, 'indexAction'],
         [BackupsListController::class, 'listAction'],
+    ],
+    'post:/backups/search/{offset}' => [
+        [AccessController::class, 'indexAction'],
+        [BackupsListController::class, 'searchAction'],
     ],
     'put:/backup' => [
         [AccessController::class, 'indexAction'],
@@ -34,6 +44,8 @@ return [
         [AccessController::class, 'indexAction'],
         [BackupItemDeleteController::class, 'deleteAction'],
     ],
+
+
     '*' => [
         function (Context $context) {
             $context->set('responseCode', 400);

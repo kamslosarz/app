@@ -10,7 +10,13 @@ export interface ListResponse<T> extends Response {
   };
 }
 export interface Pagination {
-  total?: number;
-  perPage?: number;
-  offset?: number;
+  total: number;
+  perPage: number;
+  offset: number;
+}
+
+export interface AuthTokenResponse {
+  data: {
+    token: string;
+  };
 }

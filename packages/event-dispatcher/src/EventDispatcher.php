@@ -27,18 +27,20 @@ class EventDispatcher
             {
                 foreach($listeners as $listener)
                 {
-                    if(!is_callable($listener))
+                    if(!$this->event->getContext()->get('stopEventPropagation'))
                     {
-                        throw new EventManagerException(sprintf(
-                            'listener "%s" for event "%s" is not callable', print_r($listener, true), $eventName
-                        ));
-                    }
-
-                    $listenerInvokable = $this->getListenerInvokable($listener);
-                    $results = $listenerInvokable();
-                    if($results)
-                    {
-                        $this->event->addResults($results);
+                        if(!is_callable($listener))
+                        {
+                            throw new EventManagerException(sprintf(
+                                'listener "%s" for event "%s" is not callable', print_r($listener, true), $eventName
+                            ));
+                        }
+                        $listenerInvokable = $this->getListenerInvokable($listener);
+                        $results = $listenerInvokable();
+                        if($results)
+                        {
+                            $this->event->addResults($results);
+                        }
                     }
                 }
             }

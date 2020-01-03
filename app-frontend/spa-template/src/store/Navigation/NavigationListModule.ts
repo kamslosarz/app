@@ -6,5 +6,5 @@ import Listing from "@/store/AsyncRequest/Listing";
   namespaced: true
 })
 export default class NavigationListModule extends Listing<NavigationItem> {
-  listEndpoint: string = "getNavigationsList";
+  listEndpoint: string = "navigations";
 }

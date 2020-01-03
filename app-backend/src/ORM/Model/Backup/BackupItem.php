@@ -2,22 +2,12 @@
 
 namespace App\ORM\Model\Backup;
 
-use App\ORM\Peer\BackupPeer;
+use App\ORM\Peer\Backup\BackupPeer;
 use Orm\Model\Model;
 
 class BackupItem extends Model
 {
     use BackupPeer;
-
-    protected function getPrimaryKey(): string
-    {
-        return 'id';
-    }
-
-    protected function getTableName(): string
-    {
-        return 'backups';
-    }
 
     public function setName(string $name): self
     {
@@ -39,4 +29,5 @@ class BackupItem extends Model
 
         return $this;
     }
+
 }

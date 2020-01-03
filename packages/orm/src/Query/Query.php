@@ -28,9 +28,11 @@ class Query
      * @throws DataBaseAdapterException
      * @throws OrmException
      */
-    public function execute(): void
+    public function execute(): self
     {
         $this->results = $this->dataBase->query($this->queryBuilder->build(), $this->queryBuilder->getBinds());
+
+        return $this;
     }
 
     /**
@@ -53,6 +55,11 @@ class Query
         }
 
         return $this->results[0];
+    }
+
+    public function hasResults(): bool
+    {
+        return !empty($this->results);
     }
 
     /**

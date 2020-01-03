@@ -83,4 +83,8 @@ abstract class Controller implements EventListenerInvokable
         $this->context->set('responseHeaders', $headers);
     }
 
+    protected function stopEventPropagation(): void
+    {
+        $this->context->set('stopEventPropagation', true);
+    }
 }

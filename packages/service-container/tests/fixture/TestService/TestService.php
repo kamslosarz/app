@@ -1,4 +1,4 @@
-<?php /** @noinspection ALL */
+<?php
 
 namespace fixture\TestService;
 
@@ -10,6 +10,12 @@ class TestService extends Service
     private $param1;
     private $param2;
 
+    /**
+     * TestService constructor.
+     * @param $testService
+     * @param null $param1
+     * @param null $param2
+     */
     public function __construct($testService, $param1 = null, $param2 = null)
     {
         $this->testService = $testService;
@@ -17,6 +23,9 @@ class TestService extends Service
         $this->param2 = $param2;
     }
 
+    /**
+     * @return string
+     */
     public function __invoke(): string
     {
         return 'Test service invoked';

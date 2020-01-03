@@ -10,3 +10,5 @@
     - repo tests
     - model tests
 - console with proc_open
+
+- stopEventPropagation => tests

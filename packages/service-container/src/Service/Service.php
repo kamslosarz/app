@@ -6,5 +6,8 @@ abstract class Service
 {
     protected array $config = [];
 
-    abstract public function __invoke();
+    public function __construct(array $config = [])
+    {
+        $this->config = $config;
+    }
 }

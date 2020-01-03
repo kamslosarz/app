@@ -9,7 +9,7 @@
             type="text"
             placeholder="Search"
             aria-label="Search"
-            v-model="search"
+            v-model="keyword"
           />
         </div>
       </div>
@@ -26,7 +26,11 @@
             {{ item.name }}
           </a>
         </div>
-        <Pagination v-if="showPagination" :pagination="pagination" />
+        <Pagination
+          v-if="showPagination"
+          :pagination="pagination"
+          @pageChanged="pageChanged"
+        />
       </div>
       <div class="col-8">
         <BackupItemDetails
@@ -48,13 +52,15 @@
 
 <script lang="ts">
   import {Component, Vue, Watch} from "vue-property-decorator";
-  import {BackupItem, BackupItemDeleteResponse} from "@/models/Backup";
+  import {BackupItem, BackupItemDeleteResponse, BackupListResponse} from "@/models/Backup";
   import {mapActions, mapState} from "vuex";
   import Loader from "@/components/Loader.vue";
   import BackupItemDetails from "@/components/BackupItemDetails.vue";
   import BackupItemEdit from "@/components/BackupItemEdit.vue";
   import Pagination from "@/components/Pagination.vue";
   import {Pagination as PaginationInterface} from "@/models/Response";
+  import {AxiosPromise} from "axios";
+  import {SearchPayload} from "@/models/Search";
 
   @Component({
   components: {
@@ -64,7 +70,7 @@
     Pagination
   },
   methods: {
-    ...mapActions("backupList", ["getItems"]),
+    ...mapActions("backupList", ["getItems", "search"]),
     ...mapActions("backupItem", ["deleteItem"])
   },
   computed: {
@@ -74,16 +80,23 @@
 export default class BackupsListView extends Vue {
   items!: BackupItem[];
   activeItem: BackupItem | null = null;
-  getItems!: () => BackupItem[];
+  getItems!: (offset?: number) => AxiosPromise;
   deleteItem!: (item: BackupItem) => Promise<BackupItemDeleteResponse>;
   displayMode: string = "details";
   pagination!: PaginationInterface;
-  search: string = '';
+  keyword: string = "";
+  search!: (searchPayload: SearchPayload) => Promise<BackupListResponse>;
+  searchQueue: number = 0;
 
-  @Watch('search')
-  searchChanged(keyword: string){
-
-    console.log(keyword);
+  @Watch("keyword")
+  searchChanged(keyword: string) {
+    this.searchQueue++;
+    setTimeout(() => {
+      this.searchQueue--;
+      if (this.searchQueue === 0) {
+        this.search({ keyword: keyword, offset: 0 });
+      }
+    }, 1000);
   }
 
   @Watch("items")
@@ -91,6 +104,15 @@ export default class BackupsListView extends Vue {
     this.activeItem = null;
     if (items.length) {
       this.activeItem = items[0];
+    }
+  }
+
+  pageChanged(offset: number) {
+    if (this.keyword) {
+      let keyword = this.keyword;
+      this.search({ keyword, offset });
+    } else {
+      this.getItems(offset);
     }
   }
 

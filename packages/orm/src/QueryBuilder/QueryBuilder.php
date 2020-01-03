@@ -12,7 +12,8 @@ class QueryBuilder
     protected array $binds = [];
     protected array $data;
     protected string $columns;
-    protected string $limit;
+    protected ?string $limit;
+    protected string $order;
 
     /**
      * @param string $table
@@ -64,7 +65,7 @@ class QueryBuilder
      */
     public function where(string $column, string $conditionPeer, $value, array $binds = []): self
     {
-        $this->where = $column . $conditionPeer . $value;
+        $this->where = $column . ' ' . $conditionPeer . ' ' . $value;
         $this->binds += $binds;
 
         return $this;
@@ -110,9 +111,18 @@ class QueryBuilder
         return $this;
     }
 
-    public function limit(int $offset, int $limit)
+    public function limit(int $limit, int $offset = 0): self
     {
         $this->limit = sprintf('%s, %s', $offset, $limit);
+
+        return $this;
+    }
+
+    public function order(string $column, string $direction): self
+    {
+        $this->order = sprintf('%s %s', $column, $direction);
+
+        return $this;
     }
 
     /**
@@ -159,12 +169,18 @@ class QueryBuilder
                 {
                     $where = sprintf('WHERE %s', $this->where);
                 }
+                $order = '';
+                if(isset($this->order))
+                {
+                    $order = sprintf('ORDER BY %s', $this->order);
+                }
                 $limit = '';
                 if(isset($this->limit))
                 {
                     $limit = sprintf('LIMIT %s', $this->limit);
                 }
-                $query = sprintf("SELECT %s FROM %s %s %s", $this->columns, $this->table, $where, $limit);
+                $query = sprintf("SELECT %s FROM %s %s %s %s", $this->columns, $this->table, $where, $order, $limit);
+
                 break;
 
             case QueryBuilderPeers::DELETE:
@@ -183,5 +199,13 @@ class QueryBuilder
 
 
         return $query;
+    }
+
+    public function rebuildAsCountQuery(): self
+    {
+        $this->limit = null;
+        $this->select('COUNT('.$this->columns.') as count');
+
+        return $this;
     }
 }

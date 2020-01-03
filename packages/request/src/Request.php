@@ -44,6 +44,11 @@ class Request
         return $this->parameters->get('input');
     }
 
+    public function getHeaders(): Collection
+    {
+        return $this->parameters->get('headers');
+    }
+
     /**
      * @return Collection
      */
@@ -56,6 +61,7 @@ class Request
         $collection->set('cookie', new Collection($_COOKIE));
         $collection->set('session', new Collection($_SESSION));
         $collection->set('input', new Collection((array)json_decode(file_get_contents('php://input'), true)));
+        $collection->set('headers', new Collection(getallheaders()));
 
         return $collection;
     }

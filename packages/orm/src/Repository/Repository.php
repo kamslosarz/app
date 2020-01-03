@@ -29,7 +29,7 @@ abstract class Repository extends Peer
             ->from($this->getTableName());
         if(!is_null($limit))
         {
-            $queryBuilder->limit($offset, $limit);
+            $queryBuilder->limit($limit, $offset);
         }
 
         $query = new Query($queryBuilder, $this->getDataBase());

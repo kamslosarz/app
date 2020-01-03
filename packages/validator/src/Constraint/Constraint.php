@@ -6,7 +6,7 @@ use Collection\Collection;
 
 abstract class Constraint
 {
-    protected string $value = '';
+    protected ?string $value = '';
     protected Collection $options;
 
     public function __construct(array $options = [])

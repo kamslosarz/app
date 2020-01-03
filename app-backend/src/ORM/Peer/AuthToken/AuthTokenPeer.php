@@ -1,18 +1,18 @@
 <?php
 
-namespace App\ORM\Peer;
+namespace App\ORM\Peer\AuthToken;
 
-use App\ORM\Model\Backup\BackupItem;
-use App\ORM\Repository\Backup\BackupRepository;
+use App\ORM\Model\AuthToken\AuthTokenItem;
+use App\ORM\Repository\AuthToken\AuthTokenRepository;
 
-trait BackupPeer
+trait AuthTokenPeer
 {
     /**
      * @return string
      */
     protected function getTableName(): string
     {
-        return 'backups';
+        return 'auth_tokens';
     }
 
     /**
@@ -28,7 +28,7 @@ trait BackupPeer
      */
     protected function getModel(): string
     {
-        return BackupItem::class;
+        return AuthTokenItem::class;
     }
 
     /**
@@ -36,6 +36,6 @@ trait BackupPeer
      */
     protected function getRepository(): string
     {
-        return BackupRepository::class;
+        return AuthTokenRepository::class;
     }
 }

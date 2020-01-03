@@ -1,6 +1,9 @@
 <template>
   <nav>
-    <ul class="pagination pagination-sm justify-content-center">
+    <ul
+      class="pagination pagination-sm justify-content-center"
+      v-if="displayPagination"
+    >
       <li class="page-item" :class="{ disabled: disablePrevious }">
         <a class="page-link" href="#" v-on:click="selectPage(page - 1)">« </a>
       </li>
@@ -40,6 +43,11 @@ export default class Pagination extends Vue {
 
   selectPage(page: number): void {
     this.page = page;
+    let offset = this.pagination.perPage
+      ? this.pagination.perPage * (page - 1)
+      : 0;
+
+    this.$emit("pageChanged", offset);
   }
 
   get disablePrevious(): boolean {
@@ -58,7 +66,7 @@ export default class Pagination extends Vue {
       Math.ceil(this.pagination.total / this.pagination.perPage) + 1;
 
     let firstPage: number =
-      this.page <= 2
+      this.page <= 2 || totalPages <= 5
         ? 1
         : this.page >= totalPages - 2
         ? this.page - 2 - (3 + (this.page - totalPages))
@@ -70,6 +78,10 @@ export default class Pagination extends Vue {
         return value;
       })
       .slice(firstPage, firstPage + pagesToShow);
+  }
+
+  get displayPagination(): boolean {
+    return Math.ceil(this.pagination.total / this.pagination.perPage) > 1;
   }
 }
 </script>
