@@ -37,7 +37,7 @@ class EventDispatcher
                         }
                         $listenerInvokable = $this->getListenerInvokable($listener);
                         $results = $listenerInvokable();
-                        if($results)
+                        if(strlen($results))
                         {
                             $this->event->addResults($results);
                         }

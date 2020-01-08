@@ -26,7 +26,7 @@ class BackupItemUpdateController extends BackupController
         $constraintBuilder->addConstraint('id', NumberConstraint::class, ['min' => 1]);
         if(!$this->validate($requestData, $this->getConstraintBuilder()))
         {
-            return (new JsonResponse(['errors' => $this->getErrors()]))->toJson();
+            return $this->jsonErrorResponse($this->getErrors());
         }
 
         $backupRepository = new BackupRepository();

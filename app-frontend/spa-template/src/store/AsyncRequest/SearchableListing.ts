@@ -10,7 +10,7 @@ export abstract class SearchableListing<ItemType> extends Listing<ItemType> {
 
   @Action
   search(payload: SearchPayload): AxiosPromise {
-    return this.context.dispatch("asyncRequest", (resolve: Function) => {
+    return this.context.dispatch("asyncRequest", (resolve: Function, reject: Function) => {
       let formData = new FormData();
       formData.append("keyword", payload.keyword);
       let searchEndpoint = payload.offset
@@ -25,6 +25,7 @@ export abstract class SearchableListing<ItemType> extends Listing<ItemType> {
           let listResponse: ListResponse<ItemType> = response.data;
           if (!listResponse.success) {
             this.context.commit("setResponseErrors", listResponse.errors);
+            reject(listResponse.errors);
           } else {
             this.context.commit("setItems", listResponse.data.items);
             this.context.commit("setPagination", listResponse.data.pagination);

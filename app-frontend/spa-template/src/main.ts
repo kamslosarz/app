@@ -3,16 +3,22 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import VueAxios from "vue-axios";
 import {auth} from "./services/services";
+import {AuthTokenResponse, ErrorResponse} from "@/models/Response";
 
 Vue.use(VueAxios, axios);
 Vue.axios.defaults.baseURL = "http://app.backup.dev.com/api";
 Vue.axios.interceptors.response.use(
-  response => response,
-  error => {
-    console.error(error);
+  (response: AxiosResponse) => response,
+  (error) => {
+    let errorResponse: ErrorResponse = error.response;
+    if (errorResponse.data.errors.includes("Access token expired")) {
+      auth.generateAuthToken().then((response: AuthTokenResponse) => {
+        console.log(response);
+      });
+    }
   }
 );
 Vue.config.productionTip = false;

@@ -24,7 +24,7 @@ class BackupsListController extends BackupController
     public function listAction(int $offset = 0): string
     {
         $backupRepository = new BackupRepository();
-        $items = $backupRepository->find(10, $offset);
+        $items = $backupRepository->find(self::ITEMS_PER_PAGE, $offset);
 
         return $this->jsonListResponse($items->__toArray(), $items->count(), $offset, $backupRepository->count(), self::ITEMS_PER_PAGE);
     }
@@ -37,6 +37,8 @@ class BackupsListController extends BackupController
      */
     public function searchAction(int $offset = 0)
     {
+        sleep(2);
+
         $keyword = $this->getRequest()->getPost()->get('keyword');
         if(!$keyword)
         {
@@ -46,7 +48,7 @@ class BackupsListController extends BackupController
         $queryBuilder = new QueryBuilder();
         $queryBuilder->select('*')
             ->from('backups')
-            ->limit(10, $offset)
+            ->limit(self::ITEMS_PER_PAGE, $offset)
             ->order('name', QueryBuilderPeers::ORDER_ASC)
             ->where('name', QueryBuilderPeers::LIKE, ':keyword', [':keyword' => '%' . $keyword . '%']);
         $query = new Query($queryBuilder, DataBaseFactory::getInstance());

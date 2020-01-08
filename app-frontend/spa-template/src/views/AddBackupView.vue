@@ -2,9 +2,11 @@
   <div>
     <loader :is-loading="loading" />
     <backup-form @save="save" :errors="responseErrors" :item="itemEntry">
-      <div class="alert alert-success" role="alert" v-if="success">
-        {{ this.successMessage }}
-      </div>
+      <template v-slot:form-message>
+        <div class="alert alert-success" role="alert" v-if="success">
+          {{ successMessage }}
+        </div>
+      </template>
     </backup-form>
   </div>
 </template>

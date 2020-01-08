@@ -28,9 +28,13 @@
 export default class App extends Vue {
   applicationReady: boolean = false;
   created() {
-    auth.generateAccessToken().then((response: AuthTokenResponse) => {
-      this.applicationReady = auth.hasToken();
-    });
+    if (!auth.hasToken()) {
+      auth.generateAuthToken().then((response: AuthTokenResponse) => {
+        this.applicationReady = auth.hasToken();
+      });
+    } else {
+      this.applicationReady = true;
+    }
   }
 }
 </script>

@@ -20,8 +20,8 @@ export default abstract class Listing<ItemType> extends AsyncRequest {
   }
 
   @Action
-  getItems(offset: number = 0): AxiosPromise {
-    return this.context.dispatch("asyncRequest", (resolve: Function) => {
+  getItems(offset: number = 0): Promise<AxiosPromise> {
+    return this.context.dispatch("asyncRequest", (resolve: Function, reject: Function) => {
       let listEndpoint = offset
         ? this.listEndpoint + "/" + offset
         : this.listEndpoint;
@@ -32,6 +32,7 @@ export default abstract class Listing<ItemType> extends AsyncRequest {
           let listResponse: ListResponse<ItemType> = response.data;
           if (!listResponse.success) {
             this.context.commit("setResponseErrors", listResponse.errors);
+            reject();
           } else {
             this.context.commit("setItems", listResponse.data.items);
             this.context.commit("setPagination", listResponse.data.pagination);

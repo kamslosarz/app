@@ -1,9 +1,11 @@
 <template>
-  <div v-if="isLoading" class="global-loader">
-    <div class="spinner-grow" role="status">
-      <span class="sr-only">Loading...</span>
+  <transition name="fade">
+    <div v-if="isLoading" class="global-loader">
+      <div class="spinner-grow" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -31,5 +33,15 @@ export default class Loader extends Vue {
   left: 50%;
   margin: auto;
   z-index: 99999;
+}
+</style>
+
+<style lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

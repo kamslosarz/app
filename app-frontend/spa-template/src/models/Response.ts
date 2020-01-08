@@ -20,3 +20,8 @@ export interface AuthTokenResponse {
     token: string;
   };
 }
+export interface ErrorResponse {
+  data: {
+    errors: string[];
+  };
+}

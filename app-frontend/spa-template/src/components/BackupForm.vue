@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-md-12">
-      <slot></slot>
+      <slot name="form-message" />
       <div class="form-group">
         <label for="name">Name:</label>
         <input
@@ -50,19 +50,22 @@
           >
         </div>
       </div>
-      <input
-        type="button"
-        class="btn btn-primary btn-sm"
-        value="Save"
-        v-on:click="save"
-      />
-      <input
-        v-if="cancelAble"
-        type="button"
-        class="btn btn-sm"
-        value="Cancel"
-        v-on:click="cancel"
-      />
+      <div class="btn-group">
+        <input
+          type="button"
+          class="btn btn-primary btn-sm mr-2"
+          value="Save"
+          v-on:click="save"
+        />
+        <slot name="form-buttons" />
+        <input
+          v-if="cancelAble"
+          type="button"
+          class="btn btn-sm"
+          value="Cancel"
+          v-on:click="cancel"
+        />
+      </div>
     </div>
   </div>
 </template>

@@ -29,7 +29,7 @@ export default class AuthService {
     return this.token !== null;
   }
 
-  generateAccessToken(): Promise<AuthTokenResponse> {
+  generateAuthToken(): Promise<AuthTokenResponse> {
     return new Promise((resolve, reject) => {
       Vue.axios
         .get<AuthTokenResponse>("/auth/token", {
@@ -40,7 +40,6 @@ export default class AuthService {
         .then((response: AxiosResponse) => {
           let authTokenResponse: AuthTokenResponse = response.data;
           this.setToken(authTokenResponse.data.token);
-
           resolve(authTokenResponse);
         });
     });

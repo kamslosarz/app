@@ -3,7 +3,6 @@
 namespace App\Controller\Api\Access;
 
 use App\Controller\Api\ApiController;
-use App\Controller\Api\ApiException;
 use App\ORM\Model\AuthToken\AuthTokenItem;
 use App\Service\TokenGenerator\TokenGenerator;
 use DateTime;
@@ -23,7 +22,6 @@ class AccessController extends ApiController
 {
     /**
      * @return string|null
-     * @throws ApiException
      * @throws DataBaseAdapterException
      * @throws OrmException
      */
@@ -44,14 +42,23 @@ class AccessController extends ApiController
         if(!$query->hasResults())
         {
             $this->stopEventPropagation();
-            $this->setResponseCode(401);
+            $this->setResponseCode(400);
 
             return $this->jsonErrorResponse(['Invalid access token']);
         }
+        else
+        {
+            $authTokenItem = new AuthTokenItem($query->getFirstResult());
+            if($authTokenItem->isExpired())
+            {
+                $this->stopEventPropagation();
+                $this->setResponseCode(400);
 
-        $authTokenItem = new AuthTokenItem($query->getFirstResult());
+                return $this->jsonErrorResponse(['Access token expired']);
+            }
+        }
 
-        return $authTokenItem->isExpired();
+        return null;
     }
 
     /**

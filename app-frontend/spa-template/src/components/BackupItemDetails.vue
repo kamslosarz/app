@@ -1,5 +1,6 @@
 <template>
   <div id="Summery" class="tab-pane active">
+    <loader :is-loading="loading" />
     <div class="table-responsive panel">
       <table class="table">
         <tbody>
@@ -23,12 +24,6 @@
                 v-on:click="edit(item)"
                 value="Edit"
               />
-              <input
-                type="button"
-                class="btn btn-danger btn-sm"
-                v-on:click="remove(item)"
-                value="Delete"
-              />
             </td>
             <td></td>
           </tr>
@@ -41,19 +36,26 @@
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator";
   import {BackupItem} from "@/models/Backup";
+  import {mapActions, mapState} from "vuex";
+  import Loader from "@/components/Loader.vue";
 
-  @Component
+  @Component({
+  components: {
+    Loader
+  },
+  methods: {
+    ...mapActions("backupItem", ["deleteItem"])
+  },
+  computed: {
+    ...mapState("backupItem", ["loading"])
+  }
+})
 export default class BackupItemDetails extends Vue {
+  loading!: boolean;
   @Prop({
     required: true
   })
   item!: BackupItem;
-
-  remove(item: BackupItem): void {
-    if (confirm("Are you sure?")) {
-      this.$emit("remove", item);
-    }
-  }
 
   edit(item: BackupItem): void {
     this.$emit("edit", item);

@@ -9,7 +9,6 @@ export default abstract class AsyncRequest extends VuexModule {
   @Mutation
   setError(error?: Error) {
     this.error = (error && error.message) || "";
-    console.error(this.error);
   }
 
   @Mutation
@@ -23,14 +22,12 @@ export default abstract class AsyncRequest extends VuexModule {
   }
 
   @Action
-  asyncRequest(axiosRequestFactory: CallableFunction): Promise<Response> {
+  async asyncRequest(axiosRequestFactory: CallableFunction): Promise<Response> {
     this.context.commit("setLoading", true);
     this.context.commit("setResponseErrors", {});
-    return new Promise<Response>((resolve, reject) => {
-      axiosRequestFactory(resolve, reject)
-        .catch((e: Error) => {
-          this.context.commit("setError", e);
-        })
+    return await new Promise<Response>((resolve, reject) => {
+      return axiosRequestFactory(resolve, reject)
+        .catch(() => reject)
         .finally(() => {
           this.context.commit("setLoading", false);
         });
