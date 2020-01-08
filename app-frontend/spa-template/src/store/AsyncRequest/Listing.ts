@@ -6,7 +6,7 @@ import {ListResponse, Pagination} from "@/models/Response";
 
 export default abstract class Listing<ItemType> extends AsyncRequest {
   abstract listEndpoint: string;
-  items: ItemType[] = [];
+  items: Array<ItemType> = [];
   pagination: Pagination | null = null;
 
   @Mutation

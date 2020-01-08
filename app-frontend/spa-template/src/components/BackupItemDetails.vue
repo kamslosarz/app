@@ -24,6 +24,12 @@
                 v-on:click="edit(item)"
                 value="Edit"
               />
+              <input
+                type="button"
+                class="btn btn-danger btn-sm"
+                v-on:click="remove(item)"
+                value="Delete"
+              />
             </td>
             <td></td>
           </tr>
@@ -35,7 +41,7 @@
 
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator";
-  import {BackupItem} from "@/models/Backup";
+  import {BackupItem, BackupItemDeleteResponse} from "@/models/Backup";
   import {mapActions, mapState} from "vuex";
   import Loader from "@/components/Loader.vue";
 
@@ -44,10 +50,10 @@
     Loader
   },
   methods: {
-    ...mapActions("backupItem", ["deleteItem"])
+    ...mapActions("backup", ["deleteItem"])
   },
   computed: {
-    ...mapState("backupItem", ["loading"])
+    ...mapState("backup", ["loading"])
   }
 })
 export default class BackupItemDetails extends Vue {
@@ -56,6 +62,15 @@ export default class BackupItemDetails extends Vue {
     required: true
   })
   item!: BackupItem;
+  deleteItem!: (item: BackupItem) => Promise<BackupItemDeleteResponse>;
+
+  remove(deleteItem: BackupItem): void {
+    if (confirm("Are you sure?")) {
+      this.deleteItem(deleteItem).then((response: BackupItemDeleteResponse) => {
+        this.$emit("removed", deleteItem);
+      });
+    }
+  }
 
   edit(item: BackupItem): void {
     this.$emit("edit", item);

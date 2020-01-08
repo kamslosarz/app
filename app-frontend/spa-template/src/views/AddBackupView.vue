@@ -23,10 +23,10 @@
     BackupForm
   },
   methods: {
-    ...mapActions("backupItem", ["saveItem", "getItem"])
+    ...mapActions("backup", ["saveItem", "getItem"])
   },
   computed: {
-    ...mapState("backupItem", ["loading", "responseErrors"])
+    ...mapState("backup", ["loading", "responseErrors"])
   }
 })
 export default class AddBackupView extends Vue {

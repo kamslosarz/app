@@ -1,17 +1,17 @@
 <template>
   <div class="itemsList">
-    <BackupsList @selected="itemSelected">
+    <BackupsList @selected="itemSelected" @search="searched">
       <div class="col-8">
         <BackupItemDetails
           v-if="showDetails && activeItem"
           :item="activeItem"
           @edit="itemEdit"
+          @removed="itemRemoved"
         />
         <BackupItemEdit
           v-if="showEdit && activeItem"
           :item-id="activeItem.id"
           @updated="itemUpdated"
-          @removed="itemRemoved"
           @canceled="editCanceled"
         />
       </div>
@@ -44,6 +44,12 @@ export default class BackupsListView extends Vue {
     this.activeItem = item;
   }
 
+  searched(keyword: string) {
+    // if (this.$store.state.backupList.items.length) {
+    //   this.itemSelected(this.$store.state.backupList.items[0]);
+    // }
+  }
+
   itemEdit(item: BackupItem): void {
     this.activeItem = item;
     this.displayMode = "edit";
@@ -54,6 +60,9 @@ export default class BackupsListView extends Vue {
   }
 
   itemUpdated(item: BackupItem): void {
+    if (this.activeItem && this.activeItem.id === item.id) {
+      this.activeItem = item;
+    }
     this.$forceUpdate();
   }
 

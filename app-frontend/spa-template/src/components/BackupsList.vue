@@ -52,10 +52,10 @@
     Loader
   },
   methods: {
-    ...mapActions("backupList", ["getItems", "search"])
+    ...mapActions("backup", ["getItems", "search"])
   },
   computed: {
-    ...mapState("backupList", ["loading", "items", "pagination"])
+    ...mapState("backup", ["loading", "items", "pagination"])
   }
 })
 export default class BackupsList extends Vue {
@@ -73,7 +73,10 @@ export default class BackupsList extends Vue {
     setTimeout(() => {
       this.searchQueue--;
       if (this.searchQueue === 0) {
-        this.search({ keyword: keyword, offset: 0 });
+        this.search({ keyword: keyword, offset: 0 }).then(() => {
+          this.activeItemId = null;
+          this.$emit('search', keyword);
+        });
       }
     }, 1000);
   }

@@ -14,21 +14,13 @@
           {{ successMessage }}
         </div>
       </template>
-      <template v-slot:form-buttons>
-        <input
-          type="button"
-          class="btn btn-danger btn-sm"
-          v-on:click="remove(item)"
-          value="Delete"
-        />
-      </template>
     </backup-form>
   </div>
 </template>
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator";
   import {mapActions, mapState} from "vuex";
-  import {BackupItem, BackupItemDeleteResponse, BackupItemResponse} from "@/models/Backup";
+  import {BackupItem, BackupItemResponse} from "@/models/Backup";
   import Loader from "@/components/Loader.vue";
   import BackupForm from "@/components/BackupForm.vue";
 
@@ -38,11 +30,11 @@
     BackupForm
   },
   methods: {
-    ...mapActions("backupItem", ["updateItem", "getItem", "deleteItem"])
+    ...mapActions("backup", ["updateItem", "getItem"])
   },
   computed: {
-    ...mapState("backupItem", ["loading", "responseErrors", "item"]),
-    ...mapState("backupList", ["items"])
+    ...mapState("backup", ["loading", "responseErrors", "item"]),
+    ...mapState("backup", ["items"])
   }
 })
 export default class BackupItemEdit extends Vue {
@@ -53,22 +45,11 @@ export default class BackupItemEdit extends Vue {
   items!: BackupItem[];
   getItem!: (itemId: number) => Promise<BackupItemResponse>;
   updateItem!: (item: BackupItem) => Promise<BackupItemResponse>;
-  deleteItem!: (item: BackupItem) => Promise<BackupItemDeleteResponse>;
-
-  remove(deleteItem: BackupItem): void {
-    if (confirm("Are you sure?")) {
-      this.deleteItem(deleteItem).then((response: BackupItemDeleteResponse) => {
-        this.$store.dispatch("backupList/getItems");
-        this.$emit("removed", deleteItem);
-      });
-    }
-  }
 
   save(item: BackupItem): void {
     this.success = false;
     this.updateItem(item).then((response: BackupItemResponse) => {
       this.success = true;
-      this.$store.dispatch("backupList/updateItem", item);
       this.$emit("updated", item);
     });
   }

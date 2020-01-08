@@ -1,14 +1,16 @@
-import {Action, Module, Mutation} from "vuex-module-decorators";
 import {BackupItem, BackupItemDeleteResponse, BackupItemResponse} from "@/models/Backup";
+import {Action, Module, Mutation} from "vuex-module-decorators";
+import {SearchableListing} from "@/store/AsyncRequest/SearchableListing";
 import {Vue} from "vue-property-decorator";
-import AsyncRequest from "@/store/AsyncRequest/AsyncRequest";
 import {AxiosResponse} from "axios";
 import {Response} from "@/models/Response";
 
 @Module({
   namespaced: true
 })
-export default class BackupItemModule extends AsyncRequest {
+export default class BackupModule extends SearchableListing<BackupItem> {
+  searchEndpoint: string = "backups/search";
+  listEndpoint: string = "backups";
   item: BackupItem | null = null;
 
   @Mutation
@@ -60,7 +62,13 @@ export default class BackupItemModule extends AsyncRequest {
           if (!itemResponse.success) {
             this.context.commit("setResponseErrors", itemResponse.errors);
           } else {
-            this.context.commit("setItem", itemResponse.data.item);
+            let updatedItem = itemResponse.data.item;
+            this.context.commit("setItem", updatedItem);
+            let items = this.items;
+            items[
+              items.findIndex(listItem => listItem.id === updatedItem.id)
+            ] = updatedItem;
+            this.context.commit("setItems", items);
             resolve(itemResponse);
           }
         });
