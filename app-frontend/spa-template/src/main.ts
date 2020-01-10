@@ -5,18 +5,25 @@ import router from "./router";
 import store from "./store";
 import axios, {AxiosResponse} from "axios";
 import VueAxios from "vue-axios";
-import {auth} from "./services/services";
-import {AuthTokenResponse, ErrorResponse} from "@/models/Response";
+import {auth} from "@/services/services";
+import {ErrorResponse} from "@/models/Response";
+import Loader from "@/components/Loader.vue";
+import ConfirmModal from "@/components/Modal/ConfirmModal.vue";
+
+Vue.component("ConfirmModal", ConfirmModal);
+Vue.component("Loader", Loader);
 
 Vue.use(VueAxios, axios);
 Vue.axios.defaults.baseURL = "http://app.backup.dev.com/api";
 Vue.axios.interceptors.response.use(
   (response: AxiosResponse) => response,
-  (error) => {
-    let errorResponse: ErrorResponse = error.response;
-    if (errorResponse.data.errors.includes("Access token expired")) {
-      auth.generateAuthToken().then((response: AuthTokenResponse) => {
-        console.log(response);
+  error => {
+    const errorResponse: ErrorResponse = error.response;
+    const errors = errorResponse.data.errors;
+    const tokenErrors = ["Invalid access token", "Access token expired"];
+    if (errors.some(i => tokenErrors.indexOf(i) >= 0)) {
+      auth.generateToken().then(() => {
+        window.location.reload();
       });
     }
   }

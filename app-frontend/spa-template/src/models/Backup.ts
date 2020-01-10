@@ -1,21 +1,17 @@
-import {ListResponse, Response} from "@/models/Response";
+import {ItemResponse, ListResponse, Response} from "@/models/Response";
 
-export interface Entry {
-  id: number | null;
+export interface Item {
+  id: number;
 }
-
-export interface BackupItem extends Entry {
+export interface BackupItem extends Item {
   name: string;
   description: string;
   date: string;
 }
-
 export interface BackupListResponse extends ListResponse<BackupItem> {}
-
-export interface BackupItemResponse extends Response {
+export interface BackupItemDeleteResponse extends Response {}
+export interface BackupItemResponse extends ItemResponse<BackupItem> {
   data: {
     item: BackupItem;
   };
 }
-
-export interface BackupItemDeleteResponse extends Response {}

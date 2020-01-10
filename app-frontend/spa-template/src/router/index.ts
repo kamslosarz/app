@@ -2,32 +2,28 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Index from "../views/Index.vue";
 import IndexView from "@/views/IndexView.vue";
-import BackupsListView from "@/views/BackupsListView.vue";
-import AddBackupView from "@/views/AddBackupView.vue";
-import BackupItemEdit from "@/components/BackupItemEdit.vue";
+import BackupListView from "@/views/BackupListView.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/index",
+    path: "/",
     name: "Index",
     component: IndexView
   },
   {
     path: "/list",
     name: "BackupsList",
-    component: BackupsListView
+    component: BackupListView
   },
   {
     path: "/add",
-    name: "AddBackup",
-    component: AddBackupView
+    name: "AddBackup"
   },
   {
     path: "/edit",
-    name: "EditBackup",
-    component: BackupItemEdit
+    name: "EditBackup"
   }
 ];
 

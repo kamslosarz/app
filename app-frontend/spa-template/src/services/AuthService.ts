@@ -1,19 +1,20 @@
 import {Vue} from "vue-property-decorator";
-import {AuthTokenResponse} from "@/models/Response";
 import {AxiosResponse} from "axios";
+import {AuthTokenResponse} from "@/models/AuthTokenResponse";
 
 export default class AuthService {
-  authKey: string;
   token: string | null = null;
+  authKey!: string;
 
   constructor(authKey: string) {
     this.authKey = authKey;
-    let token = sessionStorage.getItem("authToken");
-    if (typeof token === "string" && token) {
-      this.token = token;
-    } else {
-      this.token = null;
+    if (typeof sessionStorage.getItem("authToken") === "string") {
+      //@ts-ignore
+      this.setToken(sessionStorage.getItem("authToken"));
     }
+  }
+  getToken() {
+    return this.token;
   }
 
   setToken(token: string) {
@@ -21,27 +22,25 @@ export default class AuthService {
     sessionStorage.setItem("authToken", token);
   }
 
-  getToken(): string | null {
-    return this.token;
+  async generateToken(): Promise<void> {
+    return this.generateAuthToken().then((response: AuthTokenResponse) => {
+      this.setToken(response.data.token);
+    });
   }
 
-  hasToken(): boolean {
-    return this.token !== null;
-  }
-
-  generateAuthToken(): Promise<AuthTokenResponse> {
-    return new Promise((resolve, reject) => {
+  private async generateAuthToken(): Promise<AuthTokenResponse> {
+    return await new Promise((resolve, reject) => {
       Vue.axios
         .get<AuthTokenResponse>("/auth/token", {
           headers: {
             authKey: this.authKey
           }
         })
-        .then((response: AxiosResponse) => {
+        .then((response: AxiosResponse<AuthTokenResponse>) => {
           let authTokenResponse: AuthTokenResponse = response.data;
-          this.setToken(authTokenResponse.data.token);
           resolve(authTokenResponse);
-        });
+        })
+        .catch(()=>reject);
     });
   }
 }

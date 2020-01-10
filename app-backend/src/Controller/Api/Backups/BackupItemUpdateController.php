@@ -13,7 +13,6 @@ use Validator\Constraint\NumberConstraint;
 class BackupItemUpdateController extends BackupController
 {
     /**
-     * @param int $id
      * @return string
      * @throws DataBaseAdapterException
      * @throws FactoryException
@@ -40,8 +39,6 @@ class BackupItemUpdateController extends BackupController
         $backupItem->save();
 
         $jsonResponse = new JsonResponse(['item' => $backupItem->__toArray()]);
-
-
 
         return $jsonResponse->toJson();
     }

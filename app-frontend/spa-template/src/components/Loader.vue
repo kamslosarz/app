@@ -1,47 +1,36 @@
 <template>
-  <transition name="fade">
-    <div v-if="isLoading" class="global-loader">
-      <div class="spinner-grow" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div>
-  </transition>
+  <div v-if="isLoading" class="loader overlay">
+    <div class="spinner-border"></div>
+  </div>
 </template>
 
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator";
 
-  @Component({})
+  @Component
 export default class Loader extends Vue {
   @Prop({ required: true, default: false })
   isLoading!: boolean;
 }
 </script>
-<style lang="scss">
-.global-loader {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  background: #00000030;
-  z-index: 99999;
-}
-.global-loader .spinner-grow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: auto;
-  z-index: 99999;
-}
-</style>
 
 <style lang="scss">
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
+.loader {
+  z-index: 20;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0000002e;
+}
+.overlay .spinner-border {
+  margin: auto;
+  left: 50%;
+  top: 50%;
+  position: absolute;
+  z-index: 20;
 }
 </style>

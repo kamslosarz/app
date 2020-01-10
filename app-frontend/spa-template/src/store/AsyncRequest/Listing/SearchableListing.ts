@@ -21,10 +21,10 @@ export abstract class SearchableListing<ItemType> extends Listing<ItemType> {
         .post<ListResponse<ItemType>>(searchEndpoint, formData, {
           headers: { "Content-Type": "application/x-www-form-urlencoded" }
         })
-        .then((response: AxiosResponse) => {
+        .then((response: AxiosResponse<ListResponse<ItemType>>) => {
           let listResponse: ListResponse<ItemType> = response.data;
           if (!listResponse.success) {
-            this.context.commit("setResponseErrors", listResponse.errors);
+            this.context.commit("setErrors", listResponse.errors);
             reject(listResponse.errors);
           } else {
             this.context.commit("setItems", listResponse.data.items);

@@ -1,5 +1,7 @@
 <template>
-  <div class="index"></div>
+  <div class="index">
+    HOME PAGE
+  </div>
 </template>
 
 <script lang="ts">

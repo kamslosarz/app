@@ -25,7 +25,6 @@ class DateTimeConstraint extends Constraint
 
     public function getError(): ?string
     {
-        return sprintf('Invalid date %s. Correct format is %s', $this->value,
-            $this->options->get('format', 'Y-m-d H:i:s'));
+        return sprintf('Invalid date %s. Correct format is %s', $this->value, $this->options->get('format', 'Y-m-d H:i:s'));
     }
 }

@@ -12,7 +12,7 @@ class NavigationListController extends ApiController
             [
                 'id' => 1,
                 'title' => 'Strona głowna',
-                'href' => '/index'
+                'href' => '/'
             ],
             [
                 'id' => 2,

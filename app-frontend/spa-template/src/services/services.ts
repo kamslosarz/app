@@ -1,3 +1,3 @@
-import AuthService from "./AuthService";
+import AuthService from "@/services/AuthService";
 
-export const auth = new AuthService("TEST_AUTH_KEY");
+export const auth = new AuthService('ACCESS_KEY');

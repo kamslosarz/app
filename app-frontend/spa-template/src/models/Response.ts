@@ -15,13 +15,16 @@ export interface Pagination {
   offset: number;
 }
 
-export interface AuthTokenResponse {
-  data: {
-    token: string;
-  };
-}
 export interface ErrorResponse {
   data: {
     errors: string[];
+  };
+}
+
+export interface DeleteItemResponse extends Response {}
+
+export interface ItemResponse<ItemType> extends Response {
+  data: {
+    item: ItemType;
   };
 }
