@@ -47,7 +47,7 @@ export default class BackupDelete extends Vue {
   }
   removeItem(item: BackupItem) {
     this.deleteBackup(item).then((response: BackupItemDeleteResponse) => {
-      this.$emit("itemDeleted", item);
+      this.$emit("removed", item);
       this.itemDeleted(item);
     });
   }

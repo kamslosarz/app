@@ -14,7 +14,9 @@
           </button>
         </div>
         <div class="toast-body">
-          {{ message.body }}
+          <div class="alert" :class="['alert-' + message.type]">
+            {{ message.body }}
+          </div>
         </div>
       </div>
     </transition>

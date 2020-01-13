@@ -18,9 +18,9 @@
           <td>{{ item.date }}</td>
           <td>
             <div class="btn-group-sm">
-              <backup-edit :item="item" @updated="itemUpdated" />
+              <backup-edit :item="item" @updated="itemUpdated(item)" />
               <span class="m-1" />
-              <backup-delete :item="item" />
+              <backup-delete :item="item" @removed="itemRemoved(item)" />
             </div>
           </td>
         </tr>
@@ -35,7 +35,6 @@
   import {BackupItem, BackupListResponse} from "@/models/Backup";
   import BackupDelete from "@/components/Backup/BackupDelete.vue";
   import BackupEdit from "@/components/Backup/BackupEdit.vue";
-  import {ToastMessage} from "@/models/ToastMessage";
   import Toast from "@/components/Toast/Toast.vue";
 
   @Component({
@@ -56,14 +55,26 @@
 })
 export default class BackupList extends Vue {
   getBackupList!: (offset?: number) => Promise<BackupListResponse>;
-  addToastMessage!: (toastMessage: ToastMessage) => {};
+  addToastMessage!: (toastMessage: {
+    title: string;
+    body: string;
+    date?: Date;
+    duration?: number;
+    type?: string;
+  }) => {};
 
   itemUpdated(item: BackupItem) {
     this.addToastMessage({
-      title: "Backup Update",
-      body: "Backup '" + item.name + "' was successfully updated",
-      date: new Date(),
-      duration: 10
+      title: "Backup Updated",
+      body: "Backup '" + item.name + "' was successfully updated"
+    });
+    this.$forceUpdate();
+  }
+
+  itemRemoved(item: BackupItem) {
+    this.addToastMessage({
+      title: "Backup removed",
+      body: "Backup '" + item.name + "' was successfully removed"
     });
     this.$forceUpdate();
   }

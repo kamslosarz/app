@@ -1,5 +1,5 @@
 import {Action, Module, Mutation, VuexModule} from "vuex-module-decorators";
-import {ToastMessage} from "@/models/ToastMessage";
+import {ToastMessage, ToastMessageTypes} from "@/models/ToastMessage";
 
 @Module({
   namespaced: true
@@ -20,8 +20,21 @@ export default class ToastModule extends VuexModule {
   }
 
   @Action
-  addToastMessage(toastMessage: ToastMessage) {
-    this.context.commit("addMessage", toastMessage);
+  addToastMessage(toastMessage: {
+    title: string;
+    body: string;
+    date?: Date;
+    duration?: number;
+    type?: string;
+  }) {
+
+    this.context.commit("addMessage", {
+      title: toastMessage.title,
+      body: toastMessage.body,
+      date: toastMessage.date || new Date(),
+      duration: toastMessage.duration || ToastMessage.DURATION,
+      type: toastMessage.type || ToastMessageTypes.SUCCESS
+    });
   }
 
   @Action
