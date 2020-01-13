@@ -5,7 +5,7 @@ import {ToastMessage} from "@/models/ToastMessage";
   namespaced: true
 })
 export default class ToastModule extends VuexModule {
-  messages!: ToastMessage[];
+  messages: ToastMessage[] = [];
 
   @Mutation
   removeMessage(toastMessage: ToastMessage) {

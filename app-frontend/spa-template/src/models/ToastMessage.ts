@@ -1,5 +1,6 @@
 export interface ToastMessage {
   title: string;
   body: string;
-  date: string;
+  date: Date;
+  duration: number;
 }

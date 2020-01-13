@@ -35,8 +35,8 @@
   import {BackupItem, BackupListResponse} from "@/models/Backup";
   import BackupDelete from "@/components/Backup/BackupDelete.vue";
   import BackupEdit from "@/components/Backup/BackupEdit.vue";
-  import Toast from "@/components/Modal/Toast.vue";
   import {ToastMessage} from "@/models/ToastMessage";
+  import Toast from "@/components/Toast/Toast.vue";
 
   @Component({
   components: {
@@ -55,15 +55,15 @@
   }
 })
 export default class BackupList extends Vue {
-  toastMessages: ToastMessage[] = [];
   getBackupList!: (offset?: number) => Promise<BackupListResponse>;
   addToastMessage!: (toastMessage: ToastMessage) => {};
 
   itemUpdated(item: BackupItem) {
     this.addToastMessage({
       title: "Backup Update",
-      body: "Backup " + item.name + " was successfully updated",
-      date: "10 min ago"
+      body: "Backup '" + item.name + "' was successfully updated",
+      date: new Date(),
+      duration: 10
     });
     this.$forceUpdate();
   }
