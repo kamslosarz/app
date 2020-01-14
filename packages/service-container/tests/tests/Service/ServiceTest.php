@@ -11,6 +11,6 @@ class ServiceTest extends TestCase
     public function testShouldConstructService()
     {
         $service = Mockery::mock(Service::class)->makePartial();
-        $this->assertTrue(method_exists($service, '__invoke'));
+        $this->assertTrue($service instanceof Service);
     }
 }

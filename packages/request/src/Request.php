@@ -3,6 +3,7 @@
 namespace Request;
 
 use Collection\Collection;
+use function getallheaders;
 
 class Request
 {
@@ -61,7 +62,7 @@ class Request
         $collection->set('cookie', new Collection($_COOKIE));
         $collection->set('session', new Collection($_SESSION));
         $collection->set('input', new Collection((array)json_decode(file_get_contents('php://input'), true)));
-        $collection->set('headers', new Collection(array_filter($_SERVER, fn($key) => substr($key, 0, 5) === 'HTTP_', ARRAY_FILTER_USE_KEY)));
+        $collection->set('headers', new Collection(getallheaders()));
 
         return $collection;
     }

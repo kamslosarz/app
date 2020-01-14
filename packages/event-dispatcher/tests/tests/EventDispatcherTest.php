@@ -52,6 +52,10 @@ class EventDispatcherTest extends TestCase
                     ->shouldReceive('getParameters')
                     ->andReturn([])
                     ->getMock()
+                    ->shouldReceive('get')
+                    ->with('stopEventPropagation')
+                    ->andReturn(false)
+                    ->getMock()
             )
             ->getMock();
 
@@ -106,6 +110,10 @@ class EventDispatcherTest extends TestCase
                     ->shouldReceive('hasParameters')
                     ->andReturnTrue()
                     ->getMock()
+                    ->shouldReceive('get')
+                    ->with('stopEventPropagation')
+                    ->andReturn(false)
+                    ->getMock()
             )
             ->getMock();
 
@@ -146,6 +154,10 @@ class EventDispatcherTest extends TestCase
                     ->shouldReceive('getParameters')
                     ->andReturn([])
                     ->getMock()
+                    ->shouldReceive('get')
+                    ->with('stopEventPropagation')
+                    ->andReturn(false)
+                    ->getMock()
             )
             ->getMock();
 
@@ -170,6 +182,15 @@ class EventDispatcherTest extends TestCase
             ->shouldReceive('getName')
             ->andReturn('eventName')
             ->once()
+            ->getMock()
+            ->shouldReceive('getContext')
+            ->andReturn(
+                Mockery::mock(Context::class)
+                    ->shouldReceive('get')
+                    ->with('stopEventPropagation')
+                    ->andReturn(false)
+                    ->getMock()
+            )
             ->getMock();
 
         $eventDispatcher = new EventDispatcher($eventManagerMock, $eventMock);

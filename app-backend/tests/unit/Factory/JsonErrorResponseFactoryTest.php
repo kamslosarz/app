@@ -36,7 +36,7 @@ class JsonErrorResponseFactoryTest extends TestCase
         $response = $errorResponseFactory->__invoke($processContextMock);
 
         $this->assertInstanceOf(Response::class, $response);
-        $this->assertEquals('{"status":"error","errors":["exception message traceAsString"],"data":[]}', $response->getContents());
+        $this->assertEquals('{"success":false,"errors":["exception message traceAsString"],"data":[]}', $response->getContents());
         $this->assertEquals(500, $response->getCode());
         $this->assertEquals([], $response->getHeaders());
     }
