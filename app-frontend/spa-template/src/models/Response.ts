@@ -1,3 +1,5 @@
+import {PaginationInterface} from "@/models/PaginationModel";
+
 export interface Response {
   errors: string[];
   success: boolean;
@@ -6,13 +8,8 @@ export interface Response {
 export interface ListResponse<T> extends Response {
   data: {
     items: T[];
-    pagination: Pagination;
+    pagination: PaginationInterface;
   };
-}
-export interface Pagination {
-  total: number;
-  perPage: number;
-  offset: number;
 }
 
 export interface ErrorResponse {

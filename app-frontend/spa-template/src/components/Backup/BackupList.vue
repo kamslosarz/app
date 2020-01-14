@@ -13,7 +13,7 @@
       </thead>
       <tbody>
         <tr v-for="item in items" v-bind:key="item.id">
-          <td>{{ item.name }}</td>
+          <td>#{{ item.id }} {{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td>{{ item.date }}</td>
           <td>
@@ -26,6 +26,11 @@
         </tr>
       </tbody>
     </table>
+    <pagination
+      :pagination="pagination"
+      @pageSelected="pageSelected"
+      :current="this.selectedPage"
+    />
   </div>
 </template>
 
@@ -36,9 +41,12 @@
   import BackupDelete from "@/components/Backup/BackupDelete.vue";
   import BackupEdit from "@/components/Backup/BackupEdit.vue";
   import Toast from "@/components/Toast/Toast.vue";
+  import Pagination from "@/components/Pagination/Pagination.vue";
+  import {Page, PaginationInterface} from "@/models/PaginationModel";
 
   @Component({
   components: {
+    Pagination,
     BackupEdit,
     BackupDelete,
     Toast
@@ -49,7 +57,7 @@
   },
   computed: {
     ...mapState("backupItem", ["item"]),
-    ...mapState("backupList", ["items"]),
+    ...mapState("backupList", ["items", "pagination"]),
     ...mapGetters(["isLoading"])
   }
 })
@@ -62,6 +70,8 @@ export default class BackupList extends Vue {
     duration?: number;
     type?: string;
   }) => {};
+  pagination!: PaginationInterface;
+  selectedPage: number = 0;
 
   itemUpdated(item: BackupItem) {
     this.addToastMessage({
@@ -76,11 +86,36 @@ export default class BackupList extends Vue {
       title: "Backup removed",
       body: "Backup '" + item.name + "' was successfully removed"
     });
-    this.$forceUpdate();
+    this.reloadList();
+  }
+
+  pageSelected(page: Page) {
+    this.selectedPage = page.page;
+    this.reloadList();
+  }
+
+  reloadList() {
+    this.getBackupList(this.offset).then((response: BackupListResponse) => {
+      if (this.selectedPage && this.selectedPage > this.totalPages) {
+        this.selectedPage = this.totalPages;
+      }
+    });
   }
 
   created() {
-    this.getBackupList();
+    this.reloadList();
+  }
+
+  get offset(): number {
+    if (this.selectedPage) {
+      return this.pagination.perPage + this.selectedPage;
+    }
+
+    return 0;
+  }
+
+  get totalPages(): number {
+    return Math.round(this.pagination.total / this.pagination.perPage) - 1;
   }
 }
 </script>

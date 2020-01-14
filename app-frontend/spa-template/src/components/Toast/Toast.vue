@@ -53,7 +53,7 @@ export default class Toast extends Vue {
   }
 
   hasDurationLeft(message: ToastMessage): boolean {
-    let secondsAgo: number = Math.floor(
+    const secondsAgo: number = Math.floor(
       (Date.now() - message.date.getTime()) / 1000
     );
 
@@ -61,8 +61,8 @@ export default class Toast extends Vue {
   }
 
   getDateAgo(date: Date): string {
-    let secondsAgo = Math.floor((Date.now() - date.getTime()) / 1000);
-    let intervals = [
+    const secondsAgo = Math.floor((Date.now() - date.getTime()) / 1000);
+    const intervals = [
       { period: "years", seconds: 31536000 },
       { period: "months", seconds: 2592000 },
       { period: "weeks", seconds: 604800 },
@@ -72,9 +72,9 @@ export default class Toast extends Vue {
       { period: "seconds", seconds: 1 }
     ];
 
-    for (let index in intervals) {
-      let interval: { period: string; seconds: number } = intervals[index];
-      let intervalsInDate = Math.floor(secondsAgo / interval.seconds);
+    for (const index in intervals) {
+      const interval: { period: string; seconds: number } = intervals[index];
+      const intervalsInDate = Math.floor(secondsAgo / interval.seconds);
       if (intervalsInDate > 1) {
         return intervalsInDate + " " + interval.period + " ago";
       }

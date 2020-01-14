@@ -4,7 +4,11 @@
       Are you sure?
     </template>
     <template v-slot:buttons>
-      <button class="btn-primary btn-sm btn-sm mr-1" v-on:click="confirm">
+      <button
+        class="btn-primary btn-sm mr-1"
+        v-on:click="confirm"
+        ref="confirmButton"
+      >
         Yes
       </button>
       <button class="btn btn-sm" v-on:click="close">
@@ -24,6 +28,18 @@
   }
 })
 export default class ConfirmModal extends Vue {
+  created() {
+    window.addEventListener("keyup", (keyboardEvent: KeyboardEvent) => {
+      if (keyboardEvent.code === "Enter") {
+        const confirmButton = this.$refs.confirmButton;
+        if (confirmButton) {
+          //@ts-ignore
+          confirmButton.click();
+        }
+      }
+    });
+  }
+
   confirm() {
     this.$emit("confirm");
     this.$emit("close");

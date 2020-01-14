@@ -47,7 +47,7 @@ export default class BackupEdit extends Vue {
   updateItem!: (item: BackupItem) => void;
 
   save() {
-    let date = new Date(this.itemEntry.date);
+    const date = new Date(this.itemEntry.date);
     this.itemEntry.date = date.toISOString().slice(0, 10);
     this.updateBackup(this.itemEntry).then((response: BackupItemResponse) => {
       this.close();

@@ -37,8 +37,6 @@ class BackupsListController extends BackupController
      */
     public function searchAction(int $offset = 0)
     {
-        sleep(2);
-
         $keyword = $this->getRequest()->getPost()->get('keyword');
         if(!$keyword)
         {
