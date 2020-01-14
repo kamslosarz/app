@@ -2,9 +2,9 @@
 
 namespace Orm\Model;
 
+use App\DataBase\DataBaseFactory;
 use Orm\DataBase\DataBase;
 use Orm\DataBase\DatabaseAdapter\DataBaseAdapterException;
-use Orm\DataBase\DataBaseFactory;
 use Orm\OrmException;
 use Orm\Peer\Peer;
 use Orm\Query\Query;
@@ -113,6 +113,7 @@ abstract class Model extends Peer
 
     /**
      * @return DataBase
+     * @throws DataBaseAdapterException
      */
     protected function getDataBase(): DataBase
     {

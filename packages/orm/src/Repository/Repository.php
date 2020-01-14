@@ -2,10 +2,10 @@
 
 namespace Orm\Repository;
 
+use App\DataBase\DataBaseFactory;
 use Collection\Collection;
 use Orm\DataBase\DataBase;
 use Orm\DataBase\DatabaseAdapter\DataBaseAdapterException;
-use Orm\DataBase\DataBaseFactory;
 use Orm\Model\Model;
 use Orm\OrmException;
 use Orm\Peer\Peer;

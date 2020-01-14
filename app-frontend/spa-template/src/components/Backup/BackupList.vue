@@ -2,6 +2,7 @@
   <div class="col-md-12">
     <toast />
     <loader :is-loading="isLoading" />
+    <search @searched="searched" />
     <table class="table mt-3">
       <thead>
         <tr>
@@ -43,16 +44,18 @@
   import Toast from "@/components/Toast/Toast.vue";
   import Pagination from "@/components/Pagination/Pagination.vue";
   import {Page, PaginationInterface} from "@/models/PaginationModel";
+  import Search from "@/components/Search/Search.vue";
 
   @Component({
   components: {
     Pagination,
     BackupEdit,
     BackupDelete,
-    Toast
+    Toast,
+    Search
   },
   methods: {
-    ...mapActions("backupList", ["getBackupList", "updatePage"]),
+    ...mapActions("backupList", ["getBackupList", "updatePage", "search"]),
     ...mapActions("toast", ["addToastMessage"])
   },
   computed: {
@@ -72,6 +75,10 @@ export default class BackupList extends Vue {
   }) => {};
   updatePage!: (page: number) => {};
   pagination!: PaginationInterface;
+  search!: (payload: {
+    keyword: string;
+    offset: number;
+  }) => Promise<BackupListResponse>;
 
   itemUpdated(item: BackupItem) {
     this.addToastMessage({
@@ -91,6 +98,14 @@ export default class BackupList extends Vue {
         this.loadPage(this.lastPage);
       }
     });
+  }
+
+  searched(keyword: string) {
+    if (keyword.length) {
+      this.search({ keyword: keyword, offset: this.offset });
+    } else {
+      this.reloadList();
+    }
   }
 
   pageSelected(page: Page) {

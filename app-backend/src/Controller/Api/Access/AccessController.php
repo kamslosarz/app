@@ -3,12 +3,12 @@
 namespace App\Controller\Api\Access;
 
 use App\Controller\Api\ApiController;
+use App\DataBase\DataBaseFactory;
 use App\ORM\Model\AuthToken\AuthTokenItem;
 use App\Service\TokenGenerator\TokenGenerator;
 use DateTime;
 use Factory\FactoryException;
 use Orm\DataBase\DatabaseAdapter\DataBaseAdapterException;
-use Orm\DataBase\DataBaseFactory;
 use Orm\OrmException;
 use Orm\Query\Query;
 use Orm\QueryBuilder\QueryBuilder;

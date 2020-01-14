@@ -11,7 +11,7 @@
     }
   ],
   "require": {
-    "php": "7.4",
+    "php": ">7.4",
     "framework/event-dispatcher": "dev-master",
     "framework/service-container": "dev-master",
     "framework/collection": "dev-master",
@@ -27,7 +27,8 @@
     "framework/factory": "dev-master",
     "framework/filesystem": "dev-master",
     "framework/console": "dev-master",
-    "framework/orm": "dev-master"
+    "framework/orm": "dev-master",
+    "framework/logger": "dev-master"
   },
   "autoload": {
     "psr-4": {

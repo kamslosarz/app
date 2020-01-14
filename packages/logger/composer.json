@@ -1,22 +1,19 @@
 {
-  "name": "framework/filesystem",
+  "name": "framework/logger",
   "authors": [
     {
       "name": "Kamil Ślósarz",
       "email": "kamil.slosarz@netart.pl"
     }
   ],
-  "require": {
-    "framework/collection": "dev-master",
-    "php": ">7.4"
-  },
   "require-dev": {
     "phpunit/phpunit": "^8.4",
-    "mockery/mockery": "^1.2"
+    "mockery/mockery": "^1.2",
+    "php": ">7.4"
   },
   "autoload": {
     "psr-4": {
-      "FileSystem\\": "src/",
+      "Logger\\": "src/",
       "fixture\\": "tests/fixture"
     }
   },

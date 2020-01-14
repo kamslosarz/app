@@ -24,6 +24,6 @@
   },
   "require": {
     "framework/collection": "dev-master",
-    "php": "7.4"
+    "php": ">7.4"
   }
 }
