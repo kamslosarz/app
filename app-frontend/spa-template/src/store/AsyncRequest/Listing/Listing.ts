@@ -2,12 +2,13 @@ import {Action, Mutation} from "vuex-module-decorators";
 import {Vue} from "vue-property-decorator";
 import AsyncRequest from "@/store/AsyncRequest/AsyncRequest";
 import {AxiosPromise, AxiosResponse} from "axios";
-import {ListResponse, Pagination} from "@/models/Response";
+import {ListResponse} from "@/models/Response";
+import {PaginationInterface} from "@/models/PaginationModel";
 
 export default abstract class Listing<ItemType> extends AsyncRequest {
   abstract listEndpoint: string;
   items: Array<ItemType> = [];
-  pagination: Pagination | null = null;
+  pagination: PaginationInterface | null = null;
 
   @Mutation
   setItems(items: ItemType[]) {
@@ -15,8 +16,20 @@ export default abstract class Listing<ItemType> extends AsyncRequest {
   }
 
   @Mutation
-  setPagination(pagination: Pagination) {
+  setPagination(pagination: PaginationInterface) {
     this.pagination = pagination;
+  }
+
+  @Mutation
+  setPage(page: number) {
+    if (this.pagination) {
+      this.pagination.page = page;
+    }
+  }
+
+  @Action
+  updatePage(page: number) {
+    this.context.commit("setPage", page);
   }
 
   @Action
@@ -27,7 +40,6 @@ export default abstract class Listing<ItemType> extends AsyncRequest {
         let listEndpoint = offset
           ? this.listEndpoint + "/" + offset
           : this.listEndpoint;
-
         return Vue.axios
           .get<ListResponse<ItemType>>(listEndpoint)
           .then((response: AxiosResponse<ListResponse<ItemType>>) => {

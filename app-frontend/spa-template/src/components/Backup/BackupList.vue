@@ -28,8 +28,8 @@
     </table>
     <pagination
       :pagination="pagination"
+      :page="page"
       @pageSelected="pageSelected"
-      :current="this.selectedPage"
     />
   </div>
 </template>
@@ -52,12 +52,12 @@
     Toast
   },
   methods: {
-    ...mapActions("backupList", ["getBackupList"]),
+    ...mapActions("backupList", ["getBackupList", "updatePage"]),
     ...mapActions("toast", ["addToastMessage"])
   },
   computed: {
     ...mapState("backupItem", ["item"]),
-    ...mapState("backupList", ["items", "pagination"]),
+    ...mapState("backupList", ["items", "pagination", "page"]),
     ...mapGetters(["isLoading"])
   }
 })
@@ -70,8 +70,8 @@ export default class BackupList extends Vue {
     duration?: number;
     type?: string;
   }) => {};
+  updatePage!: (page: number) => {};
   pagination!: PaginationInterface;
-  selectedPage: number = 0;
 
   itemUpdated(item: BackupItem) {
     this.addToastMessage({
@@ -86,36 +86,44 @@ export default class BackupList extends Vue {
       title: "Backup removed",
       body: "Backup '" + item.name + "' was successfully removed"
     });
-    this.reloadList();
-  }
-
-  pageSelected(page: Page) {
-    this.selectedPage = page.page;
-    this.reloadList();
-  }
-
-  reloadList() {
-    this.getBackupList(this.offset).then((response: BackupListResponse) => {
-      if (this.selectedPage && this.selectedPage > this.totalPages) {
-        this.selectedPage = this.totalPages;
+    this.reloadList().then((response: BackupListResponse) => {
+      if (this.currentPage > this.lastPage) {
+        this.loadPage(this.lastPage);
       }
     });
   }
 
-  created() {
+  pageSelected(page: Page) {
+    this.loadPage(page.page);
+  }
+
+  loadPage(page: number) {
+    this.updatePage(page);
     this.reloadList();
   }
 
-  get offset(): number {
-    if (this.selectedPage) {
-      return this.pagination.perPage + this.selectedPage;
+  reloadList(): Promise<BackupListResponse> {
+    return this.getBackupList(this.offset);
+  }
+
+  created() {
+    this.getBackupList();
+  }
+
+  get lastPage(): number {
+    if (this.pagination) {
+      return Math.ceil(this.pagination.total / this.pagination.perPage) - 1;
     }
 
     return 0;
   }
 
-  get totalPages(): number {
-    return Math.round(this.pagination.total / this.pagination.perPage) - 1;
+  get currentPage(): number {
+    return this.pagination.page;
+  }
+
+  get offset() {
+    return this.pagination.page * this.pagination.perPage;
   }
 }
 </script>

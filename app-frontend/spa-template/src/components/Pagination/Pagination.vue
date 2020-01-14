@@ -1,6 +1,16 @@
 <template>
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-end">
+      <li v-if="pagination">
+        <a class="page-link">
+          <small>
+            {{ pagination.offset }}
+            -
+            {{ totalShownRecords }}
+            of {{ pagination.total }} records
+          </small>
+        </a>
+      </li>
       <li
         class="page-item"
         v-for="page in pages"
@@ -25,11 +35,27 @@ export default class Pagination extends Vue {
     required: true
   })
   pagination!: PaginationInterface;
-  @Prop({
-    required: false,
-    default: 0
-  })
-  current!: number;
+
+  isActive(page: Page): boolean {
+    return this.pagination.page === page.page;
+  }
+
+  pageSelected(page: Page) {
+    this.pagination.page = page.page;
+    this.$emit("pageSelected", page);
+  }
+
+  get totalShownRecords(): number {
+    const total: number = this.pagination.offset + this.pagination.perPage;
+    return total > this.pagination.total ? this.pagination.total : total;
+  }
+
+  get totalPages(): number {
+    if (this.pagination) {
+      return Math.ceil(this.pagination.total / this.pagination.perPage);
+    }
+    return 0;
+  }
 
   get pages(): Page[] {
     let pages: Page[] = [];
@@ -37,14 +63,14 @@ export default class Pagination extends Vue {
       if (this.totalPages > 1) {
         const displayedPages = 5;
         const firstPage: number =
-          this.current < 3 || this.totalPages < displayedPages
+          this.pagination.page < 3 || this.totalPages < displayedPages
             ? 0
-            : this.current < this.totalPages - 2
-            ? this.current - 2
+            : this.pagination.page < this.totalPages - 2
+            ? this.pagination.page - 2
             : this.totalPages - 5;
 
         const lastPage: number =
-          firstPage === 0 ? displayedPages : this.current + 3;
+          firstPage === 0 ? displayedPages : this.pagination.page + 3;
 
         pages = Array(this.totalPages)
           .fill({ disabled: false, page: 0, title: "" })
@@ -59,31 +85,18 @@ export default class Pagination extends Vue {
 
         pages.unshift({
           title: "«",
-          page: this.current - 1,
-          disabled: this.current - 1 < 0
+          page: this.pagination.page - 1,
+          disabled: this.pagination.page - 1 < 0
         });
         pages.push({
           title: "»",
-          page: this.current + 1,
-          disabled: this.current + 1 === this.totalPages
+          page: this.pagination.page + 1,
+          disabled: this.pagination.page + 1 === this.totalPages
         });
       }
     }
 
     return pages;
-  }
-
-  isActive(page: Page): boolean {
-    return this.current === page.page;
-  }
-
-  pageSelected(page: Page) {
-    this.current = page.page;
-    this.$emit("pageSelected", page);
-  }
-
-  get totalPages(): number {
-    return Math.round(this.pagination.total / this.pagination.perPage);
   }
 }
 </script>

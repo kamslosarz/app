@@ -12,7 +12,8 @@ class PaginationResponse extends ArrayAccessible
             'perPage' => $perPage,
             'itemsCount' => $itemsCount,
             'offset' => $offset,
-            'total' => $total
+            'total' => $total,
+            'page' => floor($offset / $perPage)
         ]);
     }
 }
