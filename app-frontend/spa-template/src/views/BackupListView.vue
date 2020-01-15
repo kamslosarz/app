@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div>
     <transition name="fade">
       <loader :is-loading="isLoading" />
     </transition>

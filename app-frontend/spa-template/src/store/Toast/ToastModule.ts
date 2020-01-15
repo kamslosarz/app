@@ -16,7 +16,7 @@ export default class ToastModule extends VuexModule {
 
   @Mutation
   addMessage(toastMessage: ToastMessage) {
-    this.messages.push(toastMessage);
+    this.messages.unshift(toastMessage);
   }
 
   @Action

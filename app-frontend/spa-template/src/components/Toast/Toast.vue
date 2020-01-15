@@ -13,10 +13,8 @@
             <span v-on:click="remove(message)">&times;</span>
           </button>
         </div>
-        <div class="toast-body">
-          <div class="alert" :class="['alert-' + message.type]">
-            {{ message.body }}
-          </div>
+        <div class="toast-body" :class="['alert-' + message.type]">
+          {{ message.body }}
         </div>
       </div>
     </transition>
@@ -91,9 +89,10 @@ export default class Toast extends Vue {
 
 <style lang="scss">
 .toasts {
+  z-index: 99999;
   position: fixed;
   right: 10px;
-  top: 0;
+  top: 10px;
 }
 .toast {
   opacity: 1;

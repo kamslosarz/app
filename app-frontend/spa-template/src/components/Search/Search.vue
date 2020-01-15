@@ -1,5 +1,5 @@
 <template>
-  <div class="md-form mt-2">
+  <div class="md-form mt-3">
     <div class="input-group">
       <input class="form-control" placeholder="Search" v-model="keyword" />
       <div class="input-group-append">

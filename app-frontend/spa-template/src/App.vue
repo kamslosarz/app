@@ -1,7 +1,11 @@
 <template>
   <div class="container">
     <navigation />
-    <router-view />
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <router-view />
+      </div>
+    </div>
   </div>
 </template>
 
