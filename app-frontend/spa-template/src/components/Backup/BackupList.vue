@@ -73,8 +73,6 @@ export default class BackupList extends Vue {
   itemRemoved(item: BackupItem) {
     this.reloadList().then((response: BackupListResponse) => {
       if (this.currentPage > this.lastPage) {
-        console.log(this.lastPage);
-
         this.loadPage(this.lastPage);
       }
     });
@@ -104,7 +102,7 @@ export default class BackupList extends Vue {
   }
 
   created() {
-    this.getBackupList();
+    this.reloadList();
   }
 
   get lastPage(): number {
@@ -123,7 +121,10 @@ export default class BackupList extends Vue {
   }
 
   get offset() {
-    return this.pagination.page * this.pagination.perPage;
+    if (this.pagination) {
+      return this.pagination.page * this.pagination.perPage;
+    }
+    return 0;
   }
 }
 </script>
