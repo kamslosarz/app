@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Index from "../views/Index.vue";
 import IndexView from "@/views/IndexView.vue";
 import BackupListView from "@/views/BackupListView.vue";
+import BackupAdd from "@/components/Backup/BackupAdd.vue";
 
 Vue.use(VueRouter);
 
@@ -19,7 +20,8 @@ const routes = [
   },
   {
     path: "/add",
-    name: "AddBackup"
+    name: "AddBackup",
+    component: BackupAdd
   },
   {
     path: "/edit",

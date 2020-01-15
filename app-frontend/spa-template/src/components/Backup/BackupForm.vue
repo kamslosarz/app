@@ -43,6 +43,7 @@
       <datepicker
         id="date"
         class="datepicker form-control"
+        placeholder="Select a backup date"
         v-model="entry.date"
         name="date"
         format="yyyy-MM-dd"
@@ -57,6 +58,7 @@
         </span>
       </div>
     </div>
+    <slot name="form-bottom" />
   </form>
 </template>
 

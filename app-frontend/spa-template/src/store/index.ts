@@ -12,16 +12,16 @@ export default new Vuex.Store({
   mutations: {},
   actions: {},
   getters: {
-    isLoading(state): boolean {
+    isLoading(state: {}): boolean {
+      for (const moduleName in state) {
+        //@ts-ignore
+        const module = state[moduleName];
+        if (module && module.loading === true) {
+          return true;
+        }
+      }
 
-      console.log(state.modules);
-
-      return [
-        state.navigation.loading,
-        state.backupList.loading,
-        state.backupItem.loading,
-        state.toast.loading
-      ].includes(true);
+      return false;
     }
   },
   modules: {

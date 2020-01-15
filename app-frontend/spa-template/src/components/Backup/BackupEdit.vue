@@ -9,7 +9,7 @@
       <modal v-if="displayEditModal" @close="close">
         <template v-slot:title> Edit item {{ item.name }} </template>
         <template v-slot:body>
-          <backup-form :entry="itemEntry" :errors="errors" />
+          <backup-form :entry="entry" :errors="errors" />
         </template>
         <template v-slot:buttons>
           <button class="btn btn-sm btn-primary" v-on:click="save">Save</button>
@@ -45,16 +45,16 @@ export default class BackupEdit extends Vue {
     required: true
   })
   item!: BackupItem;
-  itemEntry!: BackupItem;
+  entry!: BackupItem;
   displayEditModal: boolean = false;
   updateBackup!: (item: BackupItem) => Promise<BackupItemResponse>;
   updateItem!: (item: BackupItem) => void;
 
   save() {
     const date = new Date();
-    date.setTime(parseInt(this.itemEntry.date));
-    this.itemEntry.date = date.toISOString().slice(0, 10);
-    this.updateBackup(this.itemEntry).then((response: BackupItemResponse) => {
+    date.setTime(parseInt(this.entry.date));
+    this.entry.date = date.toISOString().slice(0, 10);
+    this.updateBackup(this.entry).then((response: BackupItemResponse) => {
       this.close();
       this.updateItem(response.data.item);
       this.$emit("updated", response.data.item);
@@ -70,7 +70,7 @@ export default class BackupEdit extends Vue {
   }
 
   created() {
-    this.itemEntry = JSON.parse(JSON.stringify(this.item));
+    this.entry = JSON.parse(JSON.stringify(this.item));
   }
 }
 </script>

@@ -3,19 +3,26 @@
     <transition name="fade">
       <loader :is-loading="isLoading" />
     </transition>
+    <toast />
+    <backup-add />
   </div>
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from "vue-property-decorator";
-  import Loader from "@/components/Loader.vue";
-  import BackupList from "@/components/Backup/BackupList.vue";
+    import {Component, Vue} from "vue-property-decorator";
+    import BackupAdd from "@/components/Backup/BackupAdd.vue";
+    import {mapGetters} from "vuex";
+    import Toast from "@/components/Toast/Toast.vue";
 
-  @Component({
+    @Component({
   components: {
-    Loader,
-    BackupList
+    BackupAdd,
+    Toast
+  },
+  computed: {
+    ...mapGetters(["isLoading"])
   }
 })
-export default class BackupAddView extends Vue {}
+export default class BackupAddView extends Vue {
+}
 </script>
