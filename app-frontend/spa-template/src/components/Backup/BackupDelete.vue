@@ -21,7 +21,8 @@
   @Component({
   methods: {
     ...mapActions("backupList", ["itemDeleted"]),
-    ...mapActions("backupItem", ["deleteBackup"])
+    ...mapActions("backupItem", ["deleteBackup"]),
+    ...mapActions("toast", ["addToastMessage"])
   }
 })
 export default class BackupDelete extends Vue {
@@ -33,6 +34,7 @@ export default class BackupDelete extends Vue {
   showModal: boolean = false;
   deleteBackup!: (item: BackupItem) => Promise<BackupItemDeleteResponse>;
   itemDeleted!: (item: BackupItem) => Promise<BackupItemDeleteResponse>;
+  addToastMessage!: (toastMessage: { title: string; body: string }) => {};
 
   confirmRemoveItem(item: BackupItem) {
     this.showModal = true;
@@ -45,10 +47,15 @@ export default class BackupDelete extends Vue {
   modalClosed() {
     this.showModal = false;
   }
+
   removeItem(item: BackupItem) {
     this.deleteBackup(item).then((response: BackupItemDeleteResponse) => {
-      this.$emit("removed", item);
+      this.addToastMessage({
+        title: "Backup removed",
+        body: "Backup '" + item.name + "' was successfully removed"
+      });
       this.itemDeleted(item);
+      this.$emit("removed", item);
     });
   }
 }

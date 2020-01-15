@@ -40,7 +40,7 @@ export default class AuthService {
           let authTokenResponse: AuthTokenResponse = response.data;
           resolve(authTokenResponse);
         })
-        .catch(()=>reject);
+        .catch(() => reject);
     });
   }
 }

@@ -9,7 +9,7 @@
 
   @Component({})
 export default class Search extends Vue {
-  keyword: string = '';
+  keyword: string = "";
   queue = 0;
 
   @Watch("keyword")

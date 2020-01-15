@@ -34,7 +34,8 @@
   },
   methods: {
     ...mapActions("backupItem", ["updateBackup"]),
-    ...mapMutations("backupList", ["updateItem"])
+    ...mapMutations("backupList", ["updateItem"]),
+    ...mapActions("toast", ["addToastMessage"])
   },
   computed: {
     ...mapState("backupItem", ["errors"])
@@ -49,6 +50,7 @@ export default class BackupEdit extends Vue {
   displayEditModal: boolean = false;
   updateBackup!: (item: BackupItem) => Promise<BackupItemResponse>;
   updateItem!: (item: BackupItem) => void;
+  addToastMessage!: (toastMessage: { title: string; body: string }) => {};
 
   save() {
     const date = new Date();
@@ -57,6 +59,11 @@ export default class BackupEdit extends Vue {
     this.updateBackup(this.entry).then((response: BackupItemResponse) => {
       this.close();
       this.updateItem(response.data.item);
+      this.addToastMessage({
+        title: "Backup Updated",
+        body: "Backup '" + item.name + "' was successfully updated"
+      });
+
       this.$emit("updated", response.data.item);
     });
   }

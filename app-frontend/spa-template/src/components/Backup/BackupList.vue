@@ -52,36 +52,25 @@
   },
   methods: {
     ...mapActions("backupList", ["getBackupList", "search"]),
-    ...mapActions("toast", ["addToastMessage"]),
     ...mapMutations("backupList", ["updateKeyword", "updatePage"])
   },
   computed: {
-    ...mapState("backupItem", ["item"]),
     ...mapState("backupList", ["items", "pagination", "page", "keyword"])
   }
 })
 export default class BackupList extends Vue {
   getBackupList!: (offset?: number) => Promise<BackupListResponse>;
   search!: (offset?: number) => Promise<BackupListResponse>;
-  addToastMessage!: (toastMessage: { title: string; body: string }) => {};
   updatePage!: (page: number) => {};
   pagination!: PaginationInterface;
   updateKeyword!: (keyword: string) => {};
   keyword!: string;
 
   itemUpdated(item: BackupItem) {
-    this.addToastMessage({
-      title: "Backup Updated",
-      body: "Backup '" + item.name + "' was successfully updated"
-    });
     this.$forceUpdate();
   }
 
   itemRemoved(item: BackupItem) {
-    this.addToastMessage({
-      title: "Backup removed",
-      body: "Backup '" + item.name + "' was successfully removed"
-    });
     this.reloadList().then((response: BackupListResponse) => {
       if (this.currentPage > this.lastPage) {
         this.loadPage(this.lastPage);

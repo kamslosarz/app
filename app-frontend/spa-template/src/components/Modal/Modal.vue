@@ -1,24 +1,24 @@
 <template>
-    <div class="modal overlay-modal" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
-              <slot name="title" />
-            </h5>
-            <button class="close" v-on:click="close">
-              <span>&times;</span>
-            </button>
-          </div>
-          <div class="modal-body" v-if="shouldDisplayBody">
-            <slot name="body" />
-          </div>
-          <div class="modal-footer">
-            <slot name="buttons" />
-          </div>
+  <div class="modal overlay-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <slot name="title" />
+          </h5>
+          <button class="close" v-on:click="close">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" v-if="shouldDisplayBody">
+          <slot name="body" />
+        </div>
+        <div class="modal-footer">
+          <slot name="buttons" />
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">

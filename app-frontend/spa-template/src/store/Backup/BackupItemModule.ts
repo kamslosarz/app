@@ -7,6 +7,7 @@ import {Action, Module} from "vuex-module-decorators";
 })
 export default class BackupItemModule extends Item<BackupItem> {
   updateEndpoint: string = "/backup";
+  saveEndpoint: string = "/backup";
   deleteEndpoint: string = "/backup/{id}";
 
   @Action
@@ -17,5 +18,10 @@ export default class BackupItemModule extends Item<BackupItem> {
   @Action
   updateBackup(item: BackupItem): Promise<BackupItemResponse> {
     return this.context.dispatch("updateItem", item);
+  }
+
+  @Action
+  saveBackup(item: BackupItem): Promise<BackupItemResponse> {
+    return this.context.dispatch("saveItem", item);
   }
 }

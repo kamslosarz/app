@@ -17,7 +17,7 @@
   @Component({
   components: {
     BackupList,
-    Toast,
+    Toast
   },
   computed: {
     ...mapGetters(["isLoading"])

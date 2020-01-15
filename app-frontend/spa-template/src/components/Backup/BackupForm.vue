@@ -46,7 +46,7 @@
         placeholder="Select a backup date"
         v-model="entry.date"
         name="date"
-        format="yyyy-MM-dd"
+        format="MM/dd/yyyy"
         :class="{ 'is-invalid': errors.date }"
       />
       <small id="nameHelp" class="form-text text-muted">

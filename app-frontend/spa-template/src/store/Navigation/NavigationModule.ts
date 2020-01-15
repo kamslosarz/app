@@ -1,6 +1,6 @@
 import {Action, Module} from "vuex-module-decorators";
 import {NavigationResponse} from "@/models/NavigationItem";
-import {AxiosPromise,} from "axios";
+import {AxiosPromise} from "axios";
 import Listing from "@/store/AsyncRequest/Listing/Listing";
 
 @Module({

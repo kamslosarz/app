@@ -9,12 +9,12 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from "vue-property-decorator";
-    import BackupAdd from "@/components/Backup/BackupAdd.vue";
-    import {mapGetters} from "vuex";
-    import Toast from "@/components/Toast/Toast.vue";
+  import {Component, Vue} from "vue-property-decorator";
+  import BackupAdd from "@/components/Backup/BackupAdd.vue";
+  import {mapGetters} from "vuex";
+  import Toast from "@/components/Toast/Toast.vue";
 
-    @Component({
+  @Component({
   components: {
     BackupAdd,
     Toast
@@ -23,6 +23,5 @@
     ...mapGetters(["isLoading"])
   }
 })
-export default class BackupAddView extends Vue {
-}
+export default class BackupAddView extends Vue {}
 </script>
