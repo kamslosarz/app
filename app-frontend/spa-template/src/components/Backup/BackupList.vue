@@ -1,6 +1,6 @@
 <template>
   <div class="col-md-12">
-    <search @searched="searched" />
+    <search @searched="searched" :onLoadKeyword="keyword" />
     <table class="table mt-3">
       <thead>
         <tr>

@@ -5,12 +5,23 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue, Watch} from "vue-property-decorator";
+  import {Component, Prop, Vue, Watch} from "vue-property-decorator";
 
   @Component({})
 export default class Search extends Vue {
   keyword: string = "";
   queue = 0;
+  @Prop({
+    required: true,
+    default: ""
+  })
+  onLoadKeyword!: string;
+
+  mounted() {
+    if (!this.keyword) {
+      this.keyword = this.onLoadKeyword;
+    }
+  }
 
   @Watch("keyword")
   keywordChanged() {
