@@ -1,22 +1,27 @@
 import Listing from "./Listing";
-import {Action} from "vuex-module-decorators";
+import {Action, Mutation} from "vuex-module-decorators";
 import {ListResponse} from "@/models/Response";
 import {AxiosPromise, AxiosResponse} from "axios";
 import {Vue} from "vue-property-decorator";
-import {SearchPayload} from "@/models/Search";
 
 export abstract class SearchableListing<ItemType> extends Listing<ItemType> {
   abstract searchEndpoint: string;
+  keyword: string = "";
+
+  @Mutation
+  updateKeyword(keyword: string) {
+    this.keyword = keyword;
+  }
 
   @Action
-  search(payload: SearchPayload): AxiosPromise {
+  async search(offset: number = 0): Promise<AxiosPromise> {
     return this.context.dispatch(
       "asyncRequest",
       (resolve: Function, reject: Function) => {
         let formData = new FormData();
-        formData.append("keyword", payload.keyword);
-        let searchEndpoint = payload.offset
-          ? this.searchEndpoint + "/" + payload.offset
+        formData.append("keyword", this.keyword);
+        let searchEndpoint = offset
+          ? this.searchEndpoint + "/" + offset
           : this.searchEndpoint;
         return Vue.axios
           .post<ListResponse<ItemType>>(searchEndpoint, formData, {
@@ -30,7 +35,7 @@ export abstract class SearchableListing<ItemType> extends Listing<ItemType> {
             } else {
               this.context.commit("setItems", listResponse.data.items);
               this.context.commit(
-                "setPagination",
+                "updatePagination",
                 listResponse.data.pagination
               );
               resolve(listResponse);

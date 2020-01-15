@@ -1,7 +1,9 @@
 <template>
-  <div v-if="isLoading" class="loader overlay">
-    <div class="spinner-border"></div>
-  </div>
+  <transition name="fade">
+    <div v-if="isLoading" class="loader overlay">
+      <div class="spinner-border"></div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">

@@ -1,18 +1,22 @@
 <template>
   <div class="d-inline">
-    <button class="btn btn-primary btn-sm" v-on:click="editItem">
-      Edit
-    </button>
-    <modal v-if="displayEditModal" @close="close">
-      <template v-slot:title> Edit item {{ item.name }} </template>
-      <template v-slot:body>
-        <backup-form :entry="itemEntry" :errors="errors" />
-      </template>
-      <template v-slot:buttons>
-        <button class="btn btn-sm btn-primary" v-on:click="save">Save</button>
-        <button class="btn btn-sm" v-on:click="close">Close</button>
-      </template>
-    </modal>
+    <transition name="fade">
+      <button class="btn btn-primary btn-sm" v-on:click="editItem">
+        Edit
+      </button>
+    </transition>
+    <transition name="fade">
+      <modal v-if="displayEditModal" @close="close">
+        <template v-slot:title> Edit item {{ item.name }} </template>
+        <template v-slot:body>
+          <backup-form :entry="itemEntry" :errors="errors" />
+        </template>
+        <template v-slot:buttons>
+          <button class="btn btn-sm btn-primary" v-on:click="save">Save</button>
+          <button class="btn btn-sm" v-on:click="close">Close</button>
+        </template>
+      </modal>
+    </transition>
   </div>
 </template>
 
@@ -52,7 +56,7 @@ export default class BackupEdit extends Vue {
     this.updateBackup(this.itemEntry).then((response: BackupItemResponse) => {
       this.close();
       this.updateItem(response.data.item);
-      this.$emit('updated', response.data.item);
+      this.$emit("updated", response.data.item);
     });
   }
 

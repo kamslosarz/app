@@ -16,20 +16,15 @@ export default abstract class Listing<ItemType> extends AsyncRequest {
   }
 
   @Mutation
-  setPagination(pagination: PaginationInterface) {
+  updatePagination(pagination: PaginationInterface) {
     this.pagination = pagination;
   }
 
   @Mutation
-  setPage(page: number) {
+  updatePage(page: number) {
     if (this.pagination) {
       this.pagination.page = page;
     }
-  }
-
-  @Action
-  updatePage(page: number) {
-    this.context.commit("setPage", page);
   }
 
   @Action
@@ -50,7 +45,7 @@ export default abstract class Listing<ItemType> extends AsyncRequest {
             } else {
               this.context.commit("setItems", listResponse.data.items);
               this.context.commit(
-                "setPagination",
+                "updatePagination",
                 listResponse.data.pagination
               );
               this.context.commit("setLoading", false);

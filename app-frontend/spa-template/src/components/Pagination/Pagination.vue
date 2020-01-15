@@ -41,6 +41,8 @@ export default class Pagination extends Vue {
   }
 
   pageSelected(page: Page) {
+    console.log(page);
+
     this.pagination.page = page.page;
     this.$emit("pageSelected", page);
   }

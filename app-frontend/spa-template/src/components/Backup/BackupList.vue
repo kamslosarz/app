@@ -37,7 +37,7 @@
 
 <script lang="ts">
   import {Component, Vue} from "vue-property-decorator";
-  import {mapActions, mapGetters, mapState} from "vuex";
+  import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
   import {BackupItem, BackupListResponse} from "@/models/Backup";
   import BackupDelete from "@/components/Backup/BackupDelete.vue";
   import BackupEdit from "@/components/Backup/BackupEdit.vue";
@@ -55,30 +55,24 @@
     Search
   },
   methods: {
-    ...mapActions("backupList", ["getBackupList", "updatePage", "search"]),
-    ...mapActions("toast", ["addToastMessage"])
+    ...mapActions("backupList", ["getBackupList", "search"]),
+    ...mapActions("toast", ["addToastMessage"]),
+    ...mapMutations("backupList", ["updateKeyword", "updatePage"])
   },
   computed: {
     ...mapState("backupItem", ["item"]),
-    ...mapState("backupList", ["items", "pagination", "page"]),
+    ...mapState("backupList", ["items", "pagination", "page", "keyword"]),
     ...mapGetters(["isLoading"])
   }
 })
 export default class BackupList extends Vue {
   getBackupList!: (offset?: number) => Promise<BackupListResponse>;
-  addToastMessage!: (toastMessage: {
-    title: string;
-    body: string;
-    date?: Date;
-    duration?: number;
-    type?: string;
-  }) => {};
+  search!: (offset?: number) => Promise<BackupListResponse>;
+  addToastMessage!: (toastMessage: { title: string; body: string }) => {};
   updatePage!: (page: number) => {};
   pagination!: PaginationInterface;
-  search!: (payload: {
-    keyword: string;
-    offset: number;
-  }) => Promise<BackupListResponse>;
+  updateKeyword!: (keyword: string) => {};
+  keyword!: string;
 
   itemUpdated(item: BackupItem) {
     this.addToastMessage({
@@ -101,11 +95,8 @@ export default class BackupList extends Vue {
   }
 
   searched(keyword: string) {
-    if (keyword.length) {
-      this.search({ keyword: keyword, offset: this.offset });
-    } else {
-      this.reloadList();
-    }
+    this.updateKeyword(keyword);
+    this.reloadList();
   }
 
   pageSelected(page: Page) {
@@ -118,7 +109,11 @@ export default class BackupList extends Vue {
   }
 
   reloadList(): Promise<BackupListResponse> {
-    return this.getBackupList(this.offset);
+    if (this.keyword.length) {
+      return this.search(this.offset);
+    } else {
+      return this.getBackupList(this.offset);
+    }
   }
 
   created() {

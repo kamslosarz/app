@@ -26,18 +26,18 @@
 <script lang="ts">
   import {Component, Vue} from "vue-property-decorator";
   import {ToastMessage} from "@/models/ToastMessage";
-  import {mapActions, mapState} from "vuex";
+  import {mapMutations, mapState} from "vuex";
 
   @Component({
   methods: {
-    ...mapActions("toast", ["removeToastMessage"])
+    ...mapMutations("toast", ["removeMessage"])
   },
   computed: {
     ...mapState("toast", ["messages"])
   }
 })
 export default class Toast extends Vue {
-  removeToastMessage!: (toastMessage: ToastMessage) => {};
+  removeMessage!: (toastMessage: ToastMessage) => {};
   messages!: ToastMessage[];
 
   mounted() {
@@ -84,7 +84,7 @@ export default class Toast extends Vue {
   }
 
   remove(removeMessage: ToastMessage) {
-    this.removeToastMessage(removeMessage);
+    this.removeMessage(removeMessage);
   }
 }
 </script>
