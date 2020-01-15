@@ -13,6 +13,9 @@ export default new Vuex.Store({
   actions: {},
   getters: {
     isLoading(state): boolean {
+
+      console.log(state.modules);
+
       return [
         state.navigation.loading,
         state.backupList.loading,

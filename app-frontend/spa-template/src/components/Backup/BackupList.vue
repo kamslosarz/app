@@ -1,9 +1,5 @@
 <template>
   <div class="col-md-12">
-    <toast />
-    <transition name="fade">
-      <loader :is-loading="isLoading" />
-    </transition>
     <search @searched="searched" />
     <table class="table mt-3">
       <thead>
@@ -39,11 +35,10 @@
 
 <script lang="ts">
   import {Component, Vue} from "vue-property-decorator";
-  import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
+  import {mapActions, mapMutations, mapState} from "vuex";
   import {BackupItem, BackupListResponse} from "@/models/Backup";
   import BackupDelete from "@/components/Backup/BackupDelete.vue";
   import BackupEdit from "@/components/Backup/BackupEdit.vue";
-  import Toast from "@/components/Toast/Toast.vue";
   import Pagination from "@/components/Pagination/Pagination.vue";
   import {Page, PaginationInterface} from "@/models/PaginationModel";
   import Search from "@/components/Search/Search.vue";
@@ -53,7 +48,6 @@
     Pagination,
     BackupEdit,
     BackupDelete,
-    Toast,
     Search
   },
   methods: {
@@ -63,8 +57,7 @@
   },
   computed: {
     ...mapState("backupItem", ["item"]),
-    ...mapState("backupList", ["items", "pagination", "page", "keyword"]),
-    ...mapGetters(["isLoading"])
+    ...mapState("backupList", ["items", "pagination", "page", "keyword"])
   }
 })
 export default class BackupList extends Vue {
