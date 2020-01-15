@@ -15,7 +15,7 @@
         class="page-item"
         v-for="page in pages"
         v-bind:key="page.title"
-        :class="{ disabled: false, active: isActive(page) }"
+        :class="{ disabled: page.disabled, active: isActive(page) }"
       >
         <a class="page-link" href="#" v-on:click="pageSelected(page)">
           {{ page.title }}
@@ -39,8 +39,6 @@ export default class Pagination extends Vue {
   }
 
   pageSelected(page: Page) {
-    console.log(1);
-
     this.pagination.page = page.page;
     this.$emit("pageSelected", page);
   }
