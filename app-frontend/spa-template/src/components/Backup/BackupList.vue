@@ -76,16 +76,15 @@ export default class BackupList extends Vue {
   updateKeyword!: (keyword: string) => {};
   keyword!: string;
 
-  itemUpdated(item: BackupIte
-  m;) {
-    this;.addToastMessage({
+  itemUpdated(item: BackupItem) {
+    this.addToastMessage({
       title: "Backup Updated",
-      body: "Backup '" + item;.name; + "' was successfully updated"
-    })
+      body: "Backup '" + item.name + "' was successfully updated"
+    });
     this.$forceUpdate();
   }
 
-  itemRemoved(item;: BackupItem;) {
+  itemRemoved(item: BackupItem) {
     this.addToastMessage({
       title: "Backup removed",
       body: "Backup '" + item.name + "' was successfully removed"
@@ -97,33 +96,33 @@ export default class BackupList extends Vue {
     });
   }
 
-  searched(keyword;: string;) {
+  searched(keyword: string) {
     this.updateKeyword(keyword);
     this.reloadList();
   }
 
-  pageSelected(page;: Page;) {
+  pageSelected(page: Page) {
     this.loadPage(page.page);
   }
 
-  loadPage(page;: number;) {
+  loadPage(page: number) {
     this.updatePage(page);
     this.reloadList();
   }
 
-  reloadList();: Promise<BackupListResponse> {
-    if (this.keyword.length;) {
+  reloadList(): Promise<BackupListResponse> {
+    if (this.keyword.length) {
       return this.search(this.offset);
     } else {
       return this.getBackupList(this.offset);
     }
   }
 
-  created(); {
+  created() {
     this.getBackupList();
   }
 
-  get; lastPage();: number; {
+  get lastPage(): number {
     if (this.pagination) {
       return Math.ceil(this.pagination.total / this.pagination.perPage) - 1;
     }
@@ -131,11 +130,11 @@ export default class BackupList extends Vue {
     return 0;
   }
 
-  get; currentPage();: number; {
+  get currentPage(): number {
     return this.pagination.page;
   }
 
-  get; offset(); {
+  get offset() {
     return this.pagination.page * this.pagination.perPage;
   }
 }
