@@ -65,6 +65,7 @@
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator";
   import {BackupItem} from "@/models/Backup";
+  //@ts-ignore
   import Datepicker from "vuejs-datepicker";
 
   @Component({

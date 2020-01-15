@@ -58,7 +58,8 @@ export default class BackupEdit extends Vue {
     this.entry.date = date.toISOString().slice(0, 10);
     this.updateBackup(this.entry).then((response: BackupItemResponse) => {
       this.close();
-      this.updateItem(response.data.item);
+      let item: BackupItem = response.data.item;
+      this.updateItem(item);
       this.addToastMessage({
         title: "Backup Updated",
         body: "Backup '" + item.name + "' was successfully updated"

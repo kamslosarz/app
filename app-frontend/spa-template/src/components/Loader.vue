@@ -11,7 +11,6 @@
 export default class Loader extends Vue {
   @Prop({ required: true, default: false })
   isLoading!: boolean;
-  z;
 }
 </script>
 
