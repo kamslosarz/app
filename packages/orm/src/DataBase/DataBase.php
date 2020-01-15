@@ -27,7 +27,7 @@ class DataBase
     {
         $this->databaseAdapter->query($query, $binds);
         $results = $this->databaseAdapter->getResults();
-        $this->logger->log(sprintf('%s %s', $query, sizeof($results)));
+        $this->logger->log(sprintf('q:[%s] r[%s]', $query, sizeof($results)));
 
         return $results;
     }

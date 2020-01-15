@@ -26,7 +26,9 @@ abstract class Repository extends Peer
     {
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder->select('*')
-            ->from($this->getTableName());
+            ->from($this->getTableName())
+            ->order($this->getPrimaryKey(), QueryBuilderPeers::ORDER_DESC);
+
         if(!is_null($limit))
         {
             $queryBuilder->limit($limit, $offset);

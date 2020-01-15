@@ -4,7 +4,7 @@
       <loader :is-loading="isLoading" />
     </transition>
     <toast />
-    <backup-add />
+    <backup-add/>
   </div>
 </template>
 
@@ -23,5 +23,6 @@
     ...mapGetters(["isLoading"])
   }
 })
-export default class BackupAddView extends Vue {}
+export default class BackupAddView extends Vue {
+}
 </script>

@@ -167,19 +167,19 @@ class QueryBuilder
                 $where = '';
                 if(isset($this->where))
                 {
-                    $where = sprintf('WHERE %s', $this->where);
+                    $where = sprintf(' WHERE %s', $this->where);
                 }
                 $order = '';
                 if(isset($this->order))
                 {
-                    $order = sprintf('ORDER BY %s', $this->order);
+                    $order = sprintf(' ORDER BY %s', $this->order);
                 }
                 $limit = '';
                 if(isset($this->limit))
                 {
-                    $limit = sprintf('LIMIT %s', $this->limit);
+                    $limit = sprintf(' LIMIT %s', $this->limit);
                 }
-                $query = sprintf("SELECT %s FROM %s %s %s %s", $this->columns, $this->table, $where, $order, $limit);
+                $query = sprintf("SELECT %s FROM %s%s%s%s", $this->columns, $this->table, $where, $order, $limit);
 
                 break;
 

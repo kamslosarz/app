@@ -36,30 +36,31 @@ export default class BackupAdd extends Vue {
   save(event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
-
-    if (this.entry.date) {
-      this.entry.date = this.getFormattedDate(new Date(this.entry.date));
-    }
-
     this.saveBackup(this.entry).then((response: BackupItemResponse) => {
       this.addToastMessage({
         title: "Backup added",
         body: "Backup " + response.data.item.name + " was successfully added"
       });
+      this.resetEntry();
     });
   }
 
+  resetEntry() {
+    this.entry = this.getEntry();
+    this.$forceUpdate();
+  }
+
   created() {
-    this.entry = {
-      date: this.getFormattedDate(new Date()),
+    this.entry = this.getEntry();
+  }
+
+  getEntry(): BackupItem {
+    return {
+      date: new Date().toISOString(),
       description: "",
       id: 0,
       name: ""
     };
-  }
-
-  getFormattedDate(date: Date): string {
-    return date.toISOString().slice(0, 10);
   }
 }
 </script>

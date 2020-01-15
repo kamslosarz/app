@@ -1,6 +1,6 @@
 import Item from "../AsyncRequest/Item/Item";
-import {BackupItem, BackupItemDeleteResponse, BackupItemResponse} from "@/models/Backup";
 import {Action, Module} from "vuex-module-decorators";
+import {BackupItem, BackupItemDeleteResponse, BackupItemResponse} from "@/models/Backup";
 
 @Module({
   namespaced: true
@@ -22,6 +22,9 @@ export default class BackupItemModule extends Item<BackupItem> {
 
   @Action
   saveBackup(item: BackupItem): Promise<BackupItemResponse> {
+    if (item.date) {
+      item.date = new Date(item.date).toISOString().slice(0, 10);
+    }
     return this.context.dispatch("saveItem", item);
   }
 }
