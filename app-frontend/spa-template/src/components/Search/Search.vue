@@ -1,6 +1,13 @@
 <template>
   <div class="md-form mt-2">
-    <input class="form-control" placeholder="Search" v-model="keyword" />
+    <div class="input-group">
+      <input class="form-control" placeholder="Search" v-model="keyword" />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" v-on:click="dismiss">
+          &times;
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -33,6 +40,12 @@ export default class Search extends Vue {
         this.$emit("searched", this.keyword);
       }
     }, timeout);
+  }
+
+  dismiss() {
+    this.keyword = "";
+    this.$emit("searched", this.keyword);
+    this.$emit("dismiss");
   }
 }
 </script>
