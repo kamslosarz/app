@@ -1,9 +1,7 @@
 <template>
-  <transition name="fade">
-    <div v-if="isLoading" class="loader overlay">
-      <div class="spinner-border"></div>
-    </div>
-  </transition>
+  <div v-if="isLoading" class="loader overlay">
+    <div class="spinner-border"></div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -13,7 +11,7 @@
 export default class Loader extends Vue {
   @Prop({ required: true, default: false })
   isLoading!: boolean;
-}
+z}
 </script>
 
 <style lang="scss">

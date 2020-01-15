@@ -18,7 +18,7 @@ export default class Search extends Vue {
     this.queue++;
     setTimeout(() => {
       this.queue--;
-      if (this.queue === 0) {
+      if (!this.queue) {
         this.$emit("searched", this.keyword);
       }
     }, timeout);

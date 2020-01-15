@@ -1,7 +1,9 @@
 <template>
   <div class="col-md-12">
     <toast />
-    <loader :is-loading="isLoading" />
+    <transition name="fade">
+      <loader :is-loading="isLoading" />
+    </transition>
     <search @searched="searched" />
     <table class="table mt-3">
       <thead>
@@ -14,11 +16,11 @@
       </thead>
       <tbody>
         <tr v-for="item in items" v-bind:key="item.id">
-          <td>#{{ item.id }} {{ item.name }}</td>
-          <td>{{ item.description }}</td>
-          <td>{{ item.date }}</td>
-          <td>
-            <div class="btn-group-sm">
+          <td class="w-25">#{{ item.id }} {{ item.name }}</td>
+          <td class="w-35">{{ item.description }}</td>
+          <td class="w-25">{{ item.date }}</td>
+          <td class="w-15">
+            <div class="btn-group-sm float-right">
               <backup-edit :item="item" @updated="itemUpdated(item)" />
               <span class="m-1" />
               <backup-delete :item="item" @removed="itemRemoved(item)" />
@@ -74,15 +76,16 @@ export default class BackupList extends Vue {
   updateKeyword!: (keyword: string) => {};
   keyword!: string;
 
-  itemUpdated(item: BackupItem) {
-    this.addToastMessage({
+  itemUpdated(item: BackupIte
+  m;) {
+    this;.addToastMessage({
       title: "Backup Updated",
-      body: "Backup '" + item.name + "' was successfully updated"
-    });
+      body: "Backup '" + item;.name; + "' was successfully updated"
+    })
     this.$forceUpdate();
   }
 
-  itemRemoved(item: BackupItem) {
+  itemRemoved(item;: BackupItem;) {
     this.addToastMessage({
       title: "Backup removed",
       body: "Backup '" + item.name + "' was successfully removed"
@@ -94,33 +97,33 @@ export default class BackupList extends Vue {
     });
   }
 
-  searched(keyword: string) {
+  searched(keyword;: string;) {
     this.updateKeyword(keyword);
     this.reloadList();
   }
 
-  pageSelected(page: Page) {
+  pageSelected(page;: Page;) {
     this.loadPage(page.page);
   }
 
-  loadPage(page: number) {
+  loadPage(page;: number;) {
     this.updatePage(page);
     this.reloadList();
   }
 
-  reloadList(): Promise<BackupListResponse> {
-    if (this.keyword.length) {
+  reloadList();: Promise<BackupListResponse> {
+    if (this.keyword.length;) {
       return this.search(this.offset);
     } else {
       return this.getBackupList(this.offset);
     }
   }
 
-  created() {
+  created(); {
     this.getBackupList();
   }
 
-  get lastPage(): number {
+  get; lastPage();: number; {
     if (this.pagination) {
       return Math.ceil(this.pagination.total / this.pagination.perPage) - 1;
     }
@@ -128,12 +131,20 @@ export default class BackupList extends Vue {
     return 0;
   }
 
-  get currentPage(): number {
+  get; currentPage();: number; {
     return this.pagination.page;
   }
 
-  get offset() {
+  get; offset(); {
     return this.pagination.page * this.pagination.perPage;
   }
 }
 </script>
+<style lang="scss">
+.w-35 {
+  width: 35%;
+}
+.w-15 {
+  width: 15%;
+}
+</style>

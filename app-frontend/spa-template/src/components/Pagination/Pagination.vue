@@ -15,7 +15,7 @@
         class="page-item"
         v-for="page in pages"
         v-bind:key="page.title"
-        :class="{ disabled: page.disabled, active: isActive(page) }"
+        :class="{ disabled: false, active: isActive(page) }"
       >
         <a class="page-link" href="#" v-on:click="pageSelected(page)">
           {{ page.title }}
@@ -31,9 +31,7 @@
 
   @Component({})
 export default class Pagination extends Vue {
-  @Prop({
-    required: true
-  })
+  @Prop({ required: true })
   pagination!: PaginationInterface;
 
   isActive(page: Page): boolean {
@@ -41,7 +39,7 @@ export default class Pagination extends Vue {
   }
 
   pageSelected(page: Page) {
-    console.log(page);
+    console.log(1);
 
     this.pagination.page = page.page;
     this.$emit("pageSelected", page);
