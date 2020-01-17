@@ -14,7 +14,7 @@
   import {Component, Vue} from "vue-property-decorator";
   import BackupForm from "@/components/Backup/BackupForm.vue";
   import {BackupItem, BackupItemResponse} from "@/models/Backup";
-  import {mapActions, mapState} from "vuex";
+  import {mapActions, mapMutations, mapState} from "vuex";
 
   @Component({
   components: {
@@ -22,7 +22,8 @@
   },
   methods: {
     ...mapActions("backupItem", ["saveBackup"]),
-    ...mapActions("toast", ["addToastMessage"])
+    ...mapActions("toast", ["addToastMessage"]),
+    ...mapMutations("backupItem", ["setErrors"])
   },
   computed: {
     ...mapState("backupItem", ["errors"])
@@ -32,10 +33,9 @@ export default class BackupAdd extends Vue {
   entry!: BackupItem;
   saveBackup!: (backupItem: BackupItem) => Promise<BackupItemResponse>;
   addToastMessage!: (toastMessage: { title: string; body: string }) => {};
+  setErrors!: (error: []) => {};
 
   save(event: MouseEvent) {
-    event.stopPropagation();
-    event.preventDefault();
     this.saveBackup(this.entry).then((response: BackupItemResponse) => {
       this.addToastMessage({
         title: "Backup added",
@@ -52,6 +52,7 @@ export default class BackupAdd extends Vue {
 
   created() {
     this.entry = this.getEntry();
+    this.setErrors([]);
   }
 
   getEntry(): BackupItem {

@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form v-on:submit.prevent>
     <div class="form-group">
       <label for="name">Backup name</label>
       <input
@@ -84,7 +84,11 @@ export default class BackupForm extends Vue {
       return {};
     }
   })
-  errors!: {};
+  errors?: {};
+
+  mounted(){
+
+  }
 }
 </script>
 

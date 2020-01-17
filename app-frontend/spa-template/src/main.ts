@@ -1,4 +1,5 @@
 import Vue from "vue";
+import Vuex from 'vuex';
 import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
@@ -12,6 +13,7 @@ import ConfirmModal from "@/components/Modal/ConfirmModal.vue";
 
 Vue.component("ConfirmModal", ConfirmModal);
 Vue.component("Loader", Loader);
+Vue.use(Vuex);
 
 Vue.use(VueAxios, axios);
 Vue.axios.defaults.baseURL = "http://app.backup.dev.com/api";
