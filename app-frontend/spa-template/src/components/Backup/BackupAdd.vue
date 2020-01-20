@@ -31,17 +31,25 @@
 })
 export default class BackupAdd extends Vue {
   entry!: BackupItem;
-  saveBackup!: (backupItem: BackupItem) => Promise<BackupItemResponse>;
+  saveBackup!: (backupItem: BackupItem) => BackupItemResponse;
   addToastMessage!: (toastMessage: { title: string; body: string }) => {};
   setErrors!: (error: []) => {};
 
-  save(event: MouseEvent) {
-    this.saveBackup(this.entry).then((response: BackupItemResponse) => {
-      this.addToastMessage({
-        title: "Backup added",
-        body: "Backup " + response.data.item.name + " was successfully added"
-      });
-      this.resetEntry();
+  async save() {
+    const response: BackupItemResponse = await this.saveBackup(this.entry);
+    this.showSuccessToast(response.data.item);
+    this.resetEntry();
+  }
+
+  created() {
+    this.entry = this.getEntry();
+    this.setErrors([]);
+  }
+
+  showSuccessToast(item: BackupItem) {
+    this.addToastMessage({
+      title: "Backup added",
+      body: "Backup " + item.name + " was successfully added"
     });
   }
 
@@ -50,14 +58,9 @@ export default class BackupAdd extends Vue {
     this.$forceUpdate();
   }
 
-  created() {
-    this.entry = this.getEntry();
-    this.setErrors([]);
-  }
-
   getEntry(): BackupItem {
     return {
-      date: new Date().toISOString(),
+      date: new Date(Date.now()).toISOString(),
       description: "",
       id: 0,
       name: ""

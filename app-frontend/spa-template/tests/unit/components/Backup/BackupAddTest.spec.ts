@@ -2,15 +2,23 @@ import BackupAdd from "@/components/Backup/BackupAdd.vue";
 import {createLocalVue, mount, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import BackupForm from "@/components/Backup/BackupForm.vue";
-import {BackupItem} from "@/models/Backup.js";
+import {BackupItem, BackupItemResponse} from "@/models/Backup.js";
+import axios from "axios";
+import {Vue} from "vue-property-decorator";
 
+jest.mock("axios");
+const mockAxios = axios as jest.Mocked<typeof axios>;
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
 describe("BackupAdd.vue", () => {
   let modules: any;
+  const time: number = Date.now();
 
   beforeEach(() => {
+    jest.useFakeTimers();
+    jest.spyOn(Date, "now").mockImplementation(() => time);
+
     modules = {
       toast: {
         namespaced: true,
@@ -33,7 +41,7 @@ describe("BackupAdd.vue", () => {
     };
   });
 
-  it("testShouldCreateComponent", () => {
+  it("creates the component with default entry", async () => {
     const wrapper = shallowMount(BackupAdd, {
       store: new Vuex.Store({ modules }),
       localVue,
@@ -41,43 +49,73 @@ describe("BackupAdd.vue", () => {
         BackupForm: "<div>{{ entry }}</div>"
       }
     });
+
+    await jest.runAllTicks();
+    await Vue.nextTick();
+
     expect(wrapper.isVueInstance()).toBeTruthy();
     expect(wrapper.find(BackupForm).exists()).toBe(true);
     let entry: BackupItem = JSON.parse(wrapper.find(BackupForm).text());
 
-    expect(entry.date).toHaveLength(24);
-    expect(entry.description).toHaveLength(0);
-    expect(entry.name).toHaveLength(0);
-    expect(entry.id).toBe(0);
-    expect(modules.backupItem.mutations.setErrors).toBeCalledTimes(1);
+    expect(entry).toStrictEqual({
+      date: new Date(time).toISOString(),
+      description: "",
+      name: "",
+      id: 0
+    });
+
+    expect(modules.backupItem.mutations.setErrors).toBeCalledWith(
+      expect.anything(),
+      []
+    );
   });
 
-  it("testShouldSaveEntry", () => {
-    modules.backupItem.actions.saveBackup = jest.fn();
+  it("save entry and display message", async () => {
+    const backupEntry: BackupItem = {
+      name: "backup name",
+      description: "backup desc",
+      date: "10/10/2020",
+      id: 0
+    };
+    const backupItemResponse: BackupItemResponse = {
+      errors: [],
+      success: true,
+      data: {
+        item: backupEntry
+      }
+    };
+
+    modules.backupItem.actions.saveBackup = jest
+      .fn()
+      .mockResolvedValue(backupItemResponse);
 
     const wrapper = mount(BackupAdd, {
       store: new Vuex.Store({ modules }),
-      localVue
+      localVue,
+      stubs: {
+        BackupForm: '<form><slot name="form-bottom"/></form>'
+      }
     });
+
+    Vue.set(wrapper.vm, "entry", backupEntry);
 
     let button = wrapper.find(".btn.btn-sm.btn-primary");
     expect(button.exists()).toBeTruthy();
     button.trigger("click");
-    expect(modules.backupItem.actions.saveBackup).toBeCalledTimes(1);
-  });
 
-  it("testShouldShowSaveEntryMessage", () => {
-    modules.backupItem.actions.saveBackup = jest
-      .fn()
-      .mockReturnValue(new Promise((resolve, reject) => resolve));
+    await jest.runAllTicks();
+    await Vue.nextTick();
 
-    const wrapper = mount(BackupAdd, {
-      store: new Vuex.Store({ modules }),
-      localVue
-    });
-    wrapper.find(".btn.btn-sm.btn-primary").trigger("click");
-
-    expect(modules.backupItem.actions.saveBackup).toBeCalledTimes(1);
-    expect(modules.toast.actions.addToastMessage).toBeCalledTimes(1);
+    expect(modules.backupItem.actions.saveBackup).toBeCalledWith(
+      expect.anything(),
+      backupEntry
+    );
+    expect(modules.toast.actions.addToastMessage).toBeCalledWith(
+      expect.anything(),
+      {
+        body: "Backup " + backupEntry.name + " was successfully added",
+        title: "Backup added"
+      }
+    );
   });
 });

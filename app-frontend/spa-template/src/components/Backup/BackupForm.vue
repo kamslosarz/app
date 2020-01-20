@@ -86,9 +86,7 @@ export default class BackupForm extends Vue {
   })
   errors?: {};
 
-  mounted(){
-
-  }
+  mounted() {}
 }
 </script>
 

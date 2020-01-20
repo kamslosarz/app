@@ -51,21 +51,23 @@ export default abstract class Item<ItemType> extends AsyncRequest {
   }
 
   @Action
-  async saveItem(item: ItemType): Promise<ItemResponse<ItemType>> {
-    return this.context.dispatch(
-      "asyncRequest",
-      (resolve: Function, reject: Function) => {
-        return Vue.axios
-          .put<ItemResponse<ItemType>>(this.saveEndpoint, item)
-          .then((response: AxiosResponse<ItemResponse<ItemType>>) => {
-            let itemResponse = response.data;
-            if (!itemResponse.success) {
-              this.context.commit("setErrors", itemResponse.errors);
-            } else {
-              resolve(itemResponse);
-            }
-          });
-      }
-    );
+  async saveItem(item: ItemType) {
+    try {
+      this.context.commit("setLoading", true);
+      const response = await Vue.axios.put<ItemResponse<ItemType>>(
+        this.saveEndpoint,
+        item
+      );
+      let savedItem: ItemType = response.data.data.item;
+      this.context.commit("setItem", item);
+
+      return savedItem;
+    } catch (error) {
+      this.context.commit("setError", error);
+    } finally {
+      this.context.commit("setLoading", false);
+    }
+
+    return item;
   }
 }

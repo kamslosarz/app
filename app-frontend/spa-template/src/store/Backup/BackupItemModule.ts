@@ -21,10 +21,11 @@ export default class BackupItemModule extends Item<BackupItem> {
   }
 
   @Action
-  saveBackup(item: BackupItem): Promise<BackupItemResponse> {
+  async saveBackup(item: BackupItem): Promise<BackupItemResponse> {
     if (item.date) {
       item.date = new Date(item.date).toISOString().slice(0, 10);
     }
+
     return this.context.dispatch("saveItem", item);
   }
 }
