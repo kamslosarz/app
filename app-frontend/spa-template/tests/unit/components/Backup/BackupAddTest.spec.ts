@@ -11,7 +11,7 @@ const mockAxios = axios as jest.Mocked<typeof axios>;
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
-describe("BackupAdd.vue", () => {
+describe("Add Backup tests", () => {
   let modules: any;
   const time: number = Date.now();
 

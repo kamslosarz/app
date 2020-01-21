@@ -13,7 +13,7 @@
       <small class="form-text text-muted">
         Type a name for your backup. Allowed special chars !@&%@!:
       </small>
-      <div class="invalid-feedback">
+      <div class="invalid-feedback name">
         <span v-for="(error, key) in errors.name" v-bind:key="key">
           {{ error }}
         </span>
@@ -32,7 +32,7 @@
       <small class="form-text text-muted">
         Type a description for your backup. Allowed 255 chars.
       </small>
-      <div class="invalid-feedback">
+      <div class="invalid-feedback description">
         <span v-for="(error, key) in errors.description" v-bind:key="key">
           {{ error }}
         </span>
@@ -52,7 +52,7 @@
       <small id="nameHelp" class="form-text text-muted">
         Type a date of your backup.
       </small>
-      <div class="invalid-feedback">
+      <div class="invalid-feedback date">
         <span v-for="(error, key) in errors.date" v-bind:key="key">
           {{ error }}
         </span>
@@ -85,8 +85,6 @@ export default class BackupForm extends Vue {
     }
   })
   errors?: {};
-
-  mounted() {}
 }
 </script>
 
