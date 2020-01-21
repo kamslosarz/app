@@ -38,7 +38,7 @@ export default class BackupDelete extends Vue {
   })
   item!: BackupItem;
   showModal: boolean = false;
-  deleteBackup!: (item: BackupItem) => Promise<BackupItemDeleteResponse>;
+  deleteBackup!: (item: BackupItem) => BackupItemDeleteResponse;
   itemDeleted!: (item: BackupItem) => Promise<BackupItemDeleteResponse>;
   addToastMessage!: (toastMessage: { title: string; body: string }) => {};
 
@@ -47,7 +47,6 @@ export default class BackupDelete extends Vue {
   }
 
   modalConfirmed() {
-    console.log("modalConfirmed");
     this.removeItem(this.item);
   }
 
@@ -55,15 +54,17 @@ export default class BackupDelete extends Vue {
     this.showModal = false;
   }
 
-  removeItem(item: BackupItem) {
-    this.deleteBackup(item).then((response: BackupItemDeleteResponse) => {
+  async removeItem(item: BackupItem) {
+    const response = await this.deleteBackup(item);
+    if (response.success) {
       this.addToastMessage({
         title: "Backup removed",
         body: "Backup '" + item.name + "' was successfully removed"
       });
       this.itemDeleted(item);
       this.$emit("removed", item);
-    });
+      this.modalClosed();
+    }
   }
 }
 </script>

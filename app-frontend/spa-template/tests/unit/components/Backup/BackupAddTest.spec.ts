@@ -3,11 +3,8 @@ import {createLocalVue, mount, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import BackupForm from "@/components/Backup/BackupForm.vue";
 import {BackupItem, BackupItemResponse} from "@/models/Backup.js";
-import axios from "axios";
 import {Vue} from "vue-property-decorator";
 
-jest.mock("axios");
-const mockAxios = axios as jest.Mocked<typeof axios>;
 const localVue = createLocalVue();
 localVue.use(Vuex);
 

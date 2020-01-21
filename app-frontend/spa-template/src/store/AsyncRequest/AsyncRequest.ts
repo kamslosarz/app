@@ -15,15 +15,15 @@ export default abstract class AsyncRequest extends VuexModule {
   }
 
   @Action
-  async asyncRequest(axiosRequestFactory: CallableFunction): Promise<Response> {
+  async tryRequest(requestCallback: CallableFunction) {
     this.context.commit("setLoading", true);
     this.context.commit("setErrors", {});
-    return await new Promise<Response>((resolve, reject) => {
-      return axiosRequestFactory(resolve, reject)
-        .catch(() => reject)
-        .finally(() => {
-          this.context.commit("setLoading", false);
-        });
-    });
+    try {
+      return await requestCallback();
+    } catch (error) {
+      this.context.commit("setError", [error]);
+    } finally {
+      this.context.commit("setLoading", false);
+    }
   }
 }

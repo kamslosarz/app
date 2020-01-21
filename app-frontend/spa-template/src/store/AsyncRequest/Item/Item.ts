@@ -11,24 +11,30 @@ export default abstract class Item<ItemType> extends AsyncRequest {
   abstract saveEndpoint: string;
 
   @Action
-  async deleteItem(itemId: number): Promise<DeleteItemResponse> {
-    return this.context.dispatch(
-      "asyncRequest",
-      (resolve: Function, reject: Function) => {
-        return Vue.axios
-          .delete<DeleteItemResponse>(
-            this.deleteEndpoint.replace("{id}", itemId.toString())
-          )
-          .then((response: AxiosResponse<DeleteItemResponse>) => {
-            let deleteResponse = response.data;
-            if (!deleteResponse.success) {
-              this.context.commit("setErrors", deleteResponse.errors);
-            } else {
-              resolve(deleteResponse);
-            }
-          });
-      }
-    );
+  async deleteItem(itemId: number) {
+    return await this.context.dispatch("tryRequest", async () => {
+      const response = await Vue.axios.delete<DeleteItemResponse>(
+        this.deleteEndpoint.replace("{id}", itemId.toString())
+      );
+      this.context.commit("setErrors", response.data.errors);
+
+      return response;
+    });
+  }
+
+  @Action
+  async saveItem(item: ItemType) {
+    return await this.context.dispatch("tryRequest", async () => {
+      this.context.commit("setLoading", true);
+      const response = await Vue.axios.put<ItemResponse<ItemType>>(
+        this.saveEndpoint,
+        item
+      );
+      this.context.commit("setErrors", response.data.errors);
+      this.context.commit("setItem", response.data.data.item);
+
+      return response;
+    });
   }
 
   @Action
@@ -48,26 +54,5 @@ export default abstract class Item<ItemType> extends AsyncRequest {
           });
       }
     );
-  }
-
-  @Action
-  async saveItem(item: ItemType) {
-    try {
-      this.context.commit("setLoading", true);
-      const response = await Vue.axios.put<ItemResponse<ItemType>>(
-        this.saveEndpoint,
-        item
-      );
-      let savedItem: ItemType = response.data.data.item;
-      this.context.commit("setItem", item);
-
-      return savedItem;
-    } catch (error) {
-      this.context.commit("setError", error);
-    } finally {
-      this.context.commit("setLoading", false);
-    }
-
-    return item;
   }
 }

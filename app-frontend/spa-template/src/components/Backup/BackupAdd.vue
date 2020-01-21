@@ -37,8 +37,10 @@ export default class BackupAdd extends Vue {
 
   async save() {
     const response: BackupItemResponse = await this.saveBackup(this.entry);
-    this.showSuccessToast(response.data.item);
-    this.resetEntry();
+    if (response.success) {
+      this.showSuccessToast(response.data.item);
+      this.resetEntry();
+    }
   }
 
   created() {

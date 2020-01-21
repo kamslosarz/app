@@ -11,12 +11,12 @@ export default class BackupItemModule extends Item<BackupItem> {
   deleteEndpoint: string = "/backup/{id}";
 
   @Action
-  deleteBackup(item: BackupItem): Promise<BackupItemDeleteResponse> {
+  async deleteBackup(item: BackupItem): Promise<BackupItemDeleteResponse> {
     return this.context.dispatch("deleteItem", item.id);
   }
 
   @Action
-  updateBackup(item: BackupItem): Promise<BackupItemResponse> {
+  async updateBackup(item: BackupItem): Promise<BackupItemResponse> {
     return this.context.dispatch("updateItem", item);
   }
 
