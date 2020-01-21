@@ -9,8 +9,8 @@
     <transition name="fade">
       <div>
         <confirm-modal
-          :class="{ active: showModal }"
-          v-if="showModal"
+          :class="{ active: displayDeleteModal }"
+          v-if="displayDeleteModal"
           @close="modalClosed"
           @confirm="modalConfirmed"
         />
@@ -37,13 +37,13 @@ export default class BackupDelete extends Vue {
     default: null
   })
   item!: BackupItem;
-  showModal: boolean = false;
+  displayDeleteModal: boolean = false;
   deleteBackup!: (item: BackupItem) => BackupItemDeleteResponse;
   itemDeleted!: (item: BackupItem) => Promise<BackupItemDeleteResponse>;
   addToastMessage!: (toastMessage: { title: string; body: string }) => {};
 
   confirmRemoveItem(item: BackupItem) {
-    this.showModal = true;
+    this.displayDeleteModal = true;
   }
 
   modalConfirmed() {
@@ -51,7 +51,7 @@ export default class BackupDelete extends Vue {
   }
 
   modalClosed() {
-    this.showModal = false;
+    this.displayDeleteModal = false;
   }
 
   async removeItem(item: BackupItem) {

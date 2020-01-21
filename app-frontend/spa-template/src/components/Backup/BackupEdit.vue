@@ -1,21 +1,25 @@
 <template>
   <div class="d-inline">
     <transition name="fade">
-      <button class="btn btn-primary btn-sm" v-on:click="editItem">
+      <button class="btn btn-primary btn-sm edit-btn" v-on:click="editItem">
         Edit
       </button>
     </transition>
     <transition name="fade">
-      <modal v-if="displayEditModal" @close="close">
-        <template v-slot:title> Edit item {{ item.name }} </template>
-        <template v-slot:body>
-          <backup-form :entry="entry" :errors="errors" />
-        </template>
-        <template v-slot:buttons>
-          <button class="btn btn-sm btn-primary" v-on:click="save">Save</button>
-          <button class="btn btn-sm" v-on:click="close">Close</button>
-        </template>
-      </modal>
+      <div>
+        <modal v-if="displayEditModal" @close="closeModal">
+          <template v-slot:title> Edit item {{ item.name }} </template>
+          <template v-slot:body>
+            <backup-form :entry="entry" :errors="errors" />
+          </template>
+          <template v-slot:buttons>
+            <button class="btn btn-sm btn-primary save-btn" v-on:click="save">
+              Save
+            </button>
+            <button class="btn btn-sm" v-on:click="closeModal">Close</button>
+          </template>
+        </modal>
+      </div>
     </transition>
   </div>
 </template>
@@ -54,24 +58,23 @@ export default class BackupEdit extends Vue {
   addToastMessage!: (toastMessage: { title: string; body: string }) => {};
   setErrors!: (error: []) => {};
 
-  save() {
-    const date = new Date();
-    date.setTime(parseInt(this.entry.date));
-    this.entry.date = date.toISOString().slice(0, 10);
-    this.updateBackup(this.entry).then((response: BackupItemResponse) => {
-      this.close();
+  async save() {
+    const response: BackupItemResponse = await this.updateBackup(
+      this.preparedEntry
+    );
+    if (response.success) {
       let item: BackupItem = response.data.item;
       this.updateItem(item);
       this.addToastMessage({
         title: "Backup Updated",
         body: "Backup '" + item.name + "' was successfully updated"
       });
-
-      this.$emit("updated", response.data.item);
-    });
+      this.$emit("updated", item);
+      this.closeModal();
+    }
   }
 
-  close() {
+  closeModal() {
     this.displayEditModal = false;
   }
 
@@ -82,6 +85,14 @@ export default class BackupEdit extends Vue {
   created() {
     this.entry = JSON.parse(JSON.stringify(this.item));
     this.setErrors([]);
+  }
+
+  get preparedEntry(): BackupItem {
+    let entry = this.entry;
+    const date = new Date(entry.date);
+    entry.date = date.toISOString().slice(0, 10);
+
+    return entry;
   }
 }
 </script>
