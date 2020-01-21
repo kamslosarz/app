@@ -1,14 +1,20 @@
 <template>
   <div class="d-inline">
-    <button class="btn btn-danger btn-sm" v-on:click="confirmRemoveItem">
+    <button
+      class="btn btn-danger btn-sm delete-btn"
+      v-on:click="confirmRemoveItem"
+    >
       Delete
     </button>
     <transition name="fade">
-      <confirm-modal
-        v-if="showModal"
-        @close="modalClosed"
-        @confirm="modalConfirmed"
-      />
+      <div>
+        <confirm-modal
+          :class="{ active: showModal }"
+          v-if="showModal"
+          @close="modalClosed"
+          @confirm="modalConfirmed"
+        />
+      </div>
     </transition>
   </div>
 </template>
@@ -41,6 +47,7 @@ export default class BackupDelete extends Vue {
   }
 
   modalConfirmed() {
+    console.log("modalConfirmed");
     this.removeItem(this.item);
   }
 

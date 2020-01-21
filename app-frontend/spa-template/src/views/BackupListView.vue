@@ -1,7 +1,9 @@
 <template>
   <div>
     <transition name="fade">
-      <loader :is-loading="isLoading" />
+      <div>
+        <loader :is-loading="isLoading" />
+      </div>
     </transition>
     <toast />
     <backup-list />
@@ -9,12 +11,12 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from "vue-property-decorator";
-  import BackupList from "@/components/Backup/BackupList.vue";
-  import {mapGetters} from "vuex";
-  import Toast from "@/components/Toast/Toast.vue";
+    import {Component, Vue} from "vue-property-decorator";
+    import BackupList from "@/components/Backup/BackupList.vue";
+    import {mapGetters} from "vuex";
+    import Toast from "@/components/Toast/Toast.vue";
 
-  @Component({
+    @Component({
   components: {
     BackupList,
     Toast
