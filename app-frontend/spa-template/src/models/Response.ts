@@ -1,7 +1,7 @@
 import {PaginationInterface} from "@/models/PaginationModel";
 
 export interface Response {
-  errors: string[];
+  errors: {};
   success: boolean;
 }
 

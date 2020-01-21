@@ -32,6 +32,9 @@ describe("Edit Backup tests", () => {
         },
         actions: {
           updateBackup: jest.fn()
+        },
+        state: {
+          errors: {}
         }
       },
       backupList: {
@@ -165,5 +168,38 @@ describe("Edit Backup tests", () => {
 
     //assert modal closed
     expect(wrapper.find(".modal").exists()).toBeFalsy();
+  });
+
+  it("should append form with errors", () => {
+    let backupItemResponse: BackupItemResponse = {
+      errors: {
+        name: ["invalid name"],
+        description: ["invalid description"],
+        date: ["invalid date"]
+      },
+      data: {
+        item: propsData.item
+      },
+      success: true
+    };
+
+    modules.backupItem.state.errors = backupItemResponse.errors;
+    modules.backupItem.actions.updateBackup = jest
+      .fn()
+      .mockReturnValue(backupItemResponse);
+
+    const wrapper = mount(BackupEdit, {
+      propsData,
+      localVue,
+      store: new Vuex.Store({ modules }),
+      stubs: {
+        "backup-form": "<div>{{ errors }}</div>"
+      }
+    });
+
+    Vue.set(wrapper.vm, 'displayEditModal', true);
+    let errors = JSON.parse(wrapper.find('.modal-body div').text());
+
+    expect(errors).toStrictEqual(backupItemResponse.errors);
   });
 });
