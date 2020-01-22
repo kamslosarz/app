@@ -195,9 +195,54 @@ describe("Edit Backup tests", () => {
       }
     });
 
-    Vue.set(wrapper.vm, 'displayEditModal', true);
-    let errors = JSON.parse(wrapper.find('.modal-body div').text());
+    Vue.set(wrapper.vm, "displayEditModal", true);
+    let errors = JSON.parse(wrapper.find(".modal-body div").text());
 
     expect(errors).toStrictEqual(backupItemResponse.errors);
+  });
+
+  it("check if prepared entry change", () => {
+    modules.backupItem.actions.updateBackup = jest.fn().mockReturnValue({
+      success: false
+    });
+
+    const wrapper = mount(BackupEdit, {
+      propsData,
+      localVue,
+      store: new Vuex.Store({ modules })
+    });
+
+    Vue.set(wrapper.vm, "displayEditModal", true);
+    const saveBtn = wrapper.find(".save-btn");
+
+    const entry = {
+      name: "name",
+      description: "description",
+      date: "2020-10-10",
+      id: 0
+    };
+
+    Vue.set(wrapper.vm, "entry", entry);
+    saveBtn.trigger("click");
+    expect(modules.backupItem.actions.updateBackup).toHaveBeenNthCalledWith(
+      1,
+      expect.anything(),
+      entry
+    );
+
+    Vue.set(wrapper.vm, "displayEditModal", true);
+    const editedEntry = {
+      name: "new name",
+      description: "new description",
+      date: "2020-10-20",
+      id: 0
+    };
+    Vue.set(wrapper.vm, "entry", editedEntry);
+    saveBtn.trigger("click");
+    expect(modules.backupItem.actions.updateBackup).toHaveBeenNthCalledWith(
+      2,
+      expect.anything(),
+      editedEntry
+    );
   });
 });
