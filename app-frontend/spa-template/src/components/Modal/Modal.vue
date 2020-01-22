@@ -1,6 +1,6 @@
 <template>
-  <div class="modal overlay-modal">
-    <div class="modal-dialog" role="document">
+  <div class="modal">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
@@ -18,6 +18,7 @@
         </div>
       </div>
     </div>
+    <div class="overlay-modal" v-on:click="close"></div>
   </div>
 </template>
 
@@ -53,5 +54,8 @@ export default class Modal extends Vue {
   height: 100%;
   background: #0000002e;
   z-index: 10;
+}
+.modal-dialog {
+  z-index: 11;
 }
 </style>
