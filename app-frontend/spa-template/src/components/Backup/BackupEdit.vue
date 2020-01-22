@@ -59,9 +59,7 @@ export default class BackupEdit extends Vue {
   setErrors!: (error: []) => {};
 
   async save() {
-    const response: BackupItemResponse = await this.updateBackup(
-      this.preparedEntry
-    );
+    const response: BackupItemResponse = await this.updateBackup(this.preparedEntry());
     if (response.success) {
       let item: BackupItem = response.data.item;
       this.updateItem(item);
@@ -87,7 +85,7 @@ export default class BackupEdit extends Vue {
     this.setErrors([]);
   }
 
-  get preparedEntry(): BackupItem {
+  preparedEntry(): BackupItem {
     let entry = this.entry;
     const date = new Date(entry.date);
     entry.date = date.toISOString().slice(0, 10);
