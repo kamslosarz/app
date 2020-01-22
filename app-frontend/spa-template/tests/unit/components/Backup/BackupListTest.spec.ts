@@ -337,4 +337,47 @@ describe("Backup list tests", () => {
       2
     );
   });
+
+  it("select specific page", async () => {
+    modules.backupList.state.pagination = {
+      page: 1,
+      perPage: 1,
+      total: 3,
+      offset: 1
+    };
+    modules.backupList.mutations.updatePage = jest
+      .fn()
+      .mockImplementation(() => {
+        modules.backupList.state.pagination.page = 3;
+      });
+
+    const wrapper = shallowMount(BackupList, {
+      store: new Vuex.Store({ modules }),
+      localVue
+    });
+
+    const paginationStub = wrapper.find("pagination-stub");
+    paginationStub.vm.$emit("pageSelected", {
+      page: 3
+    });
+
+    await paginationStub.vm.$nextTick();
+    await jest.runAllTimers();
+    await jest.runAllTicks();
+
+    expect(modules.backupList.mutations.updatePage).toBeCalledWith(
+      expect.anything(),
+      3
+    );
+    expect(modules.backupList.actions.getBackupList).toHaveBeenNthCalledWith(
+      1,
+      expect.anything(),
+      1
+    );
+    expect(modules.backupList.actions.getBackupList).toHaveBeenNthCalledWith(
+      2,
+      expect.anything(),
+      3
+    );
+  });
 });
