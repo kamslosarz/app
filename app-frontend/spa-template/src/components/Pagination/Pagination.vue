@@ -1,5 +1,5 @@
 <template>
-  <nav aria-label="Page navigation example">
+  <nav>
     <ul class="pagination justify-content-end">
       <li v-if="pagination">
         <a class="page-link">
@@ -98,3 +98,8 @@ export default class Pagination extends Vue {
   }
 }
 </script>
+<style lang="scss">
+.page-link {
+  position: static;
+}
+</style>

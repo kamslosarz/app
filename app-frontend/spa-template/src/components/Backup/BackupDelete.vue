@@ -7,7 +7,7 @@
       Delete
     </button>
     <transition name="fade">
-      <div v-if="displayDeleteModal" class="d-inline">
+      <div v-if="displayDeleteModal" class="d-inline delete-modal-container">
         <confirm-modal
           :class="{ active: displayDeleteModal }"
           @close="modalClosed"

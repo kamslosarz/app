@@ -1,5 +1,5 @@
 <template>
-  <div class="modal overlay-modal" tabindex="-1" role="dialog">
+  <div class="modal overlay-modal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
