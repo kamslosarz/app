@@ -33,7 +33,7 @@ describe("backup delete tests", () => {
       },
       backupList: {
         namespaced: true,
-        actions: {
+        mutations: {
           itemDeleted: jest.fn()
         }
       },
@@ -118,7 +118,7 @@ describe("backup delete tests", () => {
         body: "Backup '" + propsData.item.name + "' was successfully removed"
       }
     );
-    expect(modules.backupList.actions.itemDeleted).toBeCalledWith(
+    expect(modules.backupList.mutations.itemDeleted).toBeCalledWith(
       expect.anything(),
       propsData.item
     );

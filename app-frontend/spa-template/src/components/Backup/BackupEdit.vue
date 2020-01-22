@@ -6,8 +6,8 @@
       </button>
     </transition>
     <transition name="fade">
-      <div>
-        <modal v-if="displayEditModal" @close="closeModal">
+      <div v-if="displayEditModal" class="d-inline">
+        <modal @close="closeModal">
           <template v-slot:title> Edit item {{ item.name }} </template>
           <template v-slot:body>
             <backup-form :entry="entry" :errors="errors" />

@@ -163,9 +163,7 @@ describe("Edit Backup tests", () => {
         body: "Backup '" + propsData.item.name + "' was successfully updated"
       }
     );
-
     expect(wrapper.emitted().updated).toBeTruthy();
-
     //assert modal closed
     expect(wrapper.find(".modal").exists()).toBeFalsy();
   });

@@ -21,7 +21,6 @@ export default class ToastModule extends VuexModule {
 
   @Action
   addToastMessage(toastMessage: { title: string; body: string }) {
-    console.log('asdas');
     this.context.commit("addMessage", {
       title: toastMessage.title,
       body: toastMessage.body,

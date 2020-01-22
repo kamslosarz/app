@@ -1,7 +1,7 @@
 <template>
   <div class="col-md-12">
-    <search @searched="searched" :onLoadKeyword="keyword"/>
-    <table class="table mt-3">
+    <search @searched="searched" :onLoadKeyword="onLoadKeyword" />
+    <table class="table mt-3 backup-list">
       <thead>
         <tr>
           <th>Name</th>
@@ -59,8 +59,8 @@
   }
 })
 export default class BackupList extends Vue {
-  getBackupList!: (offset?: number) => Promise<BackupListResponse>;
-  search!: (offset?: number) => Promise<BackupListResponse>;
+  getBackupList!: (offset?: number) => BackupListResponse;
+  search!: (offset?: number) => BackupListResponse;
   updatePage!: (page: number) => {};
   pagination!: PaginationInterface;
   updateKeyword!: (keyword: string) => {};
@@ -70,18 +70,27 @@ export default class BackupList extends Vue {
     this.$forceUpdate();
   }
 
-  itemRemoved(item: BackupItem) {
-    this.reloadList().then((response: BackupListResponse) => {
+  async itemRemoved(item: BackupItem) {
+    const response: BackupListResponse = await this.reloadList();
+    if (response.success) {
       if (this.currentPage > this.lastPage) {
         this.loadPage(this.lastPage);
       }
-    });
+    }
   }
 
   searched(keyword: string) {
     this.updatePage(0);
     this.updateKeyword(keyword);
     this.reloadList();
+  }
+
+  async reloadList() {
+    if (this.keyword.length) {
+      return this.search(this.offset);
+    } else {
+      return this.getBackupList(this.offset);
+    }
   }
 
   pageSelected(page: Page) {
@@ -93,31 +102,25 @@ export default class BackupList extends Vue {
     this.reloadList();
   }
 
-  reloadList(): Promise<BackupListResponse> {
-    if (this.keyword.length) {
-      return this.search(this.offset);
-    } else {
-      return this.getBackupList(this.offset);
-    }
-  }
-
   created() {
     this.reloadList();
   }
 
   get lastPage(): number {
     if (this.pagination) {
-      const total = this.pagination.total;
-      const perPage = this.pagination.perPage;
-      const lastPage = Math.ceil(total / perPage);
+      const lastPage = Math.ceil(
+        this.pagination.total / this.pagination.perPage
+      );
       return lastPage > 0 ? lastPage - 1 : 0;
     }
-
     return 0;
   }
 
   get currentPage(): number {
-    return this.pagination.page;
+    if (this.pagination) {
+      return this.pagination.page;
+    }
+    return 0;
   }
 
   get offset() {
@@ -125,6 +128,10 @@ export default class BackupList extends Vue {
       return this.pagination.page * this.pagination.perPage;
     }
     return 0;
+  }
+
+  get onLoadKeyword(): string {
+    return this.keyword;
   }
 }
 </script>

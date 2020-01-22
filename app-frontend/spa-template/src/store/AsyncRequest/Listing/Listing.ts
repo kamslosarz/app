@@ -1,7 +1,6 @@
 import {Action, Mutation} from "vuex-module-decorators";
 import {Vue} from "vue-property-decorator";
 import AsyncRequest from "@/store/AsyncRequest/AsyncRequest";
-import {AxiosPromise, AxiosResponse} from "axios";
 import {ListResponse} from "@/models/Response";
 import {PaginationInterface} from "@/models/PaginationModel";
 
@@ -28,39 +27,30 @@ export default abstract class Listing<ItemType> extends AsyncRequest {
   }
 
   @Action
-  async getItems(offset: number = 0): Promise<AxiosPromise> {
-    return this.context.dispatch(
-      "asyncRequest",
-      (resolve: Function, reject: Function) => {
-        let listEndpoint = offset
-          ? this.listEndpoint + "/" + offset
-          : this.listEndpoint;
-        return Vue.axios
-          .get<ListResponse<ItemType>>(listEndpoint)
-          .then((response: AxiosResponse<ListResponse<ItemType>>) => {
-            let listResponse: ListResponse<ItemType> = response.data;
-            if (!listResponse.success) {
-              this.context.commit("setErrors", listResponse.errors);
-              reject();
-            } else {
-              this.context.commit("setItems", listResponse.data.items);
-              this.context.commit(
-                "updatePagination",
-                listResponse.data.pagination
-              );
-              this.context.commit("setLoading", false);
-              resolve(listResponse);
-            }
-          });
+  async getItems(offset: number = 0) {
+    return await this.context.dispatch("tryRequest", async () => {
+      let listEndpoint = offset
+        ? this.listEndpoint + "/" + offset
+        : this.listEndpoint;
+      const listResponse = await Vue.axios.get<ListResponse<ItemType>>(
+        listEndpoint
+      );
+      if (!listResponse.data.success) {
+        this.context.commit("setErrors", listResponse.data.errors);
+      } else {
+        this.context.commit("setItems", listResponse.data.data.items);
+        this.context.commit(
+          "updatePagination",
+          listResponse.data.data.pagination
+        );
       }
-    );
+
+      return listResponse.data;
+    });
   }
 
-  @Action
+  @Mutation
   itemDeleted(deletedItem: ItemType) {
-    this.context.commit(
-      "setItems",
-      this.items.filter(item => item !== deletedItem)
-    );
+    this.items = this.items.filter(item => item !== deletedItem);
   }
 }

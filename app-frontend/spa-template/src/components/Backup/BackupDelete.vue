@@ -7,10 +7,9 @@
       Delete
     </button>
     <transition name="fade">
-      <div>
+      <div v-if="displayDeleteModal" class="d-inline">
         <confirm-modal
           :class="{ active: displayDeleteModal }"
-          v-if="displayDeleteModal"
           @close="modalClosed"
           @confirm="modalConfirmed"
         />
@@ -22,11 +21,11 @@
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator";
   import {BackupItem, BackupItemDeleteResponse} from "@/models/Backup";
-  import {mapActions} from "vuex";
+  import {mapActions, mapMutations} from "vuex";
 
   @Component({
   methods: {
-    ...mapActions("backupList", ["itemDeleted"]),
+    ...mapMutations("backupList", ["itemDeleted"]),
     ...mapActions("backupItem", ["deleteBackup"]),
     ...mapActions("toast", ["addToastMessage"])
   }
